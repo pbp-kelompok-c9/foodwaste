@@ -10,7 +10,7 @@ Alur yang direncanakan: laporan masuk → EO menerima atau menolak laporan → p
 
 ## Status Checkpoint 1
 
-Code base Django 5.2 tersedia. Halaman `/` menampilkan halaman roket bawaan Django, termasuk ketika `PRODUCTION=True`. Route sementara ini menggunakan halaman bawaan Django, sehingga teks bawaannya tentang DEBUG tidak mencerminkan konfigurasi server. Fitur aplikasi belum diimplementasikan.
+Code base Django 5.2 tersedia. Secara bawaan `CHECKPOINT_ONLY=True`: hanya halaman roket, tanpa akun/admin atau database persisten; SQLite sementara di memori digunakan agar langkah migrasi otomatis PWS tetap berjalan tanpa kredensial database. Untuk mulai mengembangkan fitur, gunakan `.env.example` (`CHECKPOINT_ONLY=False`). Halaman `/` menampilkan halaman roket bawaan Django, termasuk ketika `PRODUCTION=True`. Route sementara ini menggunakan halaman bawaan Django, sehingga teks bawaannya tentang DEBUG tidak mencerminkan konfigurasi server. Fitur aplikasi belum diimplementasikan.
 
 ## Anggota kelompok
 
@@ -76,7 +76,7 @@ Buka http://127.0.0.1:8000/ untuk melihat roket Django. Hentikan server dengan C
 
 ## Menyiapkan PWS
 
-1. Buat proyek PWS dengan nama `foodwaste`.
+1. Proyek PWS bernama `foodwaste`. Checkpoint roket dapat dideploy tanpa mengisi database. Untuk mengaktifkan aplikasi lengkap nanti, set `CHECKPOINT_ONLY=False` dan ikuti konfigurasi berikut.
 2. Isi Environs berdasarkan `.env.prod.example` menggunakan kredensial database ITF salah satu anggota. Gunakan schema `tugas_kelompok` untuk proyek kelompok.
 3. Buat SECRET_KEY acak melalui `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"` lalu simpan hanya di PWS Environs.
 4. Isi ALLOWED_HOSTS dengan hostname deployment yang benar dan CSRF_TRUSTED_ORIGINS dengan URL HTTPS-nya.

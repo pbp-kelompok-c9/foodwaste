@@ -21,17 +21,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 import os
+import secrets
 from dotenv import load_dotenv
 from django.core.exceptions import ImproperlyConfigured
 
 load_dotenv(BASE_DIR / ".env")
+CHECKPOINT_ONLY = os.getenv("CHECKPOINT_ONLY", "True").lower() == "true"
 PRODUCTION = os.getenv("PRODUCTION", "False").lower() == "true"
-SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-local-development-only-foodwaste")
+SECRET_KEY = os.getenv("SECRET_KEY", secrets.token_urlsafe(50) if CHECKPOINT_ONLY else "django-insecure-local-development-only-foodwaste")
 if PRODUCTION and SECRET_KEY.startswith("django-insecure-"):
     raise ImproperlyConfigured("Set SECRET_KEY di environment PWS sebelum deployment.")
-DEBUG = not PRODUCTION
+DEBUG = not PRODUCTION and not CHECKPOINT_ONLY
 ALLOWED_HOSTS = [host.strip() for host in os.getenv(
-    "ALLOWED_HOSTS", "localhost,127.0.0.1"
+    "ALLOWED_HOSTS", "localhost,127.0.0.1,adinata-alaudin51-foodwaste.pws.cs.ui.ac.id"
 ).split(",") if host.strip()]
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv(
     "CSRF_TRUSTED_ORIGINS", ""
@@ -84,7 +86,10 @@ WSGI_APPLICATION = 'foodwaste.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-if PRODUCTION:
+if CHECKPOINT_ONLY:
+    # No persistent database or credentials; compatible with PWS migrate startup.
+    DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}}
+elif PRODUCTION:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
@@ -149,3 +154,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 WHITENOISE_USE_FINDERS = True
+
+# Rocket-only checkpoint: no accounts, sessions, admin, or application data.
+if CHECKPOINT_ONLY:
+    INSTALLED_APPS = ["django.contrib.staticfiles"]
+    MIDDLEWARE = [
+        "django.middleware.security.SecurityMiddleware",
+        "whitenoise.middleware.WhiteNoiseMiddleware",
+        "django.middleware.common.CommonMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    ]
+    TEMPLATES[0]["OPTIONS"]["context_processors"] = []
