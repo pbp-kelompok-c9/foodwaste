@@ -14,13 +14,13 @@ Code base Django 5.2 tersedia. Secara bawaan `CHECKPOINT_ONLY=True`: hanya halam
 
 ## Anggota kelompok
 
-Lengkapi nama resmi, NPM, dan seluruh anggota sebelum pengumpulan.
-
-| Anggota / akun yang diketahui | NPM |
-| --- | --- |
-| Adinata Alaudin Pranaja (@adinatapranaja) | Belum diisi |
-| Angga (@AnggaRestha; nama lengkap perlu dikonfirmasi) | Belum diisi |
-| Stefani Gwen Rolanda Tumbelaka (@stefanigwen14) | Belum diisi |
+| Nama | NPM | Program Studi | GitHub |
+| --- | --- | --- | --- |
+| Khansa Khairunnisa Haikal | 2506536465 | Sistem Informasi | — |
+| Stefani Gwen Rolanda Tumbelaka | 2506594263 | Sistem Informasi | [stefanigwen14](https://github.com/stefanigwen14) |
+| Muhammad Fatahillah Widodo | 2506623925 | Ilmu Komputer | — |
+| Adinata Alaudin Pranaja | 2506656356 | Sistem Informasi | [adinatapranaja](https://github.com/adinatapranaja) |
+| Angga Restha Rustyanto | 2506656444 | Ilmu Komputer | [AnggaRestha](https://github.com/AnggaRestha) |
 
 ## Rencana modul dan PIC
 
