@@ -14,7 +14,27 @@ Alur yang direncanakan: peserta mengirim laporan → admin menerima atau menolak
 
 ## Status Checkpoint 1
 
-Code base Django 5.2 tersedia. Secara bawaan `CHECKPOINT_ONLY=True`: hanya halaman roket, tanpa akun/admin atau database persisten; SQLite sementara di memori digunakan agar langkah migrasi otomatis PWS tetap berjalan tanpa kredensial database. Untuk mulai mengembangkan fitur, gunakan `.env.example` (`CHECKPOINT_ONLY=False`). Halaman `/` menampilkan halaman roket bawaan Django, termasuk ketika `PRODUCTION=True`. Route sementara ini menggunakan halaman bawaan Django, sehingga teks bawaannya tentang DEBUG tidak mencerminkan konfigurasi server. Fitur aplikasi belum diimplementasikan.
+Diperbarui pada 15 September 2026. Code base dan dokumentasi awal FoodWaste sudah tersedia dengan rincian berikut:
+
+- [x] Repository `foodwaste` tersedia di GitHub Organization `pbp-kelompok-c9`.
+- [x] Code base Django 5.2 tersedia.
+- [x] Nama aplikasi, nama anggota, dan NPM seluruh anggota tercantum.
+- [x] Deskripsi aplikasi dan nilai manfaatnya tercantum.
+- [x] Perbandingan dengan Surplus Indonesia dan Olio dilengkapi sumber referensi.
+- [x] Lima modul, deskripsi, dan PIC masing-masing sudah ditentukan.
+- [x] Nominatim dipilih sebagai Public API; sumber dan rencana penggunaannya tercantum.
+- [x] Peran pengguna dan target pengguna sudah dijelaskan.
+- [x] [Deployment PWS](https://adinata-alaudin51-foodwaste.pws.cs.ui.ac.id/) berhasil menampilkan halaman roket Django.
+- [x] [Tautan desain Figma](https://www.figma.com/design/wSGPDUl78i7Bzpfz7zeWil/Untitled?node-id=0-1&t=KkgO6a6FgNbzobOW-1) sudah dicantumkan.
+
+Implementasi lima modul, integrasi Nominatim, dan konfigurasi database persisten merupakan pekerjaan pengembangan selanjutnya. Checklist ini mencatat ketersediaan hasil kerja dan dokumentasi, bukan konfirmasi pengumpulan atau penilaian tugas.
+
+<details>
+<summary>Catatan teknis deployment checkpoint</summary>
+
+Secara bawaan `CHECKPOINT_ONLY=True`: hanya halaman roket, tanpa akun/admin atau database persisten; SQLite sementara di memori digunakan agar langkah migrasi otomatis PWS tetap berjalan tanpa kredensial database. Untuk mulai mengembangkan fitur, gunakan `.env.example` (`CHECKPOINT_ONLY=False`). Halaman `/` menampilkan halaman roket bawaan Django, termasuk ketika `PRODUCTION=True`. Route sementara ini menggunakan halaman bawaan Django, sehingga teks bawaannya tentang DEBUG tidak mencerminkan konfigurasi server.
+
+</details>
 
 ## Anggota kelompok
 
