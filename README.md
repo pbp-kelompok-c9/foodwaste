@@ -59,7 +59,18 @@ Pembeda yang diusulkan adalah alur **peserta melapor → EO memoderasi → EO me
 
 ## Public API / mock API
 
-Belum dipilih oleh kelompok. Halaman roket tidak memerlukan API eksternal.
+Public API yang dipilih adalah **Nominatim**, layanan pencarian lokasi berdasarkan data OpenStreetMap. FoodWaste berencana memakainya pada modul Acara untuk mengubah nama tempat atau alamat yang dimasukkan EO menjadi pilihan lokasi beserta koordinat lintang dan bujur.
+
+Alur penggunaan: EO mengetik nama tempat atau alamat acara → menekan tombol **Cari lokasi** → memilih hasil pencarian → aplikasi menyimpan alamat dan koordinat pada data acara. Detail internal acara, seperti nomor stan atau posisi pos pengumpulan, tetap diisi oleh EO.
+
+- Sumber layanan: [Nominatim](https://nominatim.org/).
+- Endpoint pencarian: `https://nominatim.openstreetmap.org/search` dengan parameter `q` dan `format=jsonv2`.
+- Dokumentasi: [Search API](https://nominatim.org/release-docs/latest/api/Search/).
+- Ketentuan: [Nominatim Usage Policy](https://operations.osmfoundation.org/policies/nominatim/).
+
+Nominatim merupakan perangkat lunak open source dan layanan publiknya dapat digunakan tanpa biaya sesuai kebijakan penggunaan. Integrasi direncanakan melalui backend Django dengan pembatasan maksimal satu request per detik untuk seluruh aplikasi, identitas aplikasi pada User-Agent, penyimpanan hasil pencarian (cache), serta atribusi **© OpenStreetMap contributors** yang ditautkan ke [informasi hak cipta OpenStreetMap](https://www.openstreetmap.org/copyright). Pencarian hanya dijalankan saat tombol ditekan, bukan autocomplete setiap kali pengguna mengetik. Alamat layanan dibuat dapat dikonfigurasi agar bisa diganti bila diperlukan.
+
+**Status Checkpoint 1:** API sudah dipilih sebagai rencana integrasi; belum diimplementasikan. Deployment saat ini tetap menampilkan halaman roket Django.
 
 ## Deployment PWS
 
