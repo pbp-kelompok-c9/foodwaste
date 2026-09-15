@@ -28,15 +28,15 @@ Code base Django 5.2 tersedia. Secara bawaan `CHECKPOINT_ONLY=True`: hanya halam
 
 ## Rencana modul dan PIC
 
-Usulan awal, belum merupakan pembagian final kelompok.
+Pembagian tanggung jawab pengembangan modul kelompok C9 adalah sebagai berikut. Fitur di bawah merupakan rencana pengembangan; Checkpoint 1 masih berupa code base Django dan halaman roket.
 
 | Modul | Deskripsi | PIC |
 | --- | --- | --- |
-| Akun dan akses | Login peserta dan admin serta pembatasan akses pengunjung tanpa login | Belum ditentukan |
-| Acara | Data acara, lokasi, dan pengelola EO | Belum ditentukan |
-| Laporan makanan | Foto, jenis makanan, porsi, tenggat, lokasi, dan opsi penjemputan | Belum ditentukan |
-| Tindak lanjut EO | Terima/tolak laporan, koordinasi pengambilan, serta pencatatan pengolahan, penjualan kembali, atau publikasi ulang makanan | Belum ditentukan |
-| Riwayat dan ringkasan | Riwayat laporan dan jumlah laporan per status | Belum ditentukan |
+| User & Authentication | Registrasi, login, logout, pengelolaan profil, serta peran dan pembatasan hak akses pengguna. | Adinata Alaudin Pranaja |
+| Event Management | Membuat, melihat, mengubah, dan menghapus acara (CRUD), menampilkan detail acara, serta mengelola vendor terkait. Pencarian lokasi acara direncanakan menggunakan Nominatim. | Khansa Khairunnisa Haikal |
+| Food Waste Reporting | Membuat dan melihat laporan serta detail makanan sisa, meliputi foto, jenis makanan, jumlah porsi, tenggat best before, lokasi, dan opsi penjemputan. | Stefani Gwen Rolanda Tumbelaka |
+| Food Waste Management | Memverifikasi dan menerima atau menolak laporan, memperbarui status penanganan, serta menentukan tindak lanjut berupa penjualan, pembagian, atau pengolahan makanan. | Angga Restha Rustyanto |
+| Discovery & Dashboard | Pencarian dan penyaringan makanan, dashboard, serta statistik laporan dan penanganan makanan. | Muhammad Fatahillah Widodo |
 
 ## Peran dan target pengguna
 
