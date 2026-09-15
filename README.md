@@ -16,9 +16,9 @@ Code base Django 5.2 tersedia. Secara bawaan `CHECKPOINT_ONLY=True`: hanya halam
 
 | Nama | NPM | Program Studi | GitHub |
 | --- | --- | --- | --- |
-| Khansa Khairunnisa Haikal | 2506536465 | Sistem Informasi | — |
+| Khansa Khairunnisa Haikal | 2506536465 | Sistem Informasi | [khansakkh](https://github.com/khansakkh) |
 | Stefani Gwen Rolanda Tumbelaka | 2506594263 | Sistem Informasi | [stefanigwen14](https://github.com/stefanigwen14) |
-| Muhammad Fatahillah Widodo | 2506623925 | Ilmu Komputer | — |
+| Muhammad Fatahillah Widodo | 2506623925 | Ilmu Komputer | [wmfatah](https://github.com/wmfatah) |
 | Adinata Alaudin Pranaja | 2506656356 | Sistem Informasi | [adinatapranaja](https://github.com/adinatapranaja) |
 | Angga Restha Rustyanto | 2506656444 | Ilmu Komputer | [AnggaRestha](https://github.com/AnggaRestha) |
 
