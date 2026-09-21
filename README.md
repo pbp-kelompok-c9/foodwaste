@@ -133,3 +133,23 @@ Buka http://127.0.0.1:8000/ untuk melihat roket Django. Hentikan server dengan C
 Konfigurasi PostgreSQL menggunakan schema `tugas_kelompok`; SQLite digunakan untuk pengembangan lokal dan database sementara di memori pada mode checkpoint. `.env`, database lokal, dan virtual environment tidak diikutkan ke Git.
 
 Referensi setup: https://pbp.cs.ui.ac.id/tutorial/tutorial-0.html dan https://pbp.cs.ui.ac.id/tutorial/tutorial-1.html
+
+
+
+## Sumber Public API (50 Initial Data)
+
+Untuk memenuhi ketentuan minimal 50 initial data utama pada database aplikasi saat deployment, kami mengonsumsi data dari Public API eksternal berikut:
+
+1. **DummyJSON Food/Recipes API**
+   * **Tautan API:** `https://dummyjson.com/recipes?limit=50`
+   * **Deskripsi Data:** Menyediakan 50 data objek makanan/resep secara langsung dalam format JSON, mencakup nama makanan, kategori, bahan-bahan, estimasi kalori, serta URL gambar makanan.
+   * **Mekanisme Integrasi:** Data dari Public API ini di-*fetch* oleh skrip *seeding* Django (`seed_data.py`) untuk dimasukkan ke dalam database sebagai katalog awal *surplus food* sebelum aplikasi di-deploy ke PWS.
+
+2. **TheMealDB API**
+   * **Tautan API:** `https://www.themealdb.com/api/json/v1/1/search.php?s=`
+   * **Deskripsi Data:** Menyediakan katalog data makanan lengkap beserta kategori, wilayah asal, instruksi, dan tautan gambar thumbnail makanan.
+   * **Mekanisme Integrasi:** Digunakan sebagai alternatif sumber data *food catalog* yang di-*fetch* untuk memperkaya variasi *initial seed data*.
+
+3. **OpenStreetMap (Nominatim API)**
+   * **Tautan API:** `https://nominatim.openstreetmap.org/`
+   * **Deskripsi Data:** Digunakan untuk *forward & reverse geocoding* dalam memetakan koordinat lokasi penjemputan makanan (latitude & longitude) secara visual pada peta interaktif Leaflet.js.
