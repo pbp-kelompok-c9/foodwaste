@@ -1,3 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
+def show_management(request):
+    context = {
+        'title': 'Food Waste Management',
+    }
+    return render(request, 'management_landing.html', context)
