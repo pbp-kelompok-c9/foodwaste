@@ -1,14 +1,9 @@
-"""Checkpoint 1: replace the root route when the application is implemented."""
-from django.conf import settings
-from django.urls import path
-from django.views.debug import default_urlconf
+from django.contrib import admin
+from django.urls import path, include
+from django.views.generic import TemplateView
 
 urlpatterns = [
-    # Explicitly show Django's bundled rocket page, including with DEBUG=False.
-    path("", default_urlconf, name="checkpoint-rocket"),
-
+    path('admin/', admin.site.urls),
+    path('', TemplateView.as_view(template_name='main_landing.html'), name='main_landing'),
+    path('management/', include('food_waste_management.urls')),
 ]
-
-if not settings.CHECKPOINT_ONLY:
-    from django.contrib import admin
-    urlpatterns.append(path("admin/", admin.site.urls))
