@@ -1,3 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
+def show_reports(request):
+    context = {
+        'title': 'Food Waste Reporting',
+    }
+    return render(request, 'reports_landing.html', context)
