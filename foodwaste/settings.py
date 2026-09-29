@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'food_waste_management',
+    'food_waste_reporting',
 ]
 
 MIDDLEWARE = [
