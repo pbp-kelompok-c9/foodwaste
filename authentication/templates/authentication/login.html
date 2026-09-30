@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Masuk - FoodWastey{% endblock %}
+{% block content %}
+<section>
+  <h1>Masuk</h1>
+  <form method="post" action="{% url 'authentication:login' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="next" value="{{ next }}">
+    <button type="submit">Masuk</button>
+  </form>
+  <p>Belum punya akun? <a href="{% url 'authentication:register' %}">Daftar</a></p>
+</section>
+{% endblock %}

@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'authentication',
     'food_waste_management',
     'food_waste_reporting',
 ]
@@ -172,3 +173,11 @@ if CHECKPOINT_ONLY:
         "django.middleware.clickjacking.XFrameOptionsMiddleware",
     ]
     TEMPLATES[0]["OPTIONS"]["context_processors"] = []
+
+# Authentication uses Django's built-in User and session backend.
+LOGIN_URL = 'authentication:login'
+LOGIN_REDIRECT_URL = 'main_landing'
+LOGOUT_REDIRECT_URL = 'authentication:login'
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = PRODUCTION
+CSRF_COOKIE_SECURE = PRODUCTION
