@@ -44,11 +44,14 @@
           </span>
         </summary>
         <div class="user__dropdown">
-          <a href="/logout/">Keluar</a>
+          <form method="post" action="{% url 'authentication:logout' %}">
+            {% csrf_token %}
+            <button type="submit">Keluar</button>
+          </form>
         </div>
       </details>
       {% else %}
-      <a href="/login/" class="navbar__link">Masuk</a>
+      <a href="{% url 'authentication:login' %}" class="navbar__link">Masuk</a>
       {% endif %}
     </nav>
   </header>

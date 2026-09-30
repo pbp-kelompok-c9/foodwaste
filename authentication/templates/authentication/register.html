@@ -1,0 +1,14 @@
+{% extends 'authentication/layout.html' %}
+{% block title %}Daftar - FoodWastey{% endblock %}
+{% block auth_content %}
+<span class="auth-eyebrow">SATU AKUN, BANYAK AKSI BAIK</span>
+<h1 id="auth-heading">Mulai aksi baikmu.</h1>
+<p class="auth-subtitle">Gabung dan jadi bagian dari acara yang lebih peduli makanan.</p>
+{% include 'authentication/google_button.html' %}
+<form method="post" action="{% url 'authentication:register' %}" class="auth-form">
+  {% csrf_token %}
+  {% include 'authentication/fields.html' %}
+  <button type="submit" class="auth-primary">Buat akun <span aria-hidden="true">↗</span></button>
+</form>
+<p class="auth-switch">Sudah punya akun? <a href="{% url 'authentication:login' %}">Masuk di sini</a></p>
+{% endblock %}

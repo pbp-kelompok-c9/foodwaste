@@ -1,0 +1,15 @@
+{% extends 'authentication/layout.html' %}
+{% block title %}Masuk - FoodWastey{% endblock %}
+{% block auth_content %}
+<span class="auth-eyebrow">SELAMAT DATANG KEMBALI</span>
+<h1 id="auth-heading">Senang melihatmu lagi.</h1>
+<p class="auth-subtitle">Masuk dan mulai aksi baikmu hari ini.</p>
+{% include 'authentication/google_button.html' %}
+<form method="post" action="{% url 'authentication:login' %}" class="auth-form">
+  {% csrf_token %}
+  {% include 'authentication/fields.html' %}
+  <input type="hidden" name="next" value="{{ next }}">
+  <button type="submit" class="auth-primary">Masuk <span aria-hidden="true">↗</span></button>
+</form>
+<p class="auth-switch">Baru di FoodWastey? <a href="{% url 'authentication:register' %}">Buat akun</a></p>
+{% endblock %}

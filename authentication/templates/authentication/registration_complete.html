@@ -1,0 +1,9 @@
+{% extends 'authentication/layout.html' %}
+{% block title %}Pendaftaran berhasil - FoodWastey{% endblock %}
+{% block auth_content %}
+<div class="auth-success-icon" aria-hidden="true">✓</div>
+<span class="auth-eyebrow">SIAP MEMULAI</span>
+<h1 id="auth-heading">Akunmu sudah siap!</h1>
+<p class="auth-subtitle">Terima kasih sudah bergabung. Masuk dengan username dan password yang baru kamu buat untuk memulai aksi baikmu.</p>
+<a class="auth-primary" href="{% url 'authentication:login' %}">Lanjut masuk <span aria-hidden="true">↗</span></a>
+{% endblock %}

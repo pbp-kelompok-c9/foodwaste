@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/auth.css' %}">{% endblock %}
+{% block content %}
+<div class="auth-backdrop">
+  <section class="auth-shell auth-panel" aria-labelledby="auth-heading">
+    <div class="auth-sprout" aria-hidden="true"><svg viewBox="0 0 48 48" width="40" height="40" fill="none"><path d="M24 40V24M24 30C10 30 8 21 8 13c10 0 16 5 16 17ZM24 24C24 12 32 8 41 8c0 10-5 17-17 16Z" fill="#a6b87c" stroke="#435a1e" stroke-width="2.2" stroke-linejoin="round"/></svg></div>
+    {% block auth_content %}{% endblock %}
+  </section>
+  <p class="auth-tagline">Satu langkah kecil, lebih sedikit makanan terbuang.</p>
+</div>
+{% endblock %}
+{% block extra_js %}<script src="{% static 'js/auth.js' %}" defer></script>{% endblock %}

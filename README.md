@@ -153,3 +153,7 @@ Untuk memenuhi ketentuan minimal 50 initial data utama pada database aplikasi sa
 3. **OpenStreetMap (Nominatim API)**
    * **Tautan API:** `https://nominatim.openstreetmap.org/`
    * **Deskripsi Data:** Digunakan untuk *forward & reverse geocoding* dalam memetakan koordinat lokasi penjemputan makanan (latitude & longitude) secara visual pada peta interaktif Leaflet.js.
+
+## Pengembangan authentication
+
+Logic registrasi, login, dan logout tersedia pada modul `authentication` ketika `CHECKPOINT_ONLY=False`. Formulir masih berupa tampilan sederhana untuk pengujian; profil dan role EO belum diimplementasikan. Lihat [panduan authentication](docs/authentication.md) untuk menjalankan dan menguji modul serta [acuan palet warna](docs/color-palette.md) untuk tahap desain berikutnya.
