@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'authentication',
     'food_waste_management',
     'food_waste_reporting',
+    'event_management',
 ]
 
 MIDDLEWARE = [
