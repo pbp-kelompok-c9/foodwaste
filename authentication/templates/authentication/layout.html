@@ -2,17 +2,12 @@
 {% load static %}
 {% block extra_head %}<link rel="stylesheet" href="{% static 'css/auth.css' %}">{% endblock %}
 {% block content %}
-<div class="auth-shell">
-  <aside class="auth-story">
-    <span class="auth-eyebrow">MAKANAN BERHARGA. AKSI BERMAKNA.</span>
-    <h1>Porsi kecil.<br>Dampak besar.</h1>
-    <p>Mulai dari satu laporan, bantu makanan berlebih menemukan kesempatan kedua.</p>
-    <div class="food-art" aria-hidden="true"><span class="art-orbit"></span><div class="art-plate"><span class="art-leaf leaf-one"></span><span class="art-leaf leaf-two"></span><span class="art-tomato"></span><span class="art-grain"></span></div><span class="art-note">Lebih sedikit terbuang ♥</span></div>
-    <div class="auth-story-bottom"><span class="story-spark">✳</span><p>Dari acara kita,<br><strong>untuk manfaat bersama.</strong></p></div>
-  </aside>
-  <section class="auth-panel" aria-labelledby="auth-heading">
+<div class="auth-backdrop">
+  <section class="auth-shell auth-panel" aria-labelledby="auth-heading">
+    <div class="auth-sprout" aria-hidden="true"><svg viewBox="0 0 48 48" width="40" height="40" fill="none"><path d="M24 40V24M24 30C10 30 8 21 8 13c10 0 16 5 16 17ZM24 24C24 12 32 8 41 8c0 10-5 17-17 16Z" fill="#a6b87c" stroke="#435a1e" stroke-width="2.2" stroke-linejoin="round"/></svg></div>
     {% block auth_content %}{% endblock %}
   </section>
+  <p class="auth-tagline">Satu langkah kecil, lebih sedikit makanan terbuang.</p>
 </div>
 {% endblock %}
 {% block extra_js %}<script src="{% static 'js/auth.js' %}" defer></script>{% endblock %}

@@ -2,8 +2,8 @@
 {% block title %}Masuk - FoodWastey{% endblock %}
 {% block auth_content %}
 <span class="auth-eyebrow">SELAMAT DATANG KEMBALI</span>
-<h2 id="auth-heading">Yuk, lanjutkan<br>aksi baikmu.</h2>
-<p class="auth-subtitle">Masuk untuk mulai berbagi dan melaporkan makanan di acaramu.</p>
+<h1 id="auth-heading">Senang melihatmu lagi.</h1>
+<p class="auth-subtitle">Masuk dan mulai aksi baikmu hari ini.</p>
 {% include 'authentication/google_button.html' %}
 <form method="post" action="{% url 'authentication:login' %}" class="auth-form">
   {% csrf_token %}
