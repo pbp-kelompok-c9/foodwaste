@@ -9,5 +9,6 @@
     <button type="submit">Daftar</button>
   </form>
   <p>Sudah punya akun? <a href="{% url 'authentication:login' %}">Masuk</a></p>
+{% include 'authentication/google_button.html' %}
 </section>
 {% endblock %}

@@ -16,3 +16,6 @@ else:
         path('management/', include('food_waste_management.urls')),
         path('reporting/', include('food_waste_reporting.urls')),
     ]
+
+    if settings.GOOGLE_LOGIN_ENABLED:
+        urlpatterns += [path('accounts/', include('allauth.urls'))]

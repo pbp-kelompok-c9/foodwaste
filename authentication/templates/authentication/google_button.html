@@ -1,0 +1,7 @@
+{% if google_login_enabled %}
+<form method="post" action="{% url 'google_login' %}">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ next }}">
+  <button type="submit">Masuk dengan Google</button>
+</form>
+{% endif %}

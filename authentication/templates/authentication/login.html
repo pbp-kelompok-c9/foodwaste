@@ -10,5 +10,6 @@
     <button type="submit">Masuk</button>
   </form>
   <p>Belum punya akun? <a href="{% url 'authentication:register' %}">Daftar</a></p>
+{% include 'authentication/google_button.html' %}
 </section>
 {% endblock %}
