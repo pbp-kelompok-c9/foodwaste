@@ -12,7 +12,7 @@ Gunakan `.env.example` sebagai `.env` dengan `CHECKPOINT_ONLY=False`. Instal req
 
 Username mengikuti aturan dan keunikan bawaan Django. Email belum diverifikasi dan belum diperlakukan sebagai identitas unik. Akun baru tidak memiliki izin staff/superuser; formulir tidak menerima pilihan role admin. Penetapan role EO dan pengelolaan profil belum termasuk tahap ini. Halaman Management belum dibatasi menjadi khusus EO karena kebijakan role tersebut belum diimplementasikan.
 
-Formulir HTML hanya untuk mencoba logic, bukan desain final. Proteksi brute-force/rate limiting dan pemulihan password belum diimplementasikan. Sebelum aplikasi dipakai publik, tambahkan pembatasan percobaan login.
+Formulir memakai desain responsif hijau–krem, tombol Google, pesan validasi, dan tombol tampilkan password. Proteksi brute-force/rate limiting dan pemulihan password belum diimplementasikan. Sebelum aplikasi dipakai publik, tambahkan pembatasan percobaan login.
 
 ## Checkpoint dan deployment
 

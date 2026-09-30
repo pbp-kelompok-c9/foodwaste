@@ -1,15 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'authentication/layout.html' %}
 {% block title %}Masuk - FoodWastey{% endblock %}
-{% block content %}
-<section>
-  <h1>Masuk</h1>
-  <form method="post" action="{% url 'authentication:login' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="hidden" name="next" value="{{ next }}">
-    <button type="submit">Masuk</button>
-  </form>
-  <p>Belum punya akun? <a href="{% url 'authentication:register' %}">Daftar</a></p>
+{% block auth_content %}
+<span class="auth-eyebrow">SELAMAT DATANG KEMBALI</span>
+<h2 id="auth-heading">Yuk, lanjutkan<br>aksi baikmu.</h2>
+<p class="auth-subtitle">Masuk untuk mulai berbagi dan melaporkan makanan di acaramu.</p>
 {% include 'authentication/google_button.html' %}
-</section>
+<form method="post" action="{% url 'authentication:login' %}" class="auth-form">
+  {% csrf_token %}
+  {% include 'authentication/fields.html' %}
+  <input type="hidden" name="next" value="{{ next }}">
+  <button type="submit" class="auth-primary">Masuk <span aria-hidden="true">↗</span></button>
+</form>
+<p class="auth-switch">Baru di FoodWastey? <a href="{% url 'authentication:register' %}">Buat akun</a></p>
 {% endblock %}

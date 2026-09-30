@@ -1,14 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'authentication/layout.html' %}
 {% block title %}Daftar - FoodWastey{% endblock %}
-{% block content %}
-<section>
-  <h1>Daftar akun</h1>
-  <form method="post" action="{% url 'authentication:register' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Daftar</button>
-  </form>
-  <p>Sudah punya akun? <a href="{% url 'authentication:login' %}">Masuk</a></p>
+{% block auth_content %}
+<span class="auth-eyebrow">SATU AKUN, BANYAK AKSI BAIK</span>
+<h2 id="auth-heading">Mulai berbagi.<br>Mulai dari sini.</h2>
+<p class="auth-subtitle">Gabung dan jadi bagian dari acara yang lebih peduli makanan.</p>
 {% include 'authentication/google_button.html' %}
-</section>
+<form method="post" action="{% url 'authentication:register' %}" class="auth-form">
+  {% csrf_token %}
+  {% include 'authentication/fields.html' %}
+  <button type="submit" class="auth-primary">Buat akun <span aria-hidden="true">↗</span></button>
+</form>
+<p class="auth-switch">Sudah punya akun? <a href="{% url 'authentication:login' %}">Masuk di sini</a></p>
 {% endblock %}
