@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}FoodWastey{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Lilita+One&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+  <!-- ===== Navbar ===== -->
+  <header class="navbar">
+    <a href="/" class="navbar__brand">FoodWastey</a>
+
+    <nav class="navbar__menu" aria-label="Navigasi utama">
+      <a href="/" class="navbar__link {% if request.path == '/' %}is-active{% endif %}"
+         {% if request.path == '/' %}aria-current="page"{% endif %}>Beranda</a>
+         
+      <a href="/reporting/" class="navbar__link {% if '/reporting' in request.path %}is-active{% endif %}"
+         {% if '/reporting' in request.path %}aria-current="page"{% endif %}>Laporan</a>
+         
+      <a href="/management/" class="navbar__link {% if '/management' in request.path %}is-active{% endif %}"
+         {% if '/management' in request.path %}aria-current="page"{% endif %}>Kelola</a>
+
+      <a href="#" class="navbar__icon-btn" aria-label="Notifikasi">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
+      </a>
+
+      {% if user.is_authenticated %}
+      <details class="user">
+        <summary>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm0 14c-2.03 0-4.43-.82-6.14-2.88C7.55 15.8 9.68 15 12 15s4.45.8 6.14 2.12C16.43 19.18 14.03 20 12 20z"/></svg>
+          <span class="user__name">
+            {{ user.username }}
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
+          </span>
+        </summary>
+        <div class="user__dropdown">
+          <a href="/logout/">Keluar</a>
+        </div>
+      </details>
+      {% else %}
+      <a href="/login/" class="navbar__link">Masuk</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  
+  <main class="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="footer__content">
+      <div class="footer__col footer__brand-col">
+        <a href="/" class="footer__brand">FoodWastey</a>
+        <p class="footer__tagline">Selamatkan makanan yang masih layak dan kurangi food waste bersama.</p>
+      </div>
+
+      <div class="footer__col">
+        <h2 class="footer__heading">Kontak</h2>
+        <a href="mailto:foodwastey@email.com" class="footer__item">foodwastey@gmail.com</a>
+        <span class="footer__item">@foodwastey</span>
+      </div>
+    </div>
+
+    <div class="footer__bar">
+      <span class="footer__copy">&copy; {% now "Y" %} PBP C Kelompok C9 - FoodWastey</span>
+      <span class="footer__legal"><a href="#">Kebijakan Privasi</a> &nbsp;|&nbsp; <a href="#">Syarat &amp; Ketentuan</a></span>
+    </div>
+  </footer>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html> 
