@@ -32,12 +32,25 @@ SECRET_KEY = os.getenv("SECRET_KEY", secrets.token_urlsafe(50) if CHECKPOINT_ONL
 if PRODUCTION and SECRET_KEY.startswith("django-insecure-"):
     raise ImproperlyConfigured("Set SECRET_KEY di environment PWS sebelum deployment.")
 DEBUG = not PRODUCTION and not CHECKPOINT_ONLY
+
+# [FIX] Host PWS dipakai di beberapa tempat
+PWS_HOST = "adinata-alaudin51-foodwaste.pws.cs.ui.ac.id"
+
 ALLOWED_HOSTS = [host.strip() for host in os.getenv(
-    "ALLOWED_HOSTS", "localhost,127.0.0.1,adinata-alaudin51-foodwaste.pws.cs.ui.ac.id"
+    "ALLOWED_HOSTS", f"localhost,127.0.0.1,{PWS_HOST}"
 ).split(",") if host.strip()]
+
+# [FIX] Default CSRF_TRUSTED_ORIGINS sekarang berisi domain PWS (https)
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv(
-    "CSRF_TRUSTED_ORIGINS", ""
+    "CSRF_TRUSTED_ORIGINS", f"https://{PWS_HOST}"
 ).split(",") if origin.strip()]
+
+# [FIX] PWS berjalan di belakang reverse proxy HTTPS.
+# Tanpa ini Django mengira request datang via http, sehingga allauth
+# mengirim redirect_uri "http://..." ke Google -> Error 400 redirect_uri_mismatch.
+# Aman untuk lokal: runserver tidak pernah mengirim header ini.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
 
 
 
@@ -203,6 +216,12 @@ SOCIALACCOUNT_STORE_TOKENS = False
 SOCIALACCOUNT_EMAIL_AUTHENTICATION = False
 SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = False
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+# [FIX] Paksa allauth membuat callback URL https saat di PWS, http saat lokal.
+# Lokal dideteksi dari DEBUG atau env LOCAL_DEV=True.
+_IS_LOCAL = DEBUG or os.getenv("LOCAL_DEV", "False").lower() == "true"
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http" if _IS_LOCAL else "https"
+
 SOCIALACCOUNT_ADAPTER = 'authentication.adapters.GoogleAccountAdapter'
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
