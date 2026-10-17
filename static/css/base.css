@@ -2,7 +2,6 @@
 :root {
   --paper: #fdecd8;
   --ink: #6d3510;
-
   --accent-dark: #597828;         /* Accent Dark / Normal  -> navbar & footer */
   --accent-dark-deep: #435a1e;    /* Accent Dark / Dark    -> bar bawah footer */
   --accent-dark-active: #283612;  /* Accent Dark / Dark :active -> teks menu aktif */

@@ -1,0 +1,112 @@
+:root {
+  --paper: #fdecd8;
+  --ink: #6d3510;
+  --ink-dark: #261306;
+  --accent: #91AC67;
+  --accent-dark: #597828;     
+  --accent-dark-deep: #435a1e;   
+  --accent-dark-active: #283612;  
+  --accent-light: #eef2ea;      
+  --accent-light-active: #ccd5bc;
+}
+
+body {
+    color: var(--ink-dark);
+}
+
+section {
+    padding: 2rem 4rem;
+}
+
+.report-form-modal {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1000px;
+    border: 1px solid #a5b17c;
+    border-radius: 10px;
+    background: #fffdf8;
+    box-shadow: 0 18px 48px #6d351012;
+}
+
+.modal-content {
+    padding: 4px 8px;
+}
+
+.header,
+.modal-horizontal-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.temp-placeholder-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #a5b17c;
+    border-radius: 6px;
+    height: 100px;
+    margin-bottom: 12px;
+}
+
+.form {
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    justify-content: flex-start;
+}
+
+.field p {
+    margin: 2px;
+    font-weight: bold;
+}
+
+.field input,
+.field textarea,
+.dropdown {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.7rem;
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: lighter;
+}
+
+.field-group {
+    display: flex;
+    align-items: center;
+    gap: 5%;
+}
+
+.button {
+    background-color: var(--accent-dark);
+    color: var(--accent-light);
+    border: 0px;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: bold;
+}
+
+.button:hover {
+    background-color: var(--accent-dark-active);
+}
+
+.close-button {
+    border: 0;
+    font-weight: bold;
+    background-color: var(--accent-light);
+}
+
+.form-modal__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4px;
+}
