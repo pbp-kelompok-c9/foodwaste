@@ -1,0 +1,64 @@
+<div id="add-report-modal"
+    class="report-form-modal"
+    popover="auto"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="add-report-modal-title">
+    <div class="modal-content">
+        <div class="modal-horizontal-layout">
+            <h3>Laporan X</h2>
+            <button type="button"
+                popovertarget="add-report-modal"
+                popovertargetaction="hide"
+                class="close-button">×</button>
+        </div>
+        <div class="temp-placeholder-img">Photo Here</div>
+        <form id="report-form"
+            method="post"
+            class="form">
+            {% csrf_token %}
+            <div class="field-group">
+                <div class="field">
+                    <p>{{ form.food_name.label }}</p>
+                    <p>{{ form.food_name }}</p>
+                    <p>{{ form.food_name.errors }}</p>
+                </div>
+                <div class="field">
+                    <p>{{ form.food_portion.label }}</p>
+                    <p>{{ form.food_portion }}</p>
+                    <p>{{ form.food_portion.errors }}</p>
+                </div>
+                <div class="field">
+                    <p>{{ form.best_before.label }}</p>
+                    <p>{{ form.best_before }}</p>
+                    <p>{{ form.best_before.errors }}</p>
+                </div>
+            </div>
+            <div class="field-group">
+                <div class="field">
+                    <p>{{ form.location.label }}</p>
+                    <p>{{ form.location }}</p>
+                    <p>{{ form.location.errors }}</p>
+                </div>
+                <div class="field">
+                    <p>{{ form.event.label }}</p>
+                    <p>{{ form.event }}</p>
+                    <p>{{ form.event.errors }}</p>
+                </div>
+            </div>
+            <div class="field">
+                <p>{{ form.pickup_option.label }}</p>
+                <p>{{ form.pickup_option }}</p>
+                <p>{{ form.pickup_option.errors }}</p>
+            </div>
+            <div class="field">
+                <p>{{ form.details.label }}</p>
+                <p>{{ form.details }}</p>
+                <p>{{ form.details.errors }}</p>
+            </div>
+            <div class="form-modal__actions">
+                <button type="submit" class="button">✓ Buat Laporan</button>
+            </div>
+        </form>
+    </div>
+</div>

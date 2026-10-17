@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} Laporan - FoodWastey {% endblock %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/reporting.css' %}">
+{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container">
+        <div class="header">
+            <h1>Laporan Telah Dibuat</h1>
+            <button type="button"
+                    class="button"
+                    popovertarget="add-report-modal">
+                + Buat Laporan
+            </button>
+        </div>
+    </div>
+</section>
+{% include "components/report_form_modal.html" %}
+{% endblock %}
+
