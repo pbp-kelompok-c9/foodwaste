@@ -56,8 +56,8 @@ class ReportForm(ModelForm):
 
     pickup_options = ChoiceField(
         label="Opsi Penjemputan",
-        choices = ["Ambil Sendiri", "ambil sendiri", "Diantar", "diantar"],
-        widget=Select(attrs={'class': 'dropdown'})
+        choices = Report.PICKUP_OPTIONS,
+        widget=Select(attrs={'class': 'input'})
     )
 
     details = CharField(
