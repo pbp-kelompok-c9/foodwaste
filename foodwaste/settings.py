@@ -118,7 +118,7 @@ if PRODUCTION:
             "PASSWORD": os.environ["DB_PASSWORD"],
             "HOST": os.environ["DB_HOST"],
             "PORT": os.getenv("DB_PORT", "5432"),
-            "OPTIONS": {"options": "-c search_path=tugas_kelompok"},
+            "OPTIONS": {"options": f"-c search_path={os.getenv('SCHEMA', 'tugas_kelompok')}"},
         }
     }
 else:
