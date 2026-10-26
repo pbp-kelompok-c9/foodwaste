@@ -1,0 +1,57 @@
+<div id="view-report-modal"
+    class="report-form-modal"
+    popover="auto"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="view-report-modal-title">
+    <button type="button"
+            class="modal__backdrop"
+            popovertarget="view-report-modal"
+            popovertargetaction="hide"></button>
+    <div class="modal-content">
+        <div class="modal-horizontal-layout">
+            <h2>Laporan</h2>
+            <button type="button"
+                popovertarget="view-report-modal"
+                popovertargetaction="hide"
+                class="close-button">×</button>
+        </div>
+        <div class="temp-placeholder-img">Photo Here</div>
+        <div class="field-group">
+            <div class="field">
+                <p>Jenis Makanan</p>
+                <p>{{ report.food_name }}</p>
+            </div>
+            <div class="field">
+                <p>Porsi</p>
+                <p>{{ report.food_portion }}</p>
+            </div>
+            <div class="field">
+                <p>Waktu Kedaluwarsa</p>
+                <p>{{ report.best_before }}</p>
+            </div>
+        </div>
+        <div class="field-group">
+            <div class="field">
+                <p>Lokasi</p>
+                <p>{{ report.location }}</p>
+            </div>
+            <div class="field">
+                <p>Event</p>
+                <p>{{ report.event }}</p>
+            </div>
+        </div>
+        <div class="field">
+            <p>Opsi Penjemputan</p>
+            <p>{{ report.pickup_options }}</p>
+        </div>
+        <div class="field">
+            <p>Deskripsi Tambahan</p>
+            <p>{{ report.details }}</p>
+        </div>
+        <div class="form-modal__actions">
+            <button type="submit" class="button">Edit</button>
+            <button type="submit" class="button">Hapus</button>
+        </div>
+    </div>
+</div>

@@ -25,11 +25,13 @@ class ReportForm(ModelForm):
         ),
     )
 
-    best_before = DateField(
+    best_before = DateTimeField(
         label="Waktu Kedaluwarsa",
-        widget=DateInput(
+        input_formats=["%d/%m/%Y"],  
+        widget=DateTimeInput(
+            format="%d/%m/%Y",
             attrs={
-                "placeholder": "6/10/2026"
+                "placeholder": "6/10/2026",
             }
         )
     )

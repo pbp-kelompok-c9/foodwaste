@@ -1,7 +1,12 @@
+from datetime import timezone
+
 from django.contrib import messages
 from django.shortcuts import redirect, render
+from django.http import JsonResponse
+from food_waste_reporting.models import Report
 from food_waste_reporting.forms import ReportForm
 from django.contrib.auth.decorators import login_required 
+from django.views.decorators.http import require_POST
 
 def show_reports(request):
     context = {
@@ -10,19 +15,38 @@ def show_reports(request):
     }
     return render(request, 'reports.html', context)
 
+def get_reports_json(request):
+    reports = Report.objects.filter(reported_by=request.user)
+
+    name_query = request.GET.get("name", "").strip()
+
+    if name_query:
+        reports = reports.filter(food_name__icontains=name_query)
+
+    data = [
+        {
+            "id": report.pk,
+            "food_name": report.food_name,
+            "portion": report.food_portion,
+            "best_before": report.best_before,
+            "location": report.location,
+            "event": report.event,
+        }
+        for report in reports
+    ]
+
+    return JsonResponse({"reports": data})
+
 @login_required(login_url="authentication:login")
-def create_report(request):
-    form = ReportForm(request.POST or None)
-
-    if request.method == "POST" and form.is_valid():
+@require_POST
+def create_report_ajax(request):
+    form = ReportForm(request.POST)
+    if form.is_valid():
         report = form.save(commit=False)
-        report.created_by = request.user
+        report.reported_by = request.user
         report.save()
-        messages.success(request, "Laporan baru berhasil ditambahkan!")
-        return redirect("main:show_reports")
-
-    context = {
-        "title": 'Food Waste Reporting',
-        "form": form,
-    }
-    return render(request, "reports.html", context)
+        return JsonResponse(
+            {"message": "Laporan berhasil dibuat!", "pk": str(report.id)},
+            status=201,
+        )
+    return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
