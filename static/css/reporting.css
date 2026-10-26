@@ -69,6 +69,7 @@ section {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
 }
 
 .temp-placeholder-img {
@@ -99,7 +100,8 @@ section {
 
 .field input,
 .field textarea,
-.field select {
+.field select,
+.search-bar {
     width: 100%;
     box-sizing: border-box;
     padding: 0.7rem;
@@ -148,4 +150,43 @@ section {
     align-items: center;
     justify-content: center;
     margin: 4px;
+}
+
+.states {
+    text-align: center;
+}
+
+.header form {
+    flex: 1;
+    min-width: 0;
+}
+
+#search-input {
+    width: 100%;
+}
+
+#filter-button {
+    flex: 0 0 auto;
+}
+
+.hide {
+    display: none !important;
+}
+
+.card {
+    background-color: var(--accent-light);
+    border-radius: 20px;
+    border: 2px solid var(--accent);
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    column-gap: 5%;
+    row-gap: 1.5rem;
+    margin-top: 24px;
+}
+
+#report-card-actions {
+    width: 100%;
 }

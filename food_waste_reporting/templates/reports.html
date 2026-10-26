@@ -6,18 +6,237 @@
 {% endblock %}
 
 {% block content %}
-<section>
-    <div class="container">
-        <div class="header">
-            <h1>Laporan Telah Dibuat</h1>
-            <button type="button"
-                    class="button"
-                    popovertarget="add-report-modal">
-                + Buat Laporan
-            </button>
+<main>
+    <section>
+        <div class="container">
+            <div class="header">
+                <h2>Laporan Telah Dibuat</h1>
+                <button type="button"
+                        class="button"
+                        popovertarget="add-report-modal">
+                    + Buat Laporan
+                </button>
+            </div>
+            <div class="header">
+                <form method="get"
+                    id="report-search"
+                    action="{% url 'food_waste_reporting:show_reports' %}">
+                    <input type="search"
+                        id="search-input"
+                        name="name-search"
+                        value="{{ name_query }}"
+                        class="search-bar"
+                        placeholder="Cari laporan berdasarkan nama...">
+                </form>
+                <button type="button"
+                        class="button"
+                        id="filter-button">
+                        Filter
+                </button>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="states hide">
+                <p>Sedang memuat laporan...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-state" class="states hide">
+                <p>Gagal memuat laporan, mohon dicoba lagi.</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="states hide">
+                <p>Tidak ditemukan laporan yang sesuai.</p>
+            </div>
+
+            <!-- Reports Grid -->
+            <div id="reports-grid" class="report-grid hide"></div>
         </div>
-    </div>
-</section>
+    </section>
+</main>
+
 {% include "components/report_form_modal.html" %}
+<script>
+    // Configuration
+    const BASE_REPORTS_ENDPOINT = "{% url 'food_waste_reporting:get_reports_json' %}"
+    let reportsAbortController;
+
+    // DOM elements
+    const loadingState = document.getElementById('loading-state');
+    const errorState = document.getElementById('error-state');
+    const emptyState = document.getElementById('empty-state');
+    const reportsGrid = document.getElementById('reports-grid');
+    const searchInput = document.getElementById('search-input');
+    const searchForm = document.getElementById('report-search');
+    const SEARCH_DEBOUNCE_DELAY = 500;
+    let searchDebounceTimer;
+
+    // Displaying page sections
+    function displayPageSection({ showLoading = false, showError = false, showEmpty = false, showGrid = false }) {
+        loadingState.classList.toggle('hide', !showLoading);
+        errorState.classList.toggle('hide', !showError);
+        emptyState.classList.toggle('hide', !showEmpty);
+        reportsGrid.classList.toggle('hide', !showGrid);
+    }
+
+    // Escape HTML for sanitation
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#39;');
+    }
+
+    // Building card components
+    function buildReportCard(report) {
+        const articleElement = document.createElement('article');
+        articleElement.className = 'card';
+
+        const cardHtml = `
+            <div class="modal-horizontal-layout">
+                <h3>${escapeHtml(report.food_name)}</h3>
+            </div>
+            <div class="modal-horizontal-layout">
+                <p>${escapeHtml(report.food_portion)} porsi</p>
+                <p>${escapeHtml(report.best_before)}</p>
+            </div>
+            <p>${escapeHtml(report.location)}</p>
+            <p>${escapeHtml(report.event)}</p>
+            <div class="modal-horizontal-layout">
+                <button type="button"
+                        class="button"
+                        popovertarget="view-report-modal"
+                        id="report-card-actions">
+                        Lihat Detail
+                </button>
+            </div>
+        `;
+        articleElement.innerHTML = cardHtml;
+        return articleElement;
+    }
+
+    // Report data fetching
+    async function fetchReports(searchQuery = "") {
+        if (reportsAbortController) reportsAbortController.abort();
+        reportsAbortController = new AbortController();
+
+        try {
+            displayPageSection({ showLoading: true });
+            
+            const url = searchQuery ? `${BASE_REPORTS_ENDPOINT}?name=${encodeURIComponent(searchQuery)}` : BASE_REPORTS_ENDPOINT;
+            
+            const response = await fetch(url, {
+                headers: { 'Accept': 'application/json' },
+                signal: reportsAbortController.signal,
+            });
+
+            if (!response.ok) throw new Error('Failed to fetch data');
+
+            const data = await response.json();
+            const reports = data.reports;
+
+            if (!Array.isArray(reports) || reports.length === 0) {
+                displayPageSection({ showEmpty: true });
+            } else {
+                reportsGrid.innerHTML = '';
+                reports.forEach(report => {
+                    reportsGrid.appendChild(buildReportCard(reports));
+                });
+                displayPageSection({ showGrid: true });
+            }
+        } catch (error) {
+            if (error.name === 'AbortError') return;
+            console.error('Error loading reports:', error);
+            displayPageSection({ showError: true });
+        }
+    }
+
+    // Search form event handler
+    function searchReports() {
+        fetchReports(searchInput.value.trim());
+    }
+
+    searchInput.addEventListener("input", function() {
+        clearTimeout(searchDebounceTimer);
+
+        searchDebounceTimer = setTimeout(function() {
+            searchReports();
+        }, SEARCH_DEBOUNCE_DELAY);
+    });
+
+    searchForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+        clearTimeout(searchDebounceTimer);
+        searchReports();
+    });
+
+    function closeReportModal() {
+        document.getElementById("add-report-modal").hidePopover();
+    }
+
+    // Creating forms
+    const CREATE_REPORT_ENDPOINT = "{% url 'food_waste_reporting:create_report_ajax' %}";
+    const reportForm = document.getElementById('report-form');
+
+    // Cookie for CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    async function addReport(event) {
+        event.preventDefault();
+        console.log('addReport jalan');
+
+        const url = CREATE_REPORT_ENDPOINT;
+
+        const submitButton = reportForm.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                body: new FormData(reportForm),
+            });
+            const result = await response.json().catch(() => ({}));
+
+            if (response.ok) {
+                reportForm.reset();
+                closeReportModal();
+                fetchReports(searchInput.value.trim());
+            } else {
+                const errorMessages = result.errors
+                    ? Object.values(result.errors).flat().map(error => error.message)
+                    : [result.message || `Error occurred: (status ${response.status}).`];
+            }
+        } catch (error) {
+            console.error('Gagal membuat laporan:', error);
+        } finally {
+            submitButton.disabled = false;
+        }
+    }
+
+    if (reportForm) {
+        reportForm.addEventListener('submit', addReport);
+    }
+    
+    // Start application
+    fetchReports(searchInput.value.trim());
+
+</script>
 {% endblock %}
 
