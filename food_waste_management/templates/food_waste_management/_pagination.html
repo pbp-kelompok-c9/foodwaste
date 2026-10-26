@@ -1,0 +1,7 @@
+{% if page_obj.has_other_pages %}
+<nav class="mgmt-pagination" aria-label="Halaman">
+  {% if page_obj.has_previous %}<a class="mgmt-btn mgmt-btn--outline" href="?{{ qs_base }}page={{ page_obj.previous_page_number }}">&lsaquo; Sebelumnya</a>{% endif %}
+  <span>Halaman {{ page_obj.number }} dari {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}<a class="mgmt-btn mgmt-btn--outline" href="?{{ qs_base }}page={{ page_obj.next_page_number }}">Berikutnya &rsaquo;</a>{% endif %}
+</nav>
+{% endif %}

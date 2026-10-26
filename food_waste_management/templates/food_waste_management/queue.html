@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Antrean Verifikasi - FoodWastey{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/management.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="mgmt">
+  <h1 class="mgmt__title">Manajemen Food Waste</h1>
+  {% include 'food_waste_management/_tabs.html' %}
+  {% include 'food_waste_management/_messages.html' %}
+
+  <div class="mgmt-card mgmt-table-wrap">
+    {% if page_obj.object_list %}
+    <table class="mgmt-table">
+      <thead>
+        <tr><th>Makanan</th><th>Porsi</th><th>Lokasi</th><th>Best Before</th><th>Pelapor</th><th>Aksi</th></tr>
+      </thead>
+      <tbody>
+        {% for review in page_obj %}
+        <tr>
+          <td><strong>{{ review.report.food_name }}</strong></td>
+          <td>{{ review.report.food_portion }}</td>
+          <td>{{ review.report.location }}</td>
+          <td>{{ review.report.best_before|date:"j/n/y H:i" }}</td>
+          <td>{{ review.report.reported_by.username }}</td>
+          <td class="mgmt-actions">
+            <a class="mgmt-btn mgmt-btn--outline" href="{% url 'food_waste_management:detail' review.report_id %}">Tinjau</a>
+            <form method="post" action="{% url 'food_waste_management:accept' review.report_id %}">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="queue">
+              <button type="submit" class="mgmt-btn">Terima</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="mgmt-empty">Antrean kosong. Semua laporan sudah diverifikasi.</p>
+    {% endif %}
+  </div>
+  {% include 'food_waste_management/_pagination.html' %}
+</section>
+{% endblock %}

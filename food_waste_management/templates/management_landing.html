@@ -1,14 +1,49 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Kelola Food Waste - FoodWastey{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/management.css' %}">
+{% endblock %}
+
 {% block content %}
-<section style="text-align: center; padding: 3rem 1rem;">
-    <h1 style="color: #2e7d32; font-family: 'Lilita One', cursive; font-size: 2.5rem; margin-bottom: 1rem;">
-        Modul Food Waste Management
-    </h1>
-    <p style="font-size: 1.1rem; color: #555; max-width: 600px; margin: 0 auto;">
-        Halaman ini merupakan dashboard awal untuk pengelolaan dan penyaluran surplus makanan.
-    </p>
+<section class="mgmt">
+  <h1 class="mgmt__title">Manajemen Food Waste</h1>
+  <p class="mgmt__lead">Verifikasi laporan peserta, perbarui status penanganan, dan tentukan tindak lanjut makanan.</p>
+
+  {% include 'food_waste_management/_tabs.html' %}
+  {% include 'food_waste_management/_messages.html' %}
+
+  <div class="mgmt-stats">
+    <div class="mgmt-card mgmt-stat"><span class="mgmt-stat__label">Menunggu Verifikasi</span><strong class="mgmt-stat__value">{{ stats.pending }}</strong></div>
+    <div class="mgmt-card mgmt-stat"><span class="mgmt-stat__label">Diterima</span><strong class="mgmt-stat__value">{{ stats.accepted }}</strong></div>
+    <div class="mgmt-card mgmt-stat"><span class="mgmt-stat__label">Ditolak</span><strong class="mgmt-stat__value mgmt-stat__value--danger">{{ stats.rejected }}</strong></div>
+    <div class="mgmt-card mgmt-stat"><span class="mgmt-stat__label">Selesai Ditangani</span><strong class="mgmt-stat__value">{{ stats.done }}</strong></div>
+  </div>
+
+  <div class="mgmt-panels">
+    <div class="mgmt-card mgmt-panel">
+      <div class="mgmt-panel__head">
+        <h2>Menunggu Verifikasi</h2>
+        <a class="mgmt-link" href="{% url 'food_waste_management:queue' %}">Lihat semua &rarr;</a>
+      </div>
+      {% for review in latest_pending %}
+      <a class="mgmt-row" href="{% url 'food_waste_management:detail' review.report_id %}">
+        <span><strong>{{ review.report.food_name }}</strong><small>{{ review.report.food_portion }} porsi &middot; {{ review.report.location }}</small></span>
+        <span class="mgmt-badge mgmt-badge--menunggu">Menunggu</span>
+      </a>
+      {% empty %}
+      <p class="mgmt-empty">Tidak ada laporan yang menunggu verifikasi.</p>
+      {% endfor %}
+    </div>
+
+    <div class="mgmt-card mgmt-panel">
+      <div class="mgmt-panel__head"><h2>Tindak Lanjut</h2></div>
+      <div class="mgmt-row"><span><strong>Dijual</strong></span><span>{{ stats.sold }}</span></div>
+      <div class="mgmt-row"><span><strong>Dibagikan</strong></span><span>{{ stats.shared }}</span></div>
+      <div class="mgmt-row"><span><strong>Diolah</strong></span><span>{{ stats.processed }}</span></div>
+    </div>
+  </div>
 </section>
 {% endblock %}

@@ -1,3 +1,13 @@
 from django.contrib import admin
 
-# Register your models here.
+from food_waste_management.models import ReportReview
+
+
+@admin.register(ReportReview)
+class ReportReviewAdmin(admin.ModelAdmin):
+    list_display = ("report", "verification_status", "handling_status", "follow_up",
+                    "reviewed_by", "reviewed_at")
+    list_filter = ("verification_status", "handling_status", "follow_up")
+    search_fields = ("report__food_name", "report__location", "report__event")
+    list_select_related = ("report", "reviewed_by")
+    readonly_fields = ("report", "reviewed_by", "reviewed_at", "created_at", "updated_at")

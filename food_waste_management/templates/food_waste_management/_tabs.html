@@ -1,0 +1,11 @@
+<nav class="mgmt-tabs" aria-label="Navigasi manajemen">
+  <a href="{% url 'food_waste_management:show_management' %}"
+     class="mgmt-tab {% if active == 'summary' %}is-active{% endif %}"
+     {% if active == 'summary' %}aria-current="page"{% endif %}>Ringkasan</a>
+  <a href="{% url 'food_waste_management:queue' %}"
+     class="mgmt-tab {% if active == 'queue' %}is-active{% endif %}"
+     {% if active == 'queue' %}aria-current="page"{% endif %}>Antrean Verifikasi{% if pending_count %} <span class="mgmt-tab__count">{{ pending_count }}</span>{% endif %}</a>
+  <a href="{% url 'food_waste_management:handling' %}"
+     class="mgmt-tab {% if active == 'handling' %}is-active{% endif %}"
+     {% if active == 'handling' %}aria-current="page"{% endif %}>Penanganan</a>
+</nav>
