@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ report.food_name }} - Kelola Laporan - FoodWastey{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/management.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="mgmt">
+  <h1 class="mgmt__title">Manajemen Food Waste</h1>
+  {% include 'food_waste_management/_tabs.html' %}
+  {% include 'food_waste_management/_messages.html' %}
+
+  <a class="mgmt-link" href="{% if review.is_pending %}{% url 'food_waste_management:queue' %}{% else %}{% url 'food_waste_management:handling' %}{% endif %}">&larr; Kembali</a>
+
+  <div class="mgmt-detail">
+    <div class="mgmt-card mgmt-panel">
+      <div class="mgmt-panel__head">
+        <h2>{{ report.food_name }}</h2>
+        <span class="mgmt-badge mgmt-badge--{{ review.verification_status }}">{{ review.get_verification_status_display }}</span>
+      </div>
+
+      {% if report.picture|slice:":4" == "http" %}
+      <img class="mgmt-photo" src="{{ report.picture }}" alt="Foto {{ report.food_name }}">
+      {% else %}
+      <div class="mgmt-photo mgmt-photo--empty">Tidak ada foto</div>
+      {% endif %}
+
+      <dl class="mgmt-dl">
+        <div><dt>Jumlah Porsi</dt><dd>{{ report.food_portion }} porsi</dd></div>
+        <div><dt>Waktu Kedaluwarsa</dt><dd>{{ report.best_before|date:"j/n/Y, H:i" }}</dd></div>
+        <div><dt>Lokasi</dt><dd>{{ report.location }}</dd></div>
+        <div><dt>Event</dt><dd>{{ report.event }}</dd></div>
+        <div><dt>Opsi Penjemputan</dt><dd>{{ report.get_pickup_option_display }}</dd></div>
+        <div><dt>Pelapor</dt><dd>{{ report.reported_by.username }}</dd></div>
+        <div class="mgmt-dl__wide"><dt>Deskripsi</dt><dd>{{ report.details|default:"–"|linebreaksbr }}</dd></div>
+        <div><dt>Dilaporkan</dt><dd>{{ report.created_at|date:"j/n/Y, H:i" }}</dd></div>
+      </dl>
+    </div>
+
+    <div class="mgmt-side">
+      {% if review.is_pending %}
+      <div class="mgmt-card mgmt-panel">
+        <h2>Verifikasi</h2>
+        <p class="mgmt-hint">Menerima laporan berarti laporan siap ditindaklanjuti, bukan jaminan makanan layak konsumsi.</p>
+        <form method="post" action="{% url 'food_waste_management:accept' report.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="mgmt-btn mgmt-btn--block">Terima Laporan</button>
+        </form>
+        <form method="post" action="{% url 'food_waste_management:reject' report.pk %}" class="mgmt-form">
+          {% csrf_token %}
+          <label for="reason">Alasan penolakan</label>
+          <textarea id="reason" name="reason" rows="3" maxlength="500" required class="mgmt-input" placeholder="Contoh: foto tidak sesuai dengan makanan yang dilaporkan"></textarea>
+          <button type="submit" class="mgmt-btn mgmt-btn--danger mgmt-btn--block">Tolak Laporan</button>
+        </form>
+      </div>
+
+      {% elif review.is_rejected %}
+      <div class="mgmt-card mgmt-panel">
+        <h2>Laporan Ditolak</h2>
+        <p>{{ review.rejection_reason|linebreaksbr }}</p>
+        <p class="mgmt-hint">Oleh {{ review.reviewed_by.username|default:"–" }} &middot; {{ review.reviewed_at|date:"j/n/Y, H:i" }}</p>
+      </div>
+
+      {% else %}
+      <div class="mgmt-card mgmt-panel">
+        <h2>Status Penanganan</h2>
+        <ol class="mgmt-steps">
+          {% for value, label in handling_steps %}
+          <li class="{% if value == review.handling_status %}is-current{% endif %}">{{ label }}</li>
+          {% endfor %}
+        </ol>
+        {% if review.next_handling %}
+        <form method="post" action="{% url 'food_waste_management:update_handling' report.pk %}">
+          {% csrf_token %}
+          <input type="hidden" name="handling_status" value="{{ review.next_handling }}">
+          <button type="submit" class="mgmt-btn mgmt-btn--block">Tandai: {{ review.next_handling_label }}</button>
+        </form>
+        {% else %}
+        <p class="mgmt-hint">Penanganan laporan ini sudah selesai.</p>
+        {% endif %}
+      </div>
+
+      <div class="mgmt-card mgmt-panel">
+        <h2>Tindak Lanjut</h2>
+        {% if review.can_set_follow_up %}
+        <form method="post" action="{% url 'food_waste_management:follow_up' report.pk %}" class="mgmt-form">
+          {% csrf_token %}
+          <label for="follow_up">Pilih tindak lanjut</label>
+          <select id="follow_up" name="follow_up" class="mgmt-input" required>
+            <option value="" disabled {% if not review.follow_up %}selected{% endif %}>Pilih...</option>
+            {% for value, label in follow_up_choices %}
+            <option value="{{ value }}" {% if value == review.follow_up %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="mgmt-btn mgmt-btn--block">Simpan</button>
+        </form>
+        {% elif review.follow_up %}
+        <p><strong>{{ review.get_follow_up_display }}</strong></p>
+        {% else %}
+        <p class="mgmt-hint">Bisa ditentukan setelah makanan diperiksa.</p>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,104 @@
+/* Modul Food Waste Management. Token warna mengikuti base.css / reporting.css */
+:root {
+  --mgmt-card: #fef9f3;
+  --mgmt-white: #fffdfb;
+  --mgmt-accent: #91ac67;
+  --mgmt-accent-light: #dde5d0;
+  --mgmt-danger: #973838;
+  --mgmt-ink-dark: #261306;
+  --mgmt-muted: #59534c;
+}
+
+.mgmt { padding: 48px 80px 56px; color: var(--mgmt-ink-dark); }
+.mgmt__title { margin: 0 0 8px; font-size: 32px; font-weight: 700; }
+.mgmt__lead { margin: 0 0 24px; font-size: 20px; font-weight: 500; color: var(--mgmt-muted); }
+.mgmt h2 { margin: 0; font-size: 24px; font-weight: 700; }
+
+.mgmt-card { background: var(--mgmt-card); border: 2px solid var(--mgmt-accent); border-radius: 10px; }
+
+/* Tabs */
+.mgmt-tabs { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 24px; }
+.mgmt-tab { padding: 10px 24px; border-radius: 10px; border: 1px solid var(--mgmt-accent); background: var(--mgmt-white); font-size: 20px; font-weight: 500; }
+.mgmt-tab:hover { background: var(--mgmt-accent-light); }
+.mgmt-tab.is-active { background: var(--accent-dark); border-color: var(--accent-dark); color: var(--accent-light); font-weight: 700; }
+.mgmt-tab__count { display: inline-block; min-width: 24px; margin-left: 6px; padding: 0 8px; border-radius: 12px; background: var(--mgmt-danger); color: #fffdfb; font-size: 14px; text-align: center; }
+
+/* Pesan */
+.mgmt-messages { margin-bottom: 16px; }
+.mgmt-message { margin: 0 0 8px; padding: 12px 16px; border-radius: 10px; font-weight: 500; }
+.mgmt-message--success { background: var(--mgmt-accent-light); color: var(--accent-dark-active); }
+.mgmt-message--error { background: #f3dcdc; color: var(--mgmt-danger); }
+
+/* Statistik & panel */
+.mgmt-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 24px; }
+.mgmt-stat { display: flex; flex-direction: column; gap: 4px; padding: 20px 24px; }
+.mgmt-stat__label { color: var(--mgmt-muted); font-weight: 500; }
+.mgmt-stat__value { font-size: 48px; line-height: 1.1; }
+.mgmt-stat__value--danger { color: var(--mgmt-danger); }
+.mgmt-panels { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.mgmt-panel { display: flex; flex-direction: column; gap: 16px; padding: 24px; }
+.mgmt-panel__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mgmt-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; background: var(--mgmt-white); border: 1px solid var(--accent-light-active); border-radius: 10px; }
+.mgmt-row strong, .mgmt-row small { display: block; }
+.mgmt-row small { color: var(--mgmt-muted); font-size: 14px; }
+a.mgmt-row:hover { background: var(--mgmt-accent-light); }
+.mgmt-empty { margin: 0; padding: 24px; color: var(--mgmt-muted); text-align: center; }
+.mgmt-link { font-weight: 700; color: var(--accent-dark); }
+.mgmt-link:hover { text-decoration: underline; }
+
+/* Tabel */
+.mgmt-table-wrap { overflow-x: auto; }
+.mgmt-table { width: 100%; border-collapse: collapse; }
+.mgmt-table th, .mgmt-table td { padding: 16px 20px; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--accent-light-active); }
+.mgmt-table th { background: var(--mgmt-accent-light); font-weight: 700; }
+.mgmt-table tbody tr:last-child td { border-bottom: 0; }
+.mgmt-actions { display: flex; gap: 12px; align-items: center; }
+.mgmt-actions form { margin: 0; }
+
+/* Toolbar & chip */
+.mgmt-toolbar { display: flex; gap: 16px; margin-bottom: 16px; }
+.mgmt-toolbar .mgmt-input { flex: 1; }
+.mgmt-chips { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+.mgmt-chip { padding: 6px 18px; border-radius: 20px; border: 1px solid var(--mgmt-accent); background: var(--mgmt-white); font-weight: 500; }
+.mgmt-chip.is-active { background: var(--accent-dark); border-color: var(--accent-dark); color: var(--accent-light); font-weight: 700; }
+
+/* Form & tombol */
+.mgmt-input { width: 100%; padding: 12px 16px; border: 1px solid var(--mgmt-accent); border-radius: 10px; background: var(--mgmt-white); font: inherit; color: inherit; }
+.mgmt-form { display: flex; flex-direction: column; gap: 8px; }
+.mgmt-form label { font-weight: 700; }
+.mgmt-btn { display: inline-block; padding: 10px 24px; border: 1px solid var(--accent-dark); border-radius: 10px; background: var(--accent-dark); color: var(--accent-light); font: inherit; font-weight: 700; cursor: pointer; text-align: center; }
+.mgmt-btn:hover { background: var(--accent-dark-active); }
+.mgmt-btn--outline { background: var(--mgmt-white); color: var(--accent-dark-deep); }
+.mgmt-btn--outline:hover { background: var(--mgmt-accent-light); }
+.mgmt-btn--danger { background: var(--mgmt-danger); border-color: var(--mgmt-danger); color: #fffdfb; }
+.mgmt-btn--danger:hover { background: #7a2d2d; }
+.mgmt-btn--block { width: 100%; }
+.mgmt-pagination { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 20px; }
+
+/* Badge status */
+.mgmt-badge { display: inline-block; padding: 4px 12px; border-radius: 10px; font-size: 14px; font-weight: 700; text-transform: uppercase; white-space: nowrap; }
+.mgmt-badge--menunggu, .mgmt-badge--belum_diproses { background: #e4d4c2; color: var(--ink); }
+.mgmt-badge--diterima, .mgmt-badge--menunggu_penjemputan { background: var(--mgmt-accent); color: var(--mgmt-ink-dark); }
+.mgmt-badge--sudah_diperiksa { background: var(--mgmt-accent-light); color: var(--accent-dark-active); }
+.mgmt-badge--selesai { background: var(--accent-dark); color: var(--accent-light); }
+.mgmt-badge--ditolak { background: var(--mgmt-danger); color: #fffdfb; }
+
+/* Detail */
+.mgmt-detail { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 24px; margin-top: 16px; }
+.mgmt-side { display: flex; flex-direction: column; gap: 24px; }
+.mgmt-photo { width: 100%; max-height: 280px; object-fit: cover; border-radius: 10px; background: var(--mgmt-accent-light); }
+.mgmt-photo--empty { display: flex; align-items: center; justify-content: center; height: 180px; color: var(--mgmt-muted); }
+.mgmt-dl { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 24px; margin: 0; }
+.mgmt-dl dt { color: var(--mgmt-muted); font-size: 14px; }
+.mgmt-dl dd { margin: 2px 0 0; font-size: 18px; font-weight: 700; overflow-wrap: anywhere; }
+.mgmt-dl__wide { grid-column: 1 / -1; }
+.mgmt-hint { margin: 0; color: var(--mgmt-muted); font-size: 14px; }
+.mgmt-steps { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+.mgmt-steps .is-current { font-weight: 700; color: var(--accent-dark); }
+
+@media (max-width: 1000px) {
+  .mgmt { padding: 32px 20px 40px; }
+  .mgmt-stats { grid-template-columns: repeat(2, 1fr); }
+  .mgmt-panels, .mgmt-detail { grid-template-columns: 1fr; }
+  .mgmt-dl { grid-template-columns: 1fr; }
+}

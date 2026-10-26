@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Penanganan - FoodWastey{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/management.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="mgmt">
+  <h1 class="mgmt__title">Manajemen Food Waste</h1>
+  {% include 'food_waste_management/_tabs.html' %}
+  {% include 'food_waste_management/_messages.html' %}
+
+  <form method="get" class="mgmt-toolbar">
+    {% if status %}<input type="hidden" name="status" value="{{ status }}">{% endif %}
+    <input type="search" name="q" value="{{ search }}" placeholder="Cari makanan, lokasi, atau event..." class="mgmt-input" aria-label="Cari laporan">
+    <button type="submit" class="mgmt-btn">Cari</button>
+  </form>
+
+  <div class="mgmt-chips">
+    {% for value, label in filters %}
+    <a class="mgmt-chip {% if value == status %}is-active{% endif %}"
+       href="?{% if value %}status={{ value }}{% endif %}{% if search %}{% if value %}&amp;{% endif %}q={{ search|urlencode }}{% endif %}">{{ label }}</a>
+    {% endfor %}
+  </div>
+
+  <div class="mgmt-card mgmt-table-wrap">
+    {% if page_obj.object_list %}
+    <table class="mgmt-table">
+      <thead>
+        <tr><th>Makanan</th><th>Porsi</th><th>Lokasi</th><th>Status Penanganan</th><th>Tindak Lanjut</th><th>Aksi</th></tr>
+      </thead>
+      <tbody>
+        {% for review in page_obj %}
+        <tr>
+          <td><strong>{{ review.report.food_name }}</strong></td>
+          <td>{{ review.report.food_portion }}</td>
+          <td>{{ review.report.location }}</td>
+          <td><span class="mgmt-badge mgmt-badge--{{ review.handling_status }}">{{ review.get_handling_status_display }}</span></td>
+          <td>{% if review.follow_up %}{{ review.get_follow_up_display }}{% else %}&ndash;{% endif %}</td>
+          <td class="mgmt-actions"><a class="mgmt-btn mgmt-btn--outline" href="{% url 'food_waste_management:detail' review.report_id %}">Kelola</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="mgmt-empty">Belum ada laporan pada filter ini.</p>
+    {% endif %}
+  </div>
+  {% include 'food_waste_management/_pagination.html' %}
+</section>
+{% endblock %}
