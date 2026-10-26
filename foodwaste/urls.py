@@ -1,3 +1,4 @@
+
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
@@ -12,6 +13,9 @@ urlpatterns = [
     path('management/', include('food_waste_management.urls')),
     path('events/', include('event_management.urls')),
     path('reporting/', include('food_waste_reporting.urls')),
+
+    # Discovery & Dashboard
+    path('', include('discovery_dashboard.urls')),
 ]
 
 if settings.GOOGLE_LOGIN_ENABLED:

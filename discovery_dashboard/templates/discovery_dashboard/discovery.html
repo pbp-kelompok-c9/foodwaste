@@ -1,0 +1,225 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Discovery - FoodWastey{% endblock %}
+
+{% block extra_head %}
+<style>
+    .discovery-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 40px 20px 60px;
+    }
+
+    .discovery-title {
+        color: #477A3B;
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    .discovery-description {
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    .discovery-search {
+        background-color: white;
+        padding: 25px;
+        border-radius: 14px;
+        margin-bottom: 35px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .discovery-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .discovery-input {
+        flex: 1;
+        min-width: 170px;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 14px;
+    }
+
+    .discovery-button {
+        background-color: #5E7534;
+        color: white;
+        padding: 12px 22px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: inherit;
+    }
+
+    .discovery-button:hover {
+        background-color: #477A3B;
+    }
+
+    .discovery-reset {
+        color: #477A3B;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .discovery-section-title {
+        margin-bottom: 20px;
+        color: #382A20;
+    }
+
+    .discovery-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .discovery-card {
+        background-color: white;
+        padding: 22px;
+        border-radius: 14px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .discovery-card h3 {
+        color: #477A3B;
+        margin-bottom: 15px;
+    }
+
+    .discovery-card p {
+        margin-bottom: 10px;
+        color: #555;
+        font-size: 14px;
+    }
+
+    .discovery-empty {
+        background-color: white;
+        padding: 40px;
+        border-radius: 14px;
+        text-align: center;
+        color: #666;
+        grid-column: 1 / -1;
+    }
+
+    .discovery-empty h3 {
+        margin-bottom: 10px;
+        color: #382A20;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="discovery-container">
+
+    <h1 class="discovery-title">
+        Discover Available Food
+    </h1>
+
+    <p class="discovery-description">
+        Temukan makanan surplus dari berbagai acara
+        dan bantu mengurangi food waste bersama.
+    </p>
+
+    <div class="discovery-search">
+
+        <form method="GET" class="discovery-form">
+
+            <input
+                type="text"
+                name="keyword"
+                class="discovery-input"
+                placeholder="Cari nama makanan..."
+                value="{{ keyword }}"
+            >
+
+            <input
+                type="text"
+                name="lokasi"
+                class="discovery-input"
+                placeholder="Cari lokasi..."
+                value="{{ lokasi }}"
+            >
+
+            <input
+                type="text"
+                name="acara"
+                class="discovery-input"
+                placeholder="Cari acara..."
+                value="{{ acara }}"
+            >
+
+            <button type="submit" class="discovery-button">
+                Cari Makanan
+            </button>
+
+            <a href="{% url 'discovery_dashboard:discovery' %}"
+               class="discovery-reset">
+                Reset
+            </a>
+
+        </form>
+
+    </div>
+
+    <h2 class="discovery-section-title">
+        Daftar Makanan
+    </h2>
+
+    <div class="discovery-list">
+
+        {% for makanan in laporan %}
+
+        <div class="discovery-card">
+
+            <h3>{{ makanan.food_name }}</h3>
+
+            <p>
+                <strong>Jumlah Porsi:</strong>
+                {{ makanan.food_portion }}
+            </p>
+
+            <p>
+                <strong>Lokasi:</strong>
+                {{ makanan.location }}
+            </p>
+
+            <p>
+                <strong>Acara:</strong>
+                {{ makanan.event }}
+            </p>
+
+            <p>
+                <strong>Best Before:</strong>
+                {{ makanan.best_before }}
+            </p>
+
+            <p>
+                <strong>Detail:</strong>
+                {{ makanan.details }}
+            </p>
+
+        </div>
+
+        {% empty %}
+
+        <div class="discovery-empty">
+            <h3>Belum Ada Makanan Ditemukan</h3>
+            <p>
+                Belum ada makanan yang tersedia
+                atau sesuai dengan pencarianmu.
+            </p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}
