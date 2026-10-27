@@ -89,9 +89,11 @@ ke Event karena nama yang sama belum tentu menunjuk acara yang sama.
 ## Pencarian lokasi OpenStreetMap
 
 Pencarian hanya dijalankan EO dengan menekan **Cari lokasi** pada formulir Event.
-Backend memanggil Nominatim, lalu pengguna memilih hasil untuk mengisi alamat,
-latitude, dan longitude. Alamat tetap bisa ditulis manual ketika layanan tidak
-tersedia. Hasil maksimal lima lokasi, koordinat divalidasi dan dibulatkan ke enam
+Backend memanggil Nominatim, lalu pengguna memilih hasil untuk mengisi alamat.
+Latitude dan longitude tersimpan otomatis dalam field tersembunyi, sehingga EO
+tidak perlu melihat atau mengisi koordinat secara manual. Alamat tetap bisa
+ditulis manual ketika layanan tidak tersedia; dalam kasus itu titik peta boleh
+kosong. Hasil maksimal lima lokasi, koordinat divalidasi dan dibulatkan ke enam
 angka desimal. Tidak ada permintaan eksternal dari tests.
 
 Penggunaan server publik mengikuti [Nominatim Usage Policy](https://operations.osmfoundation.org/policies/nominatim/):

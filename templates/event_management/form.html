@@ -8,10 +8,14 @@
 </header>
 <form class="event-form event-panel" method="post">
     {% csrf_token %}
+    {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
     {% if form.errors %}
     <div class="events-form-alert" role="alert"><p>Periksa kembali kolom yang ditandai.</p>{{ form.non_field_errors }}</div>
+    {% if form.latitude.errors or form.longitude.errors %}
+    <p class="events-form-alert" role="alert">Lokasi peta belum valid. Ketik ulang alamat atau pilih hasil pencarian lokasi lagi.</p>
     {% endif %}
-    {% for field in form %}
+    {% endif %}
+    {% for field in form.visible_fields %}
     <div class="event-field{% if field.errors %} event-field--invalid{% endif %}">
         <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span aria-hidden="true">*</span>{% else %} <span class="event-field-optional">(opsional)</span>{% endif %}</label>
         {{ field }}
@@ -31,7 +35,7 @@
         {% endif %}
     </div>
     {% endfor %}
-    <p class="event-field-help">* Wajib diisi. Koordinat boleh dikosongkan; jika diisi, masukkan lintang dan bujur sekaligus.</p>
+    <p class="event-field-help">* Wajib diisi.</p>
     <div class="events-actions">
         <button class="events-button" type="submit">Simpan acara</button>
         {% if event %}<a class="events-button events-button--secondary" href="{% url 'event_management:detail' event.id %}">Batal</a>{% else %}<a class="events-button events-button--secondary" href="{% url 'event_management:main' %}">Batal</a>{% endif %}
