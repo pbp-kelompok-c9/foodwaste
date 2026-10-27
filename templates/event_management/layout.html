@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/events.css' %}">{% endblock %}
+{% block content %}
+<section class="events-page">
+    {% if messages %}
+    <div class="events-messages" role="status">
+        {% for message in messages %}<p class="events-message{% if message.tags %} events-message--{{ message.tags }}{% endif %}">{{ message }}</p>{% endfor %}
+    </div>
+    {% endif %}
+    {% block event_content %}{% endblock %}
+</section>
+{% endblock %}

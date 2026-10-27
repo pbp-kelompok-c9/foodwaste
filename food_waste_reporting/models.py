@@ -16,6 +16,14 @@ class Report(models.Model):
     best_before = models.DateTimeField()
     location = models.CharField(max_length=255)
     event = models.CharField(max_length=255)
+    # Keep the original text for reports made before Event Management existed.
+    related_event = models.ForeignKey(
+        "event_management.Event",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="reports",
+    )
     pickup_option = models.CharField(max_length=255, choices=PICKUP_OPTIONS)
     details = models.TextField()
     picture = models.URLField()
@@ -23,3 +31,8 @@ class Report(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+    @property
+    def event_label(self):
+        """Display linked events while retaining every legacy event name."""
+        return self.related_event.name if self.related_event_id else self.event

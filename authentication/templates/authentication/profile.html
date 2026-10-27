@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profil Saya - FoodWastey{% endblock %}
+{% block extra_head %}{% include 'authentication/_tailwind.html' %}{% endblock %}
+
+{% block content %}
+<section class="tw-mx-auto tw-max-w-5xl tw-px-5 tw-py-10 md:tw-px-[58px] md:tw-py-14">
+  <header class="tw-mb-8">
+    <h1 class="tw-m-0 tw-font-brand tw-text-4xl tw-font-normal tw-text-accent">Profil Saya</h1>
+    <p class="tw-m-0 tw-mt-2 tw-text-accent-deep">
+      Atur informasi yang dilihat pengguna lain. Nomor HP dan ID LINE hanya terlihat oleh pengguna yang sudah login.
+    </p>
+  </header>
+
+  {% include 'authentication/_messages.html' %}
+
+  <div class="tw-grid tw-gap-6 md:tw-grid-cols-5">
+    <article class="tw-rounded-3xl tw-bg-white tw-p-6 tw-shadow-sm md:tw-col-span-2" aria-labelledby="profile-name">
+      <h2 id="profile-name" class="tw-m-0 tw-break-words tw-text-2xl" data-profile="name">{{ profile.name }}</h2>
+      <p class="tw-m-0 tw-text-sm tw-text-accent">@{{ profile.user.username }}</p>
+
+      <dl class="tw-m-0 tw-mt-6 tw-space-y-4 tw-text-sm">
+        <div>
+          <dt class="tw-font-bold">Kota</dt>
+          <dd class="tw-m-0" data-profile="city">{{ profile.city|default:"—" }}</dd>
+        </div>
+        <div>
+          <dt class="tw-font-bold">Tentang saya</dt>
+          <dd class="tw-m-0 tw-whitespace-pre-line tw-break-words" data-profile="bio">{{ profile.bio|default:"—" }}</dd>
+        </div>
+        <div>
+          <dt class="tw-font-bold">Nomor HP</dt>
+          <dd class="tw-m-0" data-profile="phone">{{ profile.phone|default:"—" }}</dd>
+        </div>
+        <div>
+          <dt class="tw-font-bold">ID LINE</dt>
+          <dd class="tw-m-0" data-profile="line_id">{{ profile.line_id|default:"—" }}</dd>
+        </div>
+        <div>
+          <dt class="tw-font-bold">Bergabung</dt>
+          <dd class="tw-m-0">{{ profile.user.date_joined|date:"j F Y" }}</dd>
+        </div>
+      </dl>
+
+      <div class="tw-mt-6 tw-flex tw-flex-wrap tw-gap-x-4 tw-gap-y-2 tw-text-sm tw-font-bold">
+        <a class="tw-text-accent hover:tw-underline" href="{% url 'authentication:user_detail' profile.user.username %}">Lihat profil publik</a>
+        <a class="tw-text-accent hover:tw-underline" href="{% url 'authentication:user_list' %}">Direktori pengguna</a>
+      </div>
+    </article>
+
+    <section class="tw-rounded-3xl tw-bg-white tw-p-6 tw-shadow-sm md:tw-col-span-3" aria-labelledby="edit-heading">
+      <h2 id="edit-heading" class="tw-m-0 tw-mb-5 tw-text-xl">Edit profil</h2>
+      <form id="profile-form" method="post" action="{% url 'authentication:profile_update' %}" novalidate>
+        {% csrf_token %}
+        {% include 'authentication/_form_fields.html' %}
+        <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-4">
+          <button type="submit" class="tw-cursor-pointer tw-rounded-xl tw-border-0 tw-bg-accent tw-px-5 tw-py-2.5 tw-font-bold tw-text-accent-light tw-[font:inherit] hover:tw-bg-accent-deep disabled:tw-opacity-60">
+            Simpan perubahan
+          </button>
+          <p class="tw-m-0 tw-text-sm tw-text-accent-deep" role="status" aria-live="polite" data-form-status></p>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <section class="tw-mt-6 tw-rounded-3xl tw-border tw-border-solid tw-border-red-200 tw-bg-red-50 tw-p-6" aria-labelledby="danger-heading">
+    <h2 id="danger-heading" class="tw-m-0 tw-text-lg tw-text-red-800">Hapus akun</h2>
+    <p class="tw-m-0 tw-mt-1 tw-text-sm tw-text-red-800">Akun, profil, dan seluruh laporan yang pernah kamu kirim akan dihapus permanen.</p>
+    <a class="tw-mt-4 tw-inline-block tw-rounded-xl tw-bg-red-700 tw-px-4 tw-py-2 tw-text-sm tw-font-bold tw-text-white hover:tw-bg-red-800" href="{% url 'authentication:profile_delete' %}">Hapus akun saya</a>
+  </section>
+</section>
+{% endblock %}
+
+{% block extra_js %}<script src="{% static 'js/profile.js' %}" defer></script>{% endblock %}

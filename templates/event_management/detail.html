@@ -1,0 +1,39 @@
+{% extends 'event_management/layout.html' %}
+{% load l10n %}
+{% block title %}{{ event.name }} - FoodWastey{% endblock %}
+{% block event_content %}
+<a class="events-text-link events-back" href="{% url 'event_management:main' %}">← Semua acara</a>
+<header class="events-heading">
+    <div>
+        <p class="events-eyebrow">Detail acara</p>
+        <h1>{{ event.name }}</h1>
+        <p>Diselenggarakan oleh {{ event.created_by.username }}</p>
+    </div>
+    {% if is_owner %}
+    <div class="events-actions">
+        <a class="events-button" href="{% url 'event_management:edit' event.id %}">Edit acara</a>
+        <a class="events-button events-button--secondary" href="{% url 'event_management:delete' event.id %}">Hapus acara</a>
+    </div>
+    {% endif %}
+</header>
+<div class="event-detail-grid">
+    <article class="event-panel">
+        <h2>Tentang acara</h2>
+        <div class="event-description">{{ event.description|linebreaks }}</div>
+    </article>
+    <aside class="event-panel">
+        <h2>Waktu dan tempat</h2>
+        <dl class="event-facts">
+            <div><dt>Tanggal dan waktu</dt><dd>{{ event.event_date|date:"d M Y, H:i" }} WIB</dd></div>
+            <div><dt>Lokasi</dt><dd>{{ event.location }}</dd></div>
+        </dl>
+        {% if event.latitude != None and event.longitude != None %}
+        <a class="events-text-link" href="https://www.openstreetmap.org/?mlat={{ event.latitude|unlocalize }}&amp;mlon={{ event.longitude|unlocalize }}#map=16/{{ event.latitude|unlocalize }}/{{ event.longitude|unlocalize }}" target="_blank" rel="noopener noreferrer">Lihat di OpenStreetMap <span class="events-sr-only">(tab baru)</span> ↗</a>
+        {% endif %}
+    </aside>
+</div>
+<div class="event-report-callout">
+    <div><h2>Ada makanan berlebih di acara ini?</h2><p>Pilih acara ini saat mengirim laporan makanan.</p></div>
+    <a class="events-button" href="{% url 'food_waste_reporting:show_reports' %}">Buka laporan</a>
+</div>
+{% endblock %}

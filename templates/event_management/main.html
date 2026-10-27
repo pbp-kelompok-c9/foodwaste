@@ -1,9 +1,43 @@
-{% extends 'base.html' %}
-
-{% block title %}Event Management{% endblock %}
-
-{% block content %}
-<h1 style="font-family: 'Lilita One', cursive; color: #2e7d32; text-align: center;">
-  Event Management
-</h1>
+{% extends 'event_management/layout.html' %}
+{% block title %}Acara - FoodWastey{% endblock %}
+{% block event_content %}
+<header class="events-heading">
+    <div>
+        <p class="events-eyebrow">Bersama mengurangi makanan terbuang</p>
+        <h1>Acara</h1>
+        <p>Temukan acara dan laporkan makanan berlebih di lokasi.</p>
+    </div>
+    {% if is_eo %}<a class="events-button" href="{% url 'event_management:create' %}">+ Tambah acara</a>{% endif %}
+</header>
+<form class="events-search" method="get" action="{% url 'event_management:main' %}" role="search">
+    <label for="event-query">Cari nama acara atau lokasi</label>
+    <div class="events-search-row">
+        <input type="search" name="q" id="event-query" value="{{ q }}" maxlength="200" placeholder="Nama acara atau lokasi">
+        <button class="events-button" type="submit">Cari</button>
+        {% if q %}<a class="events-text-link" href="{% url 'event_management:main' %}">Hapus pencarian</a>{% endif %}
+    </div>
+</form>
+<div class="events-grid">
+    {% for event in events %}
+    <article class="event-card">
+        <p class="event-card-date">{{ event.event_date|date:"d M Y, H:i" }} WIB</p>
+        <h2><a href="{% url 'event_management:detail' event.id %}">{{ event.name }}</a></h2>
+        <p class="event-card-location">{{ event.location }}</p>
+        <p class="event-card-organizer">Diselenggarakan oleh {{ event.created_by.username }}</p>
+        <a class="events-text-link" href="{% url 'event_management:detail' event.id %}">Lihat detail <span aria-hidden="true">→</span></a>
+    </article>
+    {% empty %}
+    <div class="events-empty">
+        <h2>{% if q %}Acara tidak ditemukan{% else %}Belum ada acara{% endif %}</h2>
+        <p>{% if q %}Coba kata pencarian lain atau lihat semua acara.{% else %}Acara yang dibuat penyelenggara akan tampil di sini.{% endif %}</p>
+    </div>
+    {% endfor %}
+</div>
+{% if page_obj.has_other_pages %}
+<nav class="events-pagination" aria-label="Halaman daftar acara">
+    {% if page_obj.has_previous %}<a class="events-button events-button--secondary" href="?q={{ q|urlencode }}&amp;page={{ page_obj.previous_page_number }}">Sebelumnya</a>{% endif %}
+    <span>Halaman {{ page_obj.number }} dari {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}<a class="events-button events-button--secondary" href="?q={{ q|urlencode }}&amp;page={{ page_obj.next_page_number }}">Selanjutnya</a>{% endif %}
+</nav>
+{% endif %}
 {% endblock %}

@@ -21,6 +21,7 @@
             method="post"
             class="form">
             {% csrf_token %}
+            <p id="report-form-errors" role="alert" hidden></p>
             <div class="field-group">
                 <div class="field">
                     <p>{{ form.food_name.label }}</p>
@@ -45,15 +46,16 @@
                     <p>{{ form.location.errors }}</p>
                 </div>
                 <div class="field">
-                    <p>{{ form.event.label }}</p>
-                    <p>{{ form.event }}</p>
-                    <p>{{ form.event.errors }}</p>
+                    <label for="{{ form.related_event.id_for_label }}">{{ form.related_event.label }}</label>
+                    <p>{{ form.related_event }}</p>
+                    <p>{{ form.related_event.help_text }}</p>
+                    <p>{{ form.related_event.errors }}</p>
                 </div>
             </div>
             <div class="field">
-                <p>{{ form.pickup_options.label }}</p>
-                <p>{{ form.pickup_options }}</p>
-                <p>{{ form.pickup_options.errors }}</p>
+                <p>{{ form.pickup_option.label }}</p>
+                <p>{{ form.pickup_option }}</p>
+                <p>{{ form.pickup_option.errors }}</p>
             </div>
             <div class="field">
                 <p>{{ form.details.label }}</p>

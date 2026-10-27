@@ -113,9 +113,7 @@
 </style>
 {% endblock %}
 
-
 {% block content %}
-
 <section class="mgmt">
 
     <h1 class="mgmt__title">
@@ -137,29 +135,23 @@
         <div class="mgmt-card mgmt-panel">
 
             <div class="mgmt-panel__head">
-
                 <h2>{{ report.food_name }}</h2>
 
                 <span class="mgmt-badge mgmt-badge--{{ review.verification_status }}">
                     {{ review.get_verification_status_display }}
                 </span>
-
             </div>
 
             {% if report.picture|slice:":4" == "http" %}
-
                 <img
                     class="mgmt-photo"
                     src="{{ report.picture }}"
                     alt="Foto {{ report.food_name }}"
                 >
-
             {% else %}
-
                 <div class="mgmt-photo mgmt-photo--empty">
                     Tidak ada foto
                 </div>
-
             {% endif %}
 
             <dl class="mgmt-dl">
@@ -181,7 +173,7 @@
 
                 <div>
                     <dt>Event</dt>
-                    <dd>{{ report.event }}</dd>
+                    <dd>{{ report.event_label }}</dd>
                 </div>
 
                 <div>
@@ -208,13 +200,11 @@
 
         </div>
 
-
         <div class="mgmt-side">
 
             {% if review.is_pending %}
 
                 <div class="mgmt-card mgmt-panel">
-
                     <h2>Verifikasi</h2>
 
                     <p class="mgmt-hint">
@@ -264,13 +254,11 @@
                             Tolak Laporan
                         </button>
                     </form>
-
                 </div>
 
             {% elif review.is_rejected %}
 
                 <div class="mgmt-card mgmt-panel">
-
                     <h2>Laporan Ditolak</h2>
 
                     <p>
@@ -282,25 +270,19 @@
                         &middot;
                         {{ review.reviewed_at|date:"j/n/Y, H:i" }}
                     </p>
-
                 </div>
 
             {% else %}
 
                 <div class="mgmt-card mgmt-panel">
-
                     <h2>Status Penanganan</h2>
 
                     <ol class="mgmt-steps">
-
                         {% for value, label in handling_steps %}
-
                             <li class="{% if value == review.handling_status %}is-current{% endif %}">
                                 {{ label }}
                             </li>
-
                         {% endfor %}
-
                     </ol>
 
                     {% if review.next_handling %}
@@ -323,7 +305,6 @@
                             >
                                 Tandai: {{ review.next_handling_label }}
                             </button>
-
                         </form>
 
                     {% else %}
@@ -333,12 +314,9 @@
                         </p>
 
                     {% endif %}
-
                 </div>
 
-
                 <div class="mgmt-card mgmt-panel">
-
                     <h2>Tindak Lanjut</h2>
 
                     {% if review.can_set_follow_up %}
@@ -360,7 +338,6 @@
                                 class="mgmt-input"
                                 required
                             >
-
                                 <option
                                     value=""
                                     disabled
@@ -370,16 +347,13 @@
                                 </option>
 
                                 {% for value, label in follow_up_choices %}
-
                                     <option
                                         value="{{ value }}"
                                         {% if value == review.follow_up %}selected{% endif %}
                                     >
                                         {{ label }}
                                     </option>
-
                                 {% endfor %}
-
                             </select>
 
                             <button
@@ -388,15 +362,12 @@
                             >
                                 Simpan
                             </button>
-
                         </form>
 
                     {% elif review.follow_up %}
 
                         <p>
-                            <strong>
-                                {{ review.get_follow_up_display }}
-                            </strong>
+                            <strong>{{ review.get_follow_up_display }}</strong>
                         </p>
 
                     {% else %}
@@ -406,7 +377,6 @@
                         </p>
 
                     {% endif %}
-
                 </div>
 
             {% endif %}
@@ -414,7 +384,6 @@
         </div>
 
     </div>
-
 
     <div class="pickup-review-section">
 
@@ -427,17 +396,11 @@
             <div class="mgmt-card mgmt-panel pickup-review-card">
 
                 <div class="pickup-review-header">
+                    <h3>Pengambilan #{{ klaim.pk }}</h3>
 
-                    <h3>
-                        Pengambilan #{{ klaim.pk }}
-                    </h3>
-
-                    <span
-                        class="pickup-review-status {% if klaim.status == 'SUCCESS' %}is-success{% elif klaim.status == 'REJECTED' %}is-rejected{% elif klaim.status == 'EXPIRED' %}is-expired{% endif %}"
-                    >
+                    <span class="pickup-review-status {% if klaim.status == 'SUCCESS' %}is-success{% elif klaim.status == 'REJECTED' %}is-rejected{% elif klaim.status == 'EXPIRED' %}is-expired{% endif %}">
                         {{ klaim.get_status_display }}
                     </span>
-
                 </div>
 
                 <div class="pickup-review-info">
@@ -458,21 +421,17 @@
                     </p>
 
                     {% if klaim.uploaded_at %}
-
                         <p>
                             <strong>Waktu Upload:</strong>
                             {{ klaim.uploaded_at|date:"d/m/Y H:i" }}
                         </p>
-
                     {% endif %}
 
                     {% if klaim.completed_at %}
-
                         <p>
                             <strong>Waktu Persetujuan:</strong>
                             {{ klaim.completed_at|date:"d/m/Y H:i" }}
                         </p>
-
                     {% endif %}
 
                 </div>
@@ -520,7 +479,6 @@
                             >
                                 Setujui Pengambilan
                             </button>
-
                         </form>
 
                         <form
@@ -535,7 +493,6 @@
                             >
                                 Tolak Pengambilan
                             </button>
-
                         </form>
 
                     </div>
@@ -575,11 +532,9 @@
         {% empty %}
 
             <div class="mgmt-card mgmt-panel">
-
                 <p class="pickup-review-empty">
                     Belum ada permintaan pengambilan untuk makanan ini.
                 </p>
-
             </div>
 
         {% endfor %}
@@ -587,5 +542,4 @@
     </div>
 
 </section>
-
 {% endblock %}

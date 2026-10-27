@@ -8,7 +8,7 @@
             class="modal__backdrop"
             popovertarget="view-report-modal"
             popovertargetaction="hide"></button>
-    <div class="modal-content">
+    <div class="modal-content" id="detail-body">
         <div class="modal-horizontal-layout">
             <h2>Laporan</h2>
             <button type="button"
@@ -17,41 +17,41 @@
                 class="close-button">×</button>
         </div>
         <div class="temp-placeholder-img">Photo Here</div>
-        <div class="field-group">
+        <div class="field-group" style="margin-bottom: 8px;">
             <div class="field">
                 <p>Jenis Makanan</p>
-                <p>{{ report.food_name }}</p>
+                <p class="filled-field">{{ report.food_name }}</p>
             </div>
             <div class="field">
                 <p>Porsi</p>
-                <p>{{ report.food_portion }}</p>
+                <p class="filled-field">{{ report.food_portion }}</p>
             </div>
             <div class="field">
                 <p>Waktu Kedaluwarsa</p>
-                <p>{{ report.best_before }}</p>
+                <p class="filled-field">{{ report.best_before }}</p>
             </div>
         </div>
-        <div class="field-group">
+        <div class="field-group" style="margin-bottom: 8px;">
             <div class="field">
                 <p>Lokasi</p>
-                <p>{{ report.location }}</p>
+                <p class="filled-field">{{ report.location }}</p>
             </div>
             <div class="field">
                 <p>Event</p>
-                <p>{{ report.event }}</p>
+                <p class="filled-field">{{ report.event_label }}</p>
             </div>
         </div>
-        <div class="field">
+        <div class="field" style="margin-bottom: 8px;">
             <p>Opsi Penjemputan</p>
-            <p>{{ report.pickup_options }}</p>
+            <p class="filled-field">{{ report.pickup_option }}</p>
         </div>
-        <div class="field">
+        <div class="field" style="margin-bottom: 8px;">
             <p>Deskripsi Tambahan</p>
-            <p>{{ report.details }}</p>
+            <p class="filled-field">{{ report.details }}</p>
         </div>
         <div class="form-modal__actions">
-            <button type="submit" class="button">Edit</button>
-            <button type="submit" class="button">Hapus</button>
+            <button type="submit" class="button" style="background-color: #973838;"><i class="fa-solid fa-trash" style="margin-right:4px;"></i>Hapus</button>
+            <button type="submit" class="button"><i class="fa-regular fa-pen-to-square" style="margin-right:4px;"></i>Edit</button>
         </div>
     </div>
 </div>

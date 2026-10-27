@@ -21,9 +21,12 @@ class DiscoveryQuerySet(models.QuerySet):
             hasil = hasil.filter(location__icontains=lokasi)
 
         if acara:
-            hasil = hasil.filter(event__icontains=acara)
+            hasil = hasil.filter(
+                Q(related_event__name__icontains=acara)
+                | Q(related_event__isnull=True, event__icontains=acara)
+            )
 
-        return hasil
+        return hasil.select_related("related_event")
 
 
 class DiscoveryReport(Report):

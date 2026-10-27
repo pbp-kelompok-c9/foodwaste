@@ -181,11 +181,20 @@ WHITENOISE_USE_FINDERS = True
 
 # Authentication uses Django's built-in User and session backend.
 LOGIN_URL = 'authentication:login'
-LOGIN_REDIRECT_URL = 'main_landing'
+LOGIN_REDIRECT_URL = 'discovery_dashboard:discovery'
 LOGOUT_REDIRECT_URL = 'authentication:login'
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = PRODUCTION
 CSRF_COOKIE_SECURE = PRODUCTION
+
+# The public Nominatim service is called only after an EO clicks search.
+NOMINATIM_SEARCH_URL = os.getenv(
+    "NOMINATIM_SEARCH_URL", "https://nominatim.openstreetmap.org/search"
+)
+NOMINATIM_USER_AGENT = os.getenv(
+    "NOMINATIM_USER_AGENT",
+    "FoodWastey/1.0 (+https://github.com/pbp-kelompok-c9/foodwaste)",
+)
 
 # Credentials live only in environment variables, never in the repository.
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID', '').strip()

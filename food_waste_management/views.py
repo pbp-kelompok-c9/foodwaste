@@ -23,6 +23,7 @@ def _reviews():
     return ReportReview.objects.select_related(
         "report",
         "report__reported_by",
+        "report__related_event",
         "reviewed_by"
     )
 
@@ -140,7 +141,11 @@ def handling_list(request):
         queryset = queryset.filter(
             Q(report__food_name__icontains=search)
             | Q(report__location__icontains=search)
-            | Q(report__event__icontains=search)
+            | Q(report__related_event__name__icontains=search)
+            | Q(
+                report__related_event__isnull=True,
+                report__event__icontains=search
+            )
         )
 
     params = {
