@@ -600,7 +600,7 @@
         {% for makanan in laporan %}
 
         <article
-            class="food-card {% if makanan.display_status == 'SUDAH DIAMBIL' %}is-taken{% elif makanan.display_status == 'EXPIRED' %}is-expired{% endif %}"
+            class="food-card {% if makanan.display_status == 'NOT AVAILABLE' %}is-taken{% elif makanan.display_status == 'EXPIRED' %}is-expired{% endif %}"
         >
 
             <!-- FOTO -->
@@ -1334,8 +1334,8 @@
                 pickupModal.close();
 
                 alert(
-                    "Foto berhasil dikirim! " +
-                    "Makanan sudah diambil."
+                    "Foto berhasil dikirim dan " +
+                    "menunggu verifikasi admin."
                 );
 
                 // Refresh untuk mendapatkan status baru

@@ -1,9 +1,9 @@
+
 from django.db import models
 from django.db.models import Q
-from food_waste_reporting.models import Report
-from datetime import timedelta
 from django.conf import settings
 from django.utils import timezone
+from food_waste_reporting.models import Report
 
 
 class DiscoveryQuerySet(models.QuerySet):
@@ -33,12 +33,15 @@ class DiscoveryReport(Report):
         proxy = True
         verbose_name = "Discovery Report"
 
+
 class PickupClaim(models.Model):
 
     class Status(models.TextChoices):
-        PENDING = "PENDING", "Pending"
-        SUCCESS = "SUCCESS", "Success"
-        EXPIRED = "EXPIRED", "Expired"
+        PENDING = "PENDING", "Menunggu Foto"
+        REVIEW = "REVIEW", "Menunggu Verifikasi Admin"
+        SUCCESS = "SUCCESS", "Disetujui Admin"
+        REJECTED = "REJECTED", "Ditolak Admin"
+        EXPIRED = "EXPIRED", "Waktu Habis"
 
     report = models.ForeignKey(
         Report,
@@ -52,7 +55,7 @@ class PickupClaim(models.Model):
     )
 
     status = models.CharField(
-        max_length=10,
+        max_length=20,
         choices=Status.choices,
         default=Status.PENDING
     )
@@ -67,6 +70,11 @@ class PickupClaim(models.Model):
         null=True
     )
 
+    uploaded_at = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+
     completed_at = models.DateTimeField(
         blank=True,
         null=True
@@ -76,12 +84,22 @@ class PickupClaim(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=["report"],
-                condition=models.Q(
-                    status__in=["PENDING", "SUCCESS"]
+                condition=Q(
+                    status__in=["PENDING", "REVIEW", "SUCCESS"]
                 ),
                 name="one_active_pickup_per_report"
             )
         ]
 
     def is_expired(self):
-        return timezone.now() >= self.expired_at
+        return (
+            self.status == self.Status.PENDING
+            and timezone.now() >= self.expired_at
+        )
+
+    def __str__(self):
+        return (
+            f"{self.report.food_name} - "
+            f"{self.user} - "
+            f"{self.get_status_display()}"
+        )

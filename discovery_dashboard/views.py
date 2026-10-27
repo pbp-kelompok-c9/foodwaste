@@ -17,71 +17,54 @@ from .forms import PickupProofForm
 from .services import statistik_dashboard, expire_pending_claims
 
 
-# ==========================================
-# DISCOVERY / BERANDA
-# ==========================================
-
 def discovery(request):
 
     keyword = request.GET.get("keyword", "")
     lokasi = request.GET.get("lokasi", "")
     acara = request.GET.get("acara", "")
 
-    # Perbarui reservasi yang sudah kedaluwarsa
     expire_pending_claims()
 
     laporan = DiscoveryReport.objects.cari(
         keyword=keyword,
         lokasi=lokasi,
         acara=acara
+    ).filter(
+        review__verification_status=ReportReview.Verification.ACCEPTED
     ).order_by("-created_at")
 
     sekarang = timezone.now()
 
     for makanan in laporan:
 
-        review = getattr(makanan, "review", None)
-
         klaim = PickupClaim.objects.filter(
             report=makanan,
             status__in=[
                 PickupClaim.Status.PENDING,
+                PickupClaim.Status.REVIEW,
                 PickupClaim.Status.SUCCESS
             ]
         ).first()
 
-        disetujui = (
-            review is not None
-            and review.verification_status
-            == ReportReview.Verification.ACCEPTED
-        )
-
-        # Makanan sudah diambil
         if klaim and klaim.status == PickupClaim.Status.SUCCESS:
-            makanan.display_status = "SUDAH DIAMBIL"
+            makanan.display_status = "NOT AVAILABLE"
 
-        # Makanan sudah melewati best before
+        elif klaim and klaim.status == PickupClaim.Status.REVIEW:
+            makanan.display_status = "MENUNGGU VERIFIKASI"
+
         elif makanan.best_before <= sekarang:
             makanan.display_status = "EXPIRED"
 
-        # Laporan belum disetujui
-        elif not disetujui:
-            makanan.display_status = "TIDAK TERSEDIA"
-
-        # Makanan sedang dipesan
-        elif klaim:
+        elif klaim and klaim.status == PickupClaim.Status.PENDING:
             makanan.display_status = "DIPESAN"
 
-        # Makanan tersedia
         else:
             makanan.display_status = "AVAILABLE"
 
-        # Menentukan apakah tombol Ambil bisa digunakan
         makanan.can_claim = (
             makanan.display_status == "AVAILABLE"
         )
 
-        # Pengguna yang sedang memesan bisa melanjutkan
         makanan.own_pending_claim = (
             klaim is not None
             and klaim.status == PickupClaim.Status.PENDING
@@ -103,10 +86,6 @@ def discovery(request):
     )
 
 
-# ==========================================
-# DASHBOARD
-# ==========================================
-
 def dashboard(request):
 
     data = statistik_dashboard()
@@ -117,10 +96,6 @@ def dashboard(request):
         data
     )
 
-
-# ==========================================
-# MULAI PENGAMBILAN MAKANAN
-# ==========================================
 
 @login_required
 @require_POST
@@ -138,7 +113,6 @@ def start_pickup(request, report_id):
 
             review = getattr(laporan, "review", None)
 
-            # Periksa apakah makanan masih tersedia
             if laporan.best_before <= sekarang:
                 return JsonResponse({
                     "error": "Makanan sudah kedaluwarsa."
@@ -150,10 +124,9 @@ def start_pickup(request, report_id):
                 != ReportReview.Verification.ACCEPTED
             ):
                 return JsonResponse({
-                    "error": "Makanan belum disetujui."
+                    "error": "Makanan belum disetujui admin."
                 }, status=400)
 
-            # Akhiri klaim lama yang sudah lewat 5 menit
             PickupClaim.objects.filter(
                 report=laporan,
                 status=PickupClaim.Status.PENDING,
@@ -162,11 +135,11 @@ def start_pickup(request, report_id):
                 status=PickupClaim.Status.EXPIRED
             )
 
-            # Cek apakah makanan sedang dipesan atau diambil
             klaim = PickupClaim.objects.filter(
                 report=laporan,
                 status__in=[
                     PickupClaim.Status.PENDING,
+                    PickupClaim.Status.REVIEW,
                     PickupClaim.Status.SUCCESS
                 ]
             ).first()
@@ -175,7 +148,12 @@ def start_pickup(request, report_id):
 
                 if klaim.status == PickupClaim.Status.SUCCESS:
                     return JsonResponse({
-                        "error": "Makanan sudah diambil."
+                        "error": "Makanan sudah tidak tersedia."
+                    }, status=409)
+
+                if klaim.status == PickupClaim.Status.REVIEW:
+                    return JsonResponse({
+                        "error": "Pengambilan makanan sedang diverifikasi admin."
                     }, status=409)
 
                 if klaim.user_id != request.user.pk:
@@ -185,7 +163,6 @@ def start_pickup(request, report_id):
 
             else:
 
-                # Buat transaksi dengan waktu 5 menit
                 klaim = PickupClaim.objects.create(
                     report=laporan,
                     user=request.user,
@@ -211,10 +188,6 @@ def start_pickup(request, report_id):
     })
 
 
-# ==========================================
-# UPLOAD FOTO BUKTI PENGAMBILAN
-# ==========================================
-
 @login_required
 @require_POST
 def upload_pickup(request, claim_id):
@@ -227,13 +200,11 @@ def upload_pickup(request, claim_id):
             user=request.user
         )
 
-        # Periksa status transaksi
         if klaim.status != PickupClaim.Status.PENDING:
             return JsonResponse({
                 "error": "Transaksi sudah tidak aktif."
             }, status=400)
 
-        # Periksa batas waktu
         if klaim.is_expired():
 
             klaim.status = PickupClaim.Status.EXPIRED
@@ -243,7 +214,6 @@ def upload_pickup(request, claim_id):
                 "error": "Waktu pengambilan sudah habis."
             }, status=400)
 
-        # Validasi foto
         form = PickupProofForm(
             request.POST,
             request.FILES,
@@ -256,16 +226,15 @@ def upload_pickup(request, claim_id):
                 "details": form.errors.get_json_data()
             }, status=400)
 
-        # Simpan foto dan selesaikan transaksi
         klaim = form.save(commit=False)
 
-        klaim.status = PickupClaim.Status.SUCCESS
-        klaim.completed_at = timezone.now()
+        klaim.status = PickupClaim.Status.REVIEW
+        klaim.uploaded_at = timezone.now()
 
         klaim.save()
 
     return JsonResponse({
         "success": True,
-        "status": "SUCCESS",
-        "message": "Foto berhasil dikirim! Makanan sudah diambil."
+        "status": "REVIEW",
+        "message": "Foto berhasil dikirim dan menunggu verifikasi admin."
     })

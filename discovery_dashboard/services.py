@@ -1,7 +1,10 @@
+
 from django.db.models import Count, Sum
+from django.utils import timezone
+
 from food_waste_reporting.models import Report
 from food_waste_management.models import ReportReview
-from django.utils import timezone
+
 from .models import PickupClaim
 
 
@@ -31,6 +34,7 @@ def statistik_dashboard():
         "status_penanganan": list(status_penanganan),
         "tindak_lanjut": list(tindak_lanjut),
     }
+
 
 def expire_pending_claims():
     return PickupClaim.objects.filter(
