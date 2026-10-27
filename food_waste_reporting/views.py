@@ -8,6 +8,7 @@ from food_waste_reporting.forms import ReportForm
 from django.contrib.auth.decorators import login_required 
 from django.views.decorators.http import require_POST
 
+@login_required(login_url="authentication:login")
 def show_reports(request):
     context = {
         "title": "Food Waste Reporting",
@@ -15,8 +16,9 @@ def show_reports(request):
     }
     return render(request, 'reports.html', context)
 
+@login_required(login_url="authentication:login")
 def get_reports_json(request):
-    reports = Report.objects.filter(reported_by=request.user)
+    reports = Report.objects.filter(reported_by=request.user).select_related("related_event")
 
     name_query = request.GET.get("name", "").strip()
 
@@ -30,7 +32,8 @@ def get_reports_json(request):
             "food_portion": report.food_portion,
             "best_before": report.best_before.strftime("%d/%m/%Y"),
             "location": report.location,
-            "event": report.event,
+            "event": report.event_label,
+            "related_event_id": report.related_event_id,
         }
         for report in reports
     ]
@@ -52,6 +55,5 @@ def create_report_ajax(request):
     return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
 
 def view_report_detail(request, report_id):
-    report = get_object_or_404(Report, pk=report_id)
+    report = get_object_or_404(Report.objects.select_related("related_event"), pk=report_id)
     return render(request, "components/report_detail_modal.html", {"report": report})
-    
