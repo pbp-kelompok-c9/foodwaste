@@ -70,6 +70,7 @@ section {
     align-items: center;
     justify-content: space-between;
     gap: 8px;
+    color: var(--ink-dark);
 }
 
 .temp-placeholder-img {
@@ -96,16 +97,18 @@ section {
 .field p {
     margin: 2px;
     font-weight: bold;
+    color: var(--ink-dark);
 }
 
 .field input,
 .field textarea,
 .field select,
-.search-bar {
+.search-bar,
+.filled-field {
     width: 100%;
     box-sizing: border-box;
     padding: 0.7rem;
-    background: var(--accent-light);
+    background: #fffdf8;
     border: 2px solid var(--accent);
     border-radius: 10px;
     font-family: 'DM Sans', system-ui, sans-serif;
@@ -150,6 +153,7 @@ section {
     align-items: center;
     justify-content: center;
     margin: 4px;
+    gap: 24px;
 }
 
 .states {
@@ -174,19 +178,32 @@ section {
 }
 
 .card {
-    background-color: var(--accent-light);
+    background-color: #fffdf8;
     border-radius: 20px;
     border: 2px solid var(--accent);
+    padding: 24px;
 }
 
 .report-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    column-gap: 5%;
-    row-gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    justify-content: start;
     margin-top: 24px;
 }
 
 #report-card-actions {
     width: 100%;
+}
+
+#report-search {
+    position: relative;
+}
+
+#search-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-dark);
 }

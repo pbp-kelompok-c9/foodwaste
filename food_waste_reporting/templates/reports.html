@@ -3,6 +3,7 @@
 {% load static %}
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/reporting.css' %}">
+<script src="https://kit.fontawesome.com/eb11a84bc3.js" crossorigin="anonymous"></script>
 {% endblock %}
 
 {% block content %}
@@ -27,11 +28,12 @@
                         value="{{ name_query }}"
                         class="search-bar"
                         placeholder="Cari laporan berdasarkan nama...">
+                    <i class="fa fa-search" id="search-icon"></i>
                 </form>
                 <button type="button"
                         class="button"
                         id="filter-button">
-                        Filter
+                        <i class="fa fa-filter" style="margin-right:4px;"></i>Filter
                 </button>
             </div>
 
@@ -57,6 +59,8 @@
 </main>
 
 {% include "components/report_form_modal.html" %}
+<div id="detail-modal-container"></div>
+
 <script>
     // Configuration
     const BASE_REPORTS_ENDPOINT = "{% url 'food_waste_reporting:get_reports_json' %}"
@@ -96,27 +100,50 @@
         articleElement.className = 'card';
 
         const cardHtml = `
-            <div class="modal-horizontal-layout">
-                <h3>${escapeHtml(report.food_name)}</h3>
+            <div class="temp-placeholder-img">Photo Here</div>
+            <h3 style="margin-bottom: 8px;">${escapeHtml(report.food_name)}</h3>
+            <div class="modal-horizontal-layout" style="justify-content:start; gap: 20px; height: 20px; margin-bottom: 4px;">
+                <p><i class="fas fa-utensils" style="margin-right:4px;"></i>${escapeHtml(report.food_portion)} porsi</p>
+                <p><i class="fa-solid fa-circle-exclamation" style="margin-right:4px;"></i>${escapeHtml(report.best_before)}</p>
             </div>
-            <div class="modal-horizontal-layout">
-                <p>${escapeHtml(report.food_portion)} porsi</p>
-                <p>${escapeHtml(report.best_before)}</p>
-            </div>
-            <p>${escapeHtml(report.location)}</p>
-            <p>${escapeHtml(report.event)}</p>
+            <p style="margin-bottom: 8px;"><i class="fa-solid fa-location-dot" style="margin-right:4px;"></i>${escapeHtml(report.location)}</p>
+            <p style="margin-bottom: 12px;"><i class="fa-regular fa-map" style="margin-right:4px;"></i>${escapeHtml(report.event)}</p>
             <div class="modal-horizontal-layout">
                 <button type="button"
                         class="button"
-                        popovertarget="view-report-modal"
-                        id="report-card-actions">
+                        id="report-card-actions"
+                        data-report-id="${report.id}">
                         Lihat Detail
                 </button>
             </div>
         `;
+
         articleElement.innerHTML = cardHtml;
         return articleElement;
     }
+
+    // dummy UUID
+        const DUMMY_ID = "00000000-0000-0000-0000-000000000000";
+        const viewUrl = "{% url 'food_waste_reporting:view_report_detail' '00000000-0000-0000-0000-000000000000' %}"
+        const detailBody = document.getElementById("detail-body");
+        const detailContainer = document.getElementById("detail-modal-container");
+
+    // Event listener for view report details
+    reportsGrid.addEventListener("click", async (event) => {
+        const button = event.target.closest("[data-report-id]");
+        if(!button) return;
+        
+        try {
+            const result = await fetch(viewUrl.replace(DUMMY_ID, button.dataset.reportId));
+            if(!result.ok) throw new Error(result.status);
+            detailContainer.innerHTML = await result.text();
+            const detailModal = detailContainer.querySelector("#view-report-modal");
+            detailModal.showPopover();
+        }
+        catch(error) {
+            console.error("Gagal memuat detail laporan: ", error);
+        }
+    });
 
     // Report data fetching
     async function fetchReports(searchQuery = "") {
@@ -143,7 +170,7 @@
             } else {
                 reportsGrid.innerHTML = '';
                 reports.forEach(report => {
-                    reportsGrid.appendChild(buildReportCard(reports));
+                    reportsGrid.appendChild(buildReportCard(report));
                 });
                 displayPageSection({ showGrid: true });
             }
@@ -236,7 +263,6 @@
     
     // Start application
     fetchReports(searchInput.value.trim());
-
 </script>
 {% endblock %}
 
