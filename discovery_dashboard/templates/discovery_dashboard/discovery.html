@@ -5,6 +5,8 @@
 
 {% block extra_head %}
 <style>
+    /* HALAMAN DISCOVERY */
+
     .discovery-container {
         max-width: 1200px;
         margin: 0 auto;
@@ -22,7 +24,7 @@
         margin-bottom: 30px;
     }
 
-    /* SEARCH */
+    /* PENCARIAN */
 
     .discovery-search {
         background: white;
@@ -45,6 +47,7 @@
         border: 1px solid #ddd;
         border-radius: 8px;
         font-family: inherit;
+        box-sizing: border-box;
     }
 
     .discovery-button {
@@ -68,19 +71,15 @@
         margin-bottom: 22px;
     }
 
-    /* FOOD GRID */
+    /* DAFTAR MAKANAN */
 
     .discovery-list {
         display: grid;
-        grid-template-columns: repeat(
-            auto-fill,
-            minmax(min(100%, 290px), 1fr)
-        );
+        grid-template-columns:
+            repeat(auto-fill, minmax(min(100%, 290px), 1fr));
         gap: 24px;
         align-items: start;
     }
-
-    /* FOOD CARD */
 
     .food-card {
         background: #FFFCF7;
@@ -98,6 +97,8 @@
         box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
 
+    /* MAKANAN SUDAH DIAMBIL */
+
     .food-card.is-taken {
         background: #E2E2E2;
         border-color: #AAAAAA;
@@ -107,7 +108,11 @@
         filter: grayscale(100%);
     }
 
-    /* FOOD IMAGE */
+    .food-card.is-taken .food-status {
+        background: #888888;
+    }
+
+    /* FOTO MAKANAN */
 
     .food-image {
         width: 100%;
@@ -152,7 +157,7 @@
         margin: 0;
     }
 
-    /* FOOD NAME AND STATUS */
+    /* NAMA DAN STATUS */
 
     .food-heading {
         display: flex;
@@ -179,11 +184,11 @@
         font-weight: bold;
     }
 
-    .food-card.is-taken .food-status {
-        background: #999999;
+    .food-card.is-expired .food-status {
+        background: #9B8272;
     }
 
-    /* FOOD INFORMATION */
+    /* INFORMASI MAKANAN */
 
     .food-info {
         display: flex;
@@ -214,7 +219,7 @@
         gap: 12px;
     }
 
-    /* FOOD BUTTONS */
+    /* TOMBOL */
 
     .food-more {
         margin-top: auto;
@@ -266,7 +271,7 @@
         cursor: not-allowed;
     }
 
-    /* EXPANDABLE DETAIL */
+    /* DETAIL MAKANAN MEMANJANG */
 
     .food-details {
         margin-top: 22px;
@@ -346,12 +351,13 @@
         white-space: pre-wrap;
     }
 
-    /* PICKUP POPUP */
+    /* POP-UP AMBIL */
 
     .pickup-modal {
         width: calc(100% - 30px);
         max-width: 450px;
         max-height: 85vh;
+        max-height: 85dvh;
         padding: 25px;
         box-sizing: border-box;
         border: 2px solid #9CAF79;
@@ -394,7 +400,7 @@
         margin-bottom: 20px;
     }
 
-    /* TIMER */
+    /* COUNTDOWN */
 
     .pickup-timer-box {
         background: #E8ECD9;
@@ -419,7 +425,15 @@
         color: #716960;
     }
 
-    /* UPLOAD PHOTO */
+    .pickup-timer-box.is-ending {
+        background: #FCE8E6;
+    }
+
+    .pickup-timer-box.is-ending h1 {
+        color: #B42318;
+    }
+
+    /* UPLOAD FOTO */
 
     .pickup-label {
         display: block;
@@ -454,6 +468,7 @@
     #pickup-error {
         color: #B42318;
         font-size: 13px;
+        overflow-wrap: anywhere;
     }
 
     .pickup-submit {
@@ -473,7 +488,12 @@
         background: #496129;
     }
 
-    /* EMPTY STATE */
+    .pickup-submit:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* BELUM ADA MAKANAN */
 
     .discovery-empty {
         grid-column: 1 / -1;
@@ -504,7 +524,10 @@
             flex: auto;
             min-width: 0;
             width: 100%;
-            box-sizing: border-box;
+        }
+
+        .pickup-modal {
+            padding: 18px;
         }
     }
 </style>
@@ -524,9 +547,10 @@
         dan bantu mengurangi food waste bersama.
     </p>
 
-    <!-- SEARCH -->
+    <!-- FORM PENCARIAN -->
 
     <div class="discovery-search">
+
         <form method="GET" class="discovery-form">
 
             <input
@@ -562,9 +586,10 @@
             </a>
 
         </form>
+
     </div>
 
-    <!-- FOOD LIST -->
+    <!-- DAFTAR MAKANAN -->
 
     <h2 class="discovery-section-title">
         Daftar Makanan
@@ -574,9 +599,11 @@
 
         {% for makanan in laporan %}
 
-        <article class="food-card {% if makanan.display_status == 'SUDAH DIAMBIL' %}is-taken{% endif %}">
+        <article
+            class="food-card {% if makanan.display_status == 'SUDAH DIAMBIL' %}is-taken{% elif makanan.display_status == 'EXPIRED' %}is-expired{% endif %}"
+        >
 
-            <!-- FOOD IMAGE -->
+            <!-- FOTO -->
 
             <div class="food-image">
 
@@ -606,7 +633,7 @@
 
             </div>
 
-            <!-- NAME AND STATUS -->
+            <!-- NAMA DAN STATUS -->
 
             <div class="food-heading">
 
@@ -620,7 +647,7 @@
 
             </div>
 
-            <!-- FOOD INFORMATION -->
+            <!-- INFORMASI -->
 
             <div class="food-info">
 
@@ -656,11 +683,13 @@
 
             </div>
 
-            <!-- FOOD BUTTONS -->
+            <!-- TOMBOL -->
 
             <div class="food-more">
 
                 <div class="food-actions">
+
+                    <!-- LIHAT DETAIL -->
 
                     <button
                         type="button"
@@ -670,6 +699,8 @@
                     >
                         Lihat Detail
                     </button>
+
+                    <!-- AMBIL MAKANAN -->
 
                     {% if makanan.display_status == "AVAILABLE" %}
 
@@ -718,7 +749,7 @@
 
                 </div>
 
-                <!-- EXPANDABLE DETAIL -->
+                <!-- DETAIL MEMANJANG -->
 
                 <div
                     class="food-details"
@@ -726,7 +757,7 @@
                     hidden
                 >
 
-                    <!-- DETAIL IMAGE -->
+                    <!-- FOTO DETAIL -->
 
                     <div class="detail-image">
 
@@ -755,11 +786,12 @@
 
                     </div>
 
-                    <!-- FOOD NAME AND PORTION -->
+                    <!-- JENIS MAKANAN DAN PORSI -->
 
                     <div class="detail-row">
 
                         <div class="detail-field">
+
                             <span class="detail-label">
                                 Jenis Makanan
                             </span>
@@ -767,9 +799,11 @@
                             <div class="detail-value">
                                 {{ makanan.food_name }}
                             </div>
+
                         </div>
 
                         <div class="detail-field">
+
                             <span class="detail-label">
                                 Porsi
                             </span>
@@ -777,13 +811,15 @@
                             <div class="detail-value">
                                 {{ makanan.food_portion }}
                             </div>
+
                         </div>
 
                     </div>
 
-                    <!-- BEST BEFORE -->
+                    <!-- WAKTU KEDALUWARSA -->
 
                     <div class="detail-field">
+
                         <span class="detail-label">
                             Waktu Kedaluwarsa
                         </span>
@@ -791,11 +827,13 @@
                         <div class="detail-value">
                             {{ makanan.best_before|date:"H:i, d/m/Y" }}
                         </div>
+
                     </div>
 
-                    <!-- LOCATION -->
+                    <!-- LOKASI -->
 
                     <div class="detail-field">
+
                         <span class="detail-label">
                             Lokasi
                         </span>
@@ -803,11 +841,13 @@
                         <div class="detail-value">
                             {{ makanan.location }}
                         </div>
+
                     </div>
 
-                    <!-- EVENT -->
+                    <!-- ACARA -->
 
                     <div class="detail-field">
+
                         <span class="detail-label">
                             Event
                         </span>
@@ -815,11 +855,13 @@
                         <div class="detail-value">
                             {{ makanan.event|default:"Tidak ada acara" }}
                         </div>
+
                     </div>
 
-                    <!-- PICKUP OPTION -->
+                    <!-- PENJEMPUTAN -->
 
                     <div class="detail-field">
+
                         <span class="detail-label">
                             Opsi Penjemputan
                         </span>
@@ -827,16 +869,19 @@
                         <div class="detail-value">
                             {{ makanan.pickup_option|default:"-" }}
                         </div>
+
                     </div>
 
-                    <!-- DESCRIPTION -->
+                    <!-- DESKRIPSI -->
 
                     <div class="detail-field">
+
                         <span class="detail-label">
                             Deskripsi Tambahan
                         </span>
 
                         <div class="detail-value detail-description">{{ makanan.details|default:"Tidak ada deskripsi" }}</div>
+
                     </div>
 
                 </div>
@@ -848,12 +893,14 @@
         {% empty %}
 
         <div class="discovery-empty">
+
             <h3>Belum Ada Makanan Ditemukan</h3>
 
             <p>
                 Belum ada makanan yang tersedia
                 atau sesuai dengan pencarianmu.
             </p>
+
         </div>
 
         {% endfor %}
@@ -863,7 +910,7 @@
 </div>
 
 
-<!-- POP-UP PENGAMBILAN MAKANAN -->
+<!-- POP-UP PENGAMBILAN -->
 
 <dialog id="pickup-modal" class="pickup-modal">
 
@@ -889,17 +936,21 @@
 
     <!-- TIMER -->
 
-    <div class="pickup-timer-box">
+    <div class="pickup-timer-box" id="pickup-timer-box">
+
         <p>Sisa Waktu</p>
 
-        <h1 id="pickup-timer">05:00</h1>
+        <h1 id="pickup-timer" aria-live="off">
+            05:00
+        </h1>
 
         <small>
             Jika waktu habis, reservasi akan dibatalkan.
         </small>
+
     </div>
 
-    <!-- FORM UPLOAD -->
+    <!-- FORM UPLOAD FOTO -->
 
     <form
         id="pickup-form"
@@ -914,9 +965,16 @@
 
         <label for="pickup-photo" class="pickup-upload-box">
 
-            <svg viewBox="0 0 24 24" width="60" height="60"
-                 fill="none" stroke="white" stroke-width="1.8"
-                 stroke-linecap="round" stroke-linejoin="round">
+            <svg
+                viewBox="0 0 24 24"
+                width="60"
+                height="60"
+                fill="none"
+                stroke="white"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
                 <path d="M12 16V3"></path>
                 <path d="M7 8l5-5 5 5"></path>
                 <path d="M4 16v4h16v-4"></path>
@@ -935,9 +993,13 @@
         </label>
 
         <p id="pickup-file-name"></p>
+
         <p id="pickup-error" role="alert"></p>
 
-        <button type="submit" class="pickup-submit">
+        <button
+            type="submit"
+            class="pickup-submit"
+        >
             Kirim Foto
         </button>
 
@@ -950,40 +1012,381 @@
 
 {% block extra_js %}
 <script>
-    // Lihat Detail: memperpanjang card ke bawah
-    document.querySelectorAll(".food-button[data-detail-id]")
-        .forEach(function(tombol) {
 
-            tombol.addEventListener("click", function() {
+    // =====================================
+    // LIHAT DETAIL MAKANAN
+    // =====================================
 
-                const detail = document.getElementById(
-                    tombol.dataset.detailId
-                );
+    document.querySelectorAll(
+        ".food-button[data-detail-id]"
+    ).forEach(function(tombol) {
 
-                detail.hidden = !detail.hidden;
+        tombol.addEventListener("click", function() {
 
-                if (detail.hidden) {
-                    tombol.textContent = "Lihat Detail";
-                    tombol.setAttribute("aria-expanded", "false");
-                } else {
-                    tombol.textContent = "Tutup Detail";
-                    tombol.setAttribute("aria-expanded", "true");
-                }
+            const detail = document.getElementById(
+                tombol.dataset.detailId
+            );
 
-            });
+            detail.hidden = !detail.hidden;
+
+            if (detail.hidden) {
+                tombol.textContent = "Lihat Detail";
+                tombol.setAttribute("aria-expanded", "false");
+            } else {
+                tombol.textContent = "Tutup Detail";
+                tombol.setAttribute("aria-expanded", "true");
+            }
 
         });
 
-    // Menampilkan nama file foto yang dipilih
+    });
+
+
+    // =====================================
+    // ELEMEN POP-UP
+    // =====================================
+
+    const pickupModal = document.getElementById("pickup-modal");
+    const pickupForm = document.getElementById("pickup-form");
+    const pickupTimer = document.getElementById("pickup-timer");
+    const pickupTimerBox = document.getElementById("pickup-timer-box");
+
     const pickupPhoto = document.getElementById("pickup-photo");
     const pickupFileName = document.getElementById("pickup-file-name");
+    const pickupError = document.getElementById("pickup-error");
+    const pickupClose = document.getElementById("pickup-close");
+
+    const csrfToken = pickupForm.querySelector(
+        "[name=csrfmiddlewaretoken]"
+    ).value;
+
+    let timerInterval = null;
+    let batasWaktu = null;
+    let sedangMengirim = false;
+
+
+    // =====================================
+    // NAMA FILE FOTO
+    // =====================================
 
     pickupPhoto.addEventListener("change", function() {
+
         if (pickupPhoto.files.length > 0) {
-            pickupFileName.textContent = pickupPhoto.files[0].name;
+
+            pickupFileName.textContent =
+                pickupPhoto.files[0].name;
+
         } else {
+
             pickupFileName.textContent = "";
+
         }
+
     });
+
+
+    // =====================================
+    // HENTIKAN TIMER TAMPILAN
+    // =====================================
+
+    function stopTimer() {
+
+        if (timerInterval !== null) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+
+    }
+
+
+    // =====================================
+    // COUNTDOWN DARI WAKTU SERVER
+    // =====================================
+
+    function updateTimer() {
+
+        if (batasWaktu === null) {
+            return;
+        }
+
+        const sisa = Math.max(
+            0,
+            batasWaktu - Date.now()
+        );
+
+        const totalDetik = Math.ceil(sisa / 1000);
+
+        const menit = Math.floor(totalDetik / 60);
+        const detik = totalDetik % 60;
+
+        pickupTimer.textContent =
+            String(menit).padStart(2, "0") + ":" +
+            String(detik).padStart(2, "0");
+
+        if (sisa <= 60000) {
+            pickupTimerBox.classList.add("is-ending");
+        } else {
+            pickupTimerBox.classList.remove("is-ending");
+        }
+
+        if (sisa <= 0) {
+
+            stopTimer();
+
+            if (pickupModal.open) {
+                pickupModal.close();
+            }
+
+            alert("Waktu pengambilan sudah habis.");
+
+            window.location.reload();
+        }
+
+    }
+
+
+    // =====================================
+    // TOMBOL AMBIL / LANJUTKAN
+    // =====================================
+
+    document.querySelectorAll(
+        ".pickup-button[data-start-url]"
+    ).forEach(function(tombol) {
+
+        tombol.addEventListener("click", async function() {
+
+            tombol.disabled = true;
+            pickupError.textContent = "";
+
+            try {
+
+                const response = await fetch(
+                    tombol.dataset.startUrl,
+                    {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": csrfToken
+                        },
+                        credentials: "same-origin"
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+
+                    alert(
+                        data.error ||
+                        "Gagal memulai pengambilan."
+                    );
+
+                    if (response.status === 409) {
+                        window.location.reload();
+                    }
+
+                    return;
+                }
+
+                // URL untuk upload foto
+                pickupForm.action = data.upload_url;
+
+                // Kosongkan form
+                pickupForm.reset();
+                pickupFileName.textContent = "";
+                pickupError.textContent = "";
+
+                sedangMengirim = false;
+
+                // Hitung sisa waktu berdasarkan server
+                const sisaWaktu =
+                    Date.parse(data.expired_at) -
+                    Date.parse(data.server_now);
+
+                if (!Number.isFinite(sisaWaktu) ||
+                    sisaWaktu <= 0) {
+
+                    alert("Waktu pengambilan sudah habis.");
+                    window.location.reload();
+                    return;
+                }
+
+                // Batas waktu countdown lokal
+                batasWaktu = Date.now() + sisaWaktu;
+
+                stopTimer();
+
+                pickupTimerBox.classList.remove("is-ending");
+
+                // Tampilkan pop-up
+                pickupModal.showModal();
+
+                updateTimer();
+
+                timerInterval = setInterval(
+                    updateTimer,
+                    1000
+                );
+
+            } catch (error) {
+
+                alert(
+                    "Tidak dapat terhubung ke server. " +
+                    "Silakan coba kembali."
+                );
+
+            } finally {
+
+                tombol.disabled = false;
+
+            }
+
+        });
+
+    });
+
+
+    // =====================================
+    // TUTUP POP-UP
+    // =====================================
+
+    pickupClose.addEventListener("click", function() {
+
+        if (!sedangMengirim) {
+            pickupModal.close();
+        }
+
+    });
+
+    pickupModal.addEventListener("cancel", function(event) {
+
+        if (sedangMengirim) {
+            event.preventDefault();
+        }
+
+    });
+
+    pickupModal.addEventListener("close", function() {
+
+        stopTimer();
+
+        // Menutup pop-up tidak membatalkan
+        // reservasi di database.
+        // Tenggat 5 menit tetap berlaku.
+
+    });
+
+
+    // =====================================
+    // KIRIM FOTO BUKTI PENGAMBILAN
+    // =====================================
+
+    pickupForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            if (sedangMengirim) {
+                return;
+            }
+
+            pickupError.textContent = "";
+
+            if (pickupPhoto.files.length === 0) {
+
+                pickupError.textContent =
+                    "Silakan pilih foto terlebih dahulu.";
+
+                return;
+            }
+
+            if (pickupPhoto.files[0].size > 5 * 1024 * 1024) {
+
+                pickupError.textContent =
+                    "Ukuran foto maksimal 5 MB.";
+
+                return;
+            }
+
+            const submitButton = pickupForm.querySelector(
+                "button[type=submit]"
+            );
+
+            sedangMengirim = true;
+            submitButton.disabled = true;
+            submitButton.textContent = "Mengirim...";
+
+            try {
+
+                const response = await fetch(
+                    pickupForm.action,
+                    {
+                        method: "POST",
+                        body: new FormData(pickupForm),
+                        headers: {
+                            "X-CSRFToken": csrfToken
+                        },
+                        credentials: "same-origin"
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+
+                    pickupError.textContent =
+                        data.error ||
+                        "Gagal mengirim foto.";
+
+                    // Jika waktu sudah habis
+                    if (
+                        data.error &&
+                        data.error.toLowerCase().includes("waktu")
+                    ) {
+
+                        stopTimer();
+
+                        pickupModal.close();
+
+                        alert(data.error);
+
+                        window.location.reload();
+                    }
+
+                    return;
+                }
+
+                // BERHASIL
+                stopTimer();
+                batasWaktu = null;
+
+                pickupModal.close();
+
+                alert(
+                    "Foto berhasil dikirim! " +
+                    "Makanan sudah diambil."
+                );
+
+                // Refresh untuk mendapatkan status baru
+                // SUDAH DIAMBIL dan card abu-abu
+                window.location.reload();
+
+            } catch (error) {
+
+                pickupError.textContent =
+                    "Terjadi kesalahan koneksi. " +
+                    "Silakan coba kembali.";
+
+            } finally {
+
+                sedangMengirim = false;
+                submitButton.disabled = false;
+                submitButton.textContent = "Kirim Foto";
+
+            }
+
+        }
+    );
+
 </script>
 {% endblock %}
