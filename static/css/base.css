@@ -36,6 +36,8 @@ a:focus-visible, summary:focus-visible, button:focus-visible {
 /* ===== Navbar (Header / Navbar) ===== */
 .navbar {
   display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
   align-items: center;
   justify-content: space-between;
   min-height: 120px;
@@ -56,8 +58,9 @@ a:focus-visible, summary:focus-visible, button:focus-visible {
 
 .navbar__menu {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 48px;
+  gap: 12px clamp(12px, 2vw, 32px);
 }
 
 .navbar__link {

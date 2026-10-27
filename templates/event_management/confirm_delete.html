@@ -1,0 +1,15 @@
+{% extends 'event_management/layout.html' %}
+{% block title %}Hapus acara - FoodWastey{% endblock %}
+{% block event_content %}
+<div class="event-panel event-delete-panel">
+    <p class="events-eyebrow">Kelola acara</p>
+    <h1>Hapus acara?</h1>
+    <p>Acara <strong>“{{ event.name }}”</strong> akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>
+    <p>Acara yang sudah terhubung dengan laporan tetap disimpan untuk menjaga riwayat laporan.</p>
+    <form method="post" class="events-actions">
+        {% csrf_token %}
+        <button class="events-button events-button--danger" type="submit">Ya, hapus acara</button>
+        <a class="events-button events-button--secondary" href="{% url 'event_management:detail' event.id %}">Batal</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'event_management/layout.html' %}
+{% load static %}
+{% block title %}{{ title }} - FoodWastey{% endblock %}
+{% block event_content %}
+<a class="events-text-link events-back" href="{% url 'event_management:main' %}">← Semua acara</a>
+<header class="events-heading">
+    <div><p class="events-eyebrow">Untuk penyelenggara</p><h1>{{ title }}</h1><p>Lengkapi informasi agar peserta mudah menemukan acara.</p></div>
+</header>
+<form class="event-form event-panel" method="post">
+    {% csrf_token %}
+    {% if form.errors %}
+    <div class="events-form-alert" role="alert"><p>Periksa kembali kolom yang ditandai.</p>{{ form.non_field_errors }}</div>
+    {% endif %}
+    {% for field in form %}
+    <div class="event-field{% if field.errors %} event-field--invalid{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span aria-hidden="true">*</span>{% else %} <span class="event-field-optional">(opsional)</span>{% endif %}</label>
+        {{ field }}
+        {% if field.help_text %}<p class="event-field-help" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</p>{% endif %}
+        {% if field.errors %}<div class="event-field-errors" id="{{ field.auto_id }}_error">{{ field.errors }}</div>{% endif %}
+        {% if field.name == 'location' %}
+        {% url 'event_management:location_search' as location_search_url %}
+        {% if location_search_url %}
+        <div class="location-search" data-location-search data-url="{{ location_search_url }}">
+            <button class="events-button events-button--secondary" type="button" id="location-search-button">Cari lokasi di peta</button>
+            <p class="event-field-help">Ketik nama tempat atau alamat di kolom lokasi, lalu pilih hasilnya. Alamat juga bisa diisi manual.</p>
+            <p class="location-search-status" role="status" aria-live="polite" id="location-search-status"></p>
+            <ul class="location-results" id="location-results" aria-label="Hasil pencarian lokasi"></ul>
+            <p class="event-field-help">Data peta © <a class="events-text-link" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>, pencarian melalui Nominatim.</p>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+    {% endfor %}
+    <p class="event-field-help">* Wajib diisi. Koordinat boleh dikosongkan; jika diisi, masukkan lintang dan bujur sekaligus.</p>
+    <div class="events-actions">
+        <button class="events-button" type="submit">Simpan acara</button>
+        {% if event %}<a class="events-button events-button--secondary" href="{% url 'event_management:detail' event.id %}">Batal</a>{% else %}<a class="events-button events-button--secondary" href="{% url 'event_management:main' %}">Batal</a>{% endif %}
+    </div>
+</form>
+{% endblock %}
+{% block extra_js %}<script src="{% static 'js/events.js' %}" defer></script>{% endblock %}

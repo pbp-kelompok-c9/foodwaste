@@ -35,11 +35,19 @@
                 Laporan
             </a>
 
+            <a href="{% url 'event_management:main' %}"
+               class="navbar__link {% if '/events/' in request.path %}is-active{% endif %}"
+               {% if '/events/' in request.path %}aria-current="page"{% endif %}>
+                Acara
+            </a>
+
+            {% if user.is_staff %}
             <a href="/management/"
                class="navbar__link {% if '/management' in request.path %}is-active{% endif %}"
                {% if '/management' in request.path %}aria-current="page"{% endif %}>
                 Kelola
             </a>
+            {% endif %}
 
             <!-- ===== Discovery & Dashboard ===== -->
 
