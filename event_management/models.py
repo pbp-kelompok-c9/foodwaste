@@ -59,7 +59,7 @@ class Event(models.Model):
     def clean(self):
         super().clean()
         if (self.latitude is None) != (self.longitude is None):
-            raise ValidationError("Isi latitude dan longitude bersama, atau kosongkan keduanya.")
+            raise ValidationError("Lokasi peta belum lengkap. Pilih lokasi lagi atau ketik ulang alamat.")
 
     def __str__(self):
         return self.name

@@ -26,7 +26,7 @@
         latitude.value = "";
         longitude.value = "";
         status.textContent = hadCoordinates
-            ? "Alamat diubah. Pilih lokasi lagi atau isi koordinat yang sesuai secara manual."
+            ? "Alamat diubah. Pilih lokasi lagi untuk memperbarui titik di peta."
             : "";
     });
 
@@ -82,14 +82,14 @@
                     latitude.value = lat.toFixed(6);
                     longitude.value = lon.toFixed(6);
                     results.replaceChildren();
-                    status.textContent = "Lokasi dipilih. Alamat dan koordinat sudah terisi.";
+                    status.textContent = "Lokasi dipilih.";
                     address.focus();
                 });
                 item.append(choice);
                 results.append(item);
             });
             status.textContent = results.children.length
-                ? "Pilih lokasi yang sesuai untuk mengisi alamat dan koordinat."
+                ? "Pilih lokasi yang sesuai."
                 : "Lokasi tidak ditemukan. Coba alamat lain atau isi alamat manual.";
         } catch (error) {
             if (activeSearch !== currentSearch) return;
