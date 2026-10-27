@@ -16,6 +16,9 @@ class EventPageTests(TestCase):
         cls.owner.groups.add(Group.objects.get_or_create(name="EO")[0])
         cls.participant = get_user_model().objects.create_user(username="page_participant")
         cls.staff = get_user_model().objects.create_user(username="page_staff", is_staff=True)
+        cls.superuser = get_user_model().objects.create_superuser(username="page_superuser", password="test-password")
+        cls.other_eo = get_user_model().objects.create_user(username="page_other_eo")
+        cls.other_eo.groups.add(Group.objects.get(name="EO"))
         cls.event = Event.objects.create(
             name="Acara <script>alert('x')</script>",
             event_date=timezone.now(),
@@ -44,20 +47,28 @@ class EventPageTests(TestCase):
         self.assertContains(response, 'name="csrfmiddlewaretoken"')
         self.assertNotContains(response, "/management/")
 
-    def test_owner_actions_are_visible_only_to_eo_owner(self):
+    def test_manage_actions_are_visible_to_eo_owner_and_superuser(self):
         detail_url = reverse("event_management:detail", args=[self.event.pk])
         edit_url = reverse("event_management:edit", args=[self.event.pk])
         delete_url = reverse("event_management:delete", args=[self.event.pk])
-        self.client.force_login(self.owner)
-        response = self.client.get(detail_url)
-        self.assertContains(response, edit_url)
-        self.assertContains(response, delete_url)
-        for other_user in (self.participant, self.staff):
+        for user in (self.owner, self.superuser):
+            with self.subTest(user=user.username):
+                self.client.force_login(user)
+                response = self.client.get(detail_url)
+                self.assertContains(response, edit_url)
+                self.assertContains(response, delete_url)
+        for other_user in (self.participant, self.staff, self.other_eo):
             with self.subTest(user=other_user.username):
                 self.client.force_login(other_user)
                 response = self.client.get(detail_url)
                 self.assertNotContains(response, edit_url)
                 self.assertNotContains(response, delete_url)
+
+    def test_superuser_without_eo_group_sees_add_event_button(self):
+        self.assertFalse(self.superuser.groups.exists())
+        self.client.force_login(self.superuser)
+        response = self.client.get(reverse("event_management:main"))
+        self.assertContains(response, reverse("event_management:create"))
 
     def test_navigation_shows_events_to_everyone_and_management_to_staff(self):
         url = reverse("event_management:main")

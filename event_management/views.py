@@ -7,7 +7,12 @@ from django.views.decorators.http import require_http_methods, require_safe
 
 from .forms import EventForm
 from .models import Event
-from .permissions import eo_required, is_eo
+from .permissions import can_manage_event, can_manage_events, event_manager_required
+
+
+def _managed_events(user):
+    events = Event.objects.all()
+    return events if user.is_superuser else events.filter(created_by=user)
 
 
 @require_safe
@@ -21,7 +26,7 @@ def main(request):
         "events": page.object_list,
         "page_obj": page,
         "q": query,
-        "is_eo": is_eo(request.user),
+        "can_manage_events": can_manage_events(request.user),
     })
 
 
@@ -30,11 +35,11 @@ def event_detail(request, event_id):
     event = get_object_or_404(Event.objects.select_related("created_by"), pk=event_id)
     return render(request, "event_management/detail.html", {
         "event": event,
-        "is_owner": is_eo(request.user) and event.created_by_id == request.user.pk,
+        "can_manage_event": can_manage_event(request.user, event),
     })
 
 
-@eo_required
+@event_manager_required
 @require_http_methods(["GET", "POST"])
 def event_create(request):
     form = EventForm(request.POST if request.method == "POST" else None)
@@ -49,10 +54,10 @@ def event_create(request):
     })
 
 
-@eo_required
+@event_manager_required
 @require_http_methods(["GET", "POST"])
 def event_update(request, event_id):
-    event = get_object_or_404(Event, pk=event_id, created_by=request.user)
+    event = get_object_or_404(_managed_events(request.user), pk=event_id)
     form = EventForm(request.POST if request.method == "POST" else None, instance=event)
     if request.method == "POST" and form.is_valid():
         form.save()
@@ -63,10 +68,10 @@ def event_update(request, event_id):
     })
 
 
-@eo_required
+@event_manager_required
 @require_http_methods(["GET", "POST"])
 def event_delete(request, event_id):
-    event = get_object_or_404(Event, pk=event_id, created_by=request.user)
+    event = get_object_or_404(_managed_events(request.user), pk=event_id)
     if request.method == "POST":
         try:
             event.delete()

@@ -7,7 +7,7 @@
         <h1>Acara</h1>
         <p>Temukan acara dan laporkan makanan berlebih di lokasi.</p>
     </div>
-    {% if is_eo %}<a class="events-button" href="{% url 'event_management:create' %}">+ Tambah acara</a>{% endif %}
+    {% if can_manage_events %}<a class="events-button" href="{% url 'event_management:create' %}">+ Tambah acara</a>{% endif %}
 </header>
 <form class="events-search" method="get" action="{% url 'event_management:main' %}" role="search">
     <label for="event-query">Cari nama acara atau lokasi</label>

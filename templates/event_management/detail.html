@@ -9,7 +9,7 @@
         <h1>{{ event.name }}</h1>
         <p>Diselenggarakan oleh {{ event.created_by.username }}</p>
     </div>
-    {% if is_owner %}
+    {% if can_manage_event %}
     <div class="events-actions">
         <a class="events-button" href="{% url 'event_management:edit' event.id %}">Edit acara</a>
         <a class="events-button events-button--secondary" href="{% url 'event_management:delete' event.id %}">Hapus acara</a>

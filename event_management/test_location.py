@@ -192,6 +192,7 @@ class LocationEndpointTests(TestCase):
         cls.eo.groups.add(Group.objects.get_or_create(name="EO")[0])
         cls.participant = user_model.objects.create_user("location-participant", password="test-password")
         cls.staff = user_model.objects.create_user("location-staff", password="test-password", is_staff=True)
+        cls.superuser = user_model.objects.create_superuser("location-superuser", password="test-password")
 
     def setUp(self):
         self.url = reverse("event_management:location_search")
@@ -223,3 +224,13 @@ class LocationEndpointTests(TestCase):
         self.assertEqual(response.status_code, 429)
         self.assertEqual(response.json(), {"error": "Tunggu sebentar.", "retry_after": 2})
         self.assertEqual(response["Retry-After"], "2")
+
+    @patch("event_management.location_views.search_locations", return_value=[])
+    def test_superuser_without_eo_group_can_search_locations(self, search):
+        self.assertFalse(self.superuser.groups.exists())
+        self.client.force_login(self.superuser)
+        response = self.client.get(self.url, {"q": "Jakarta"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"results": []})
+        self.assertEqual(self.client.post(self.url, {"q": "Jakarta"}).status_code, 405)
+        search.assert_called_once_with("Jakarta")

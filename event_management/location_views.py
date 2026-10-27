@@ -2,10 +2,10 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 
 from .location import LocationSearchError, search_locations
-from .permissions import eo_required
+from .permissions import event_manager_required
 
 
-@eo_required
+@event_manager_required
 @require_GET
 def location_search(request):
     try:

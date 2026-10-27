@@ -35,6 +35,8 @@ Migration menyediakan Group bernama `EO`. Registrasi biasa dan login Google tida
 memberikan keanggotaan ini. Admin yang berwenang dapat menambahkan akun melalui
 **Django admin → Users → Groups → EO**, tanpa mencentang **Staff status** pada akun EO.
 Admin Django memerlukan akun admin tersendiri; akun EO tidak perlu akses admin Django.
+Superuser dapat langsung membuat dan mengelola semua acara melalui menu Acara,
+tanpa perlu menjadi anggota Group `EO`.
 
 Alternatif melalui terminal admin lokal:
 
@@ -62,10 +64,12 @@ Group EO tidak mengubah hak staff yang sudah ada.
 | Pengunjung | Ya | Tidak | Tidak | Tidak |
 | Peserta login | Ya | Tidak | Tidak | Tidak |
 | EO tanpa staff | Ya | Ya | Acara miliknya | Tidak |
-| Staff tanpa Group EO | Ya | Tidak | Tidak | Ya |
+| Staff tanpa Group EO, bukan superuser | Ya | Tidak | Tidak | Ya |
+| Superuser tanpa Group EO | Ya | Ya | Semua acara | Ya |
 
 Pemeriksaan role dan pemilik dijalankan pada server untuk setiap aksi. Field
 `created_by` ditetapkan dari akun login dan tidak dapat dipilih dari formulir.
+Saat superuser mengedit acara milik EO, akun pemilik acara tetap dipertahankan.
 Acara yang sudah dipakai laporan dilindungi dari penghapusan agar riwayat tetap ada.
 
 ## Alur pengecekan manual
@@ -80,6 +84,9 @@ Acara yang sudah dipakai laporan dilindungi dari penghapusan agar riwayat tetap 
 7. Coba hapus acara yang sudah digunakan laporan; acara dan laporan tetap tersimpan.
 8. Coba buka `/management/` sebagai EO tanpa staff; akses ditolak. Masuk sebagai
    staff untuk memeriksa laporan baru pada antrean verifikasi.
+9. Masuk sebagai superuser yang tidak berada dalam Group `EO`; tombol tambah,
+   edit, dan hapus tersedia, termasuk untuk acara milik akun lain. Acara yang
+   sudah terhubung ke laporan tetap tidak dapat dihapus.
 
 Laporan baru menyimpan relasi `related_event` dan nama acara sebagai snapshot di
 kolom `event`. Tampilan memakai nama Event terhubung, dengan fallback ke teks lama
@@ -88,7 +95,7 @@ ke Event karena nama yang sama belum tentu menunjuk acara yang sama.
 
 ## Pencarian lokasi OpenStreetMap
 
-Pencarian hanya dijalankan EO dengan menekan **Cari lokasi** pada formulir Event.
+Pencarian dijalankan EO atau superuser dengan menekan **Cari lokasi** pada formulir Event.
 Backend memanggil Nominatim, lalu pengguna memilih hasil untuk mengisi alamat.
 Latitude dan longitude tersimpan otomatis dalam field tersembunyi, sehingga EO
 tidak perlu melihat atau mengisi koordinat secara manual. Alamat tetap bisa
@@ -121,7 +128,7 @@ NOMINATIM_SEARCH_URL=https://nominatim.openstreetmap.org/search
 Atur identitas/kontak User-Agent sesuai deployment. URL harus HTTPS dan dapat diganti
 ke instance Nominatim milik sendiri atau provider yang kompatibel tanpa mengubah
 kode. Untuk banyak pengguna, pilih layanan yang kapasitasnya sesuai. Endpoint
-internal `/events/locations/search/?q=...` hanya menerima akun EO; URL provider
+internal `/events/locations/search/?q=...` hanya menerima akun EO atau superuser; URL provider
 ditetapkan di server, bukan dari input pengguna.
 
 Referensi parameter: [Nominatim Search API](https://nominatim.org/release-docs/latest/api/Search/).
