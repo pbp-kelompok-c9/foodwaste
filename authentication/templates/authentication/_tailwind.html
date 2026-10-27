@@ -1,0 +1,25 @@
+{# Tailwind untuk halaman profil. Prefix "tw-" mencegah bentrok dengan kelas CSS yang sudah ada #}
+{# (misalnya .container), dan preflight dimatikan agar style dasar base.css tidak di-reset. #}
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+  tailwind.config = {
+    prefix: 'tw-',
+    corePlugins: { preflight: false },
+    theme: {
+      extend: {
+        colors: {
+          paper: 'var(--paper)',
+          ink: 'var(--ink)',
+          accent: {
+            DEFAULT: 'var(--accent-dark)',
+            deep: 'var(--accent-dark-deep)',
+            active: 'var(--accent-dark-active)',
+            light: 'var(--accent-light)',
+            soft: 'var(--accent-light-active)',
+          },
+        },
+        fontFamily: { brand: ['"Lilita One"', 'sans-serif'] },
+      },
+    },
+  };
+</script>

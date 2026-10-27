@@ -1,0 +1,16 @@
+{# Filter berbasis autentikasi: kontak pribadi hanya dirender untuk pengguna yang sudah login. #}
+{% if user.is_authenticated %}
+  {% if profile.phone or profile.line_id %}
+  <dl class="tw-m-0 tw-space-y-1 tw-text-sm">
+    {% if profile.phone %}<div class="tw-flex tw-gap-2"><dt class="tw-font-bold">HP</dt><dd class="tw-m-0">{{ profile.phone }}</dd></div>{% endif %}
+    {% if profile.line_id %}<div class="tw-flex tw-gap-2"><dt class="tw-font-bold">LINE</dt><dd class="tw-m-0">{{ profile.line_id }}</dd></div>{% endif %}
+  </dl>
+  {% else %}
+  <p class="tw-m-0 tw-text-sm tw-text-accent">Belum mencantumkan kontak.</p>
+  {% endif %}
+{% else %}
+  <p class="tw-m-0 tw-text-sm tw-text-accent-deep">
+    <a class="tw-font-bold tw-text-accent hover:tw-underline" href="{% url 'authentication:login' %}?next={{ request.get_full_path|urlencode }}">Masuk</a>
+    untuk melihat kontak.
+  </p>
+{% endif %}

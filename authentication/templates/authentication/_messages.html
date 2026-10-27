@@ -1,0 +1,7 @@
+{% if messages %}
+<ul class="tw-m-0 tw-mb-6 tw-list-none tw-space-y-2 tw-p-0" role="status">
+  {% for message in messages %}
+  <li class="tw-rounded-xl tw-px-4 tw-py-3 {% if message.tags == 'error' %}tw-bg-red-100 tw-text-red-800{% else %}tw-bg-accent-light tw-text-accent-active{% endif %}">{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
