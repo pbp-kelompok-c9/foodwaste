@@ -757,35 +757,6 @@
                     hidden
                 >
 
-                    <!-- FOTO DETAIL -->
-
-                    <div class="detail-image">
-
-                        {% if makanan.picture %}
-
-                        <img
-                            src="{{ makanan.picture }}"
-                            alt="Foto {{ makanan.food_name }}"
-                        >
-
-                        {% else %}
-
-                        <div class="detail-no-image">
-
-                            <svg class="upload-icon" viewBox="0 0 24 24">
-                                <path d="M12 16V3"></path>
-                                <path d="M7 8l5-5 5 5"></path>
-                                <path d="M4 16v4h16v-4"></path>
-                            </svg>
-
-                            <p>Belum ada foto makanan</p>
-
-                        </div>
-
-                        {% endif %}
-
-                    </div>
-
                     <!-- JENIS MAKANAN DAN PORSI -->
 
                     <div class="detail-row">
