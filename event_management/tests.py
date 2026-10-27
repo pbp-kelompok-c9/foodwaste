@@ -15,7 +15,7 @@ from food_waste_reporting.models import Report
 
 from .forms import EventForm
 from .models import Event
-from .permissions import is_eo
+from .permissions import can_manage_event, can_manage_events, is_eo
 
 
 class EventTestBase(TestCase):
@@ -125,8 +125,8 @@ class EventAccessTests(EventTestBase):
                 self.assertIn(reverse("authentication:login"), response.url)
         self.assertEqual(Event.objects.count(), 1)
 
-    def test_staff_superuser_and_participant_without_eo_group_are_denied(self):
-        for user in (self.participant, self.staff, self.superuser):
+    def test_staff_and_participant_without_eo_group_are_denied(self):
+        for user in (self.participant, self.staff):
             self.client.force_login(user)
             for name in ("create", "edit", "delete"):
                 for method in (self.client.get, self.client.post):
@@ -135,6 +135,37 @@ class EventAccessTests(EventTestBase):
         self.event.refresh_from_db()
         self.assertEqual(self.event.name, "Festival UI")
         self.assertEqual(Event.objects.count(), 1)
+
+    def test_superuser_can_create_events_without_eo_group(self):
+        self.assertFalse(self.superuser.groups.exists())
+        self.assertFalse(is_eo(self.superuser))
+        self.client.force_login(self.superuser)
+        self.assertEqual(self.client.get(self.url("create")).status_code, 200)
+        response = self.client.post(self.url("create"), self.data(created_by=self.owner.pk))
+        created = Event.objects.get(name="Festival Baru")
+        self.assertRedirects(response, self.url("detail", created))
+        self.assertEqual(created.created_by, self.superuser)
+        self.assertFalse(self.superuser.groups.exists())
+
+    def test_superuser_can_edit_and_delete_another_owners_event(self):
+        self.client.force_login(self.superuser)
+        self.assertEqual(self.client.get(self.url("edit")).status_code, 200)
+        response = self.client.post(
+            self.url("edit"), self.data(name="Diperbarui admin", created_by=self.superuser.pk)
+        )
+        self.assertRedirects(response, self.url("detail"))
+        self.event.refresh_from_db()
+        self.assertEqual(self.event.name, "Diperbarui admin")
+        self.assertEqual(self.event.created_by, self.owner)
+        self.assertEqual(self.client.get(self.url("delete")).status_code, 200)
+        self.assertTrue(Event.objects.filter(pk=self.event.pk).exists())
+        self.assertRedirects(self.client.post(self.url("delete")), self.url("main"))
+        self.assertFalse(Event.objects.filter(pk=self.event.pk).exists())
+
+    def test_inactive_superuser_does_not_get_event_management_access(self):
+        self.superuser.is_active = False
+        self.assertFalse(can_manage_events(self.superuser))
+        self.assertFalse(can_manage_event(self.superuser, self.event))
 
     def test_other_eo_cannot_read_edit_confirmation_or_modify_owner_event(self):
         self.client.force_login(self.other_eo)
@@ -179,9 +210,11 @@ class EventAccessTests(EventTestBase):
 
     def test_csrf_is_required_for_all_mutations(self):
         client = Client(enforce_csrf_checks=True)
+        for user in (self.owner, self.superuser):
+            client.force_login(user)
+            for name in ("create", "edit", "delete"):
+                self.assertEqual(client.post(self.url(name), self.data()).status_code, 403)
         client.force_login(self.owner)
-        for name in ("create", "edit", "delete"):
-            self.assertEqual(client.post(self.url(name), self.data()).status_code, 403)
         client.get(self.url("create"))
         response = client.post(self.url("create"), self.data(),
                                HTTP_X_CSRFTOKEN=client.cookies["csrftoken"].value)
@@ -204,12 +237,14 @@ class EventAccessTests(EventTestBase):
             best_before=timezone.now(), location="Pintu A", event=self.event.name,
             related_event=self.event, pickup_option="ambil sendiri", details="Utuh",
         )
-        self.client.force_login(self.owner)
-        response = self.client.post(self.url("delete"), follow=True)
-        self.assertContains(response, "Acara tidak bisa dihapus karena sudah memiliki laporan.")
-        self.assertTrue(Event.objects.filter(pk=self.event.pk).exists())
-        self.assertTrue(Report.objects.filter(pk=report.pk).exists())
-        self.assertTrue(report.review.is_pending)
+        for user in (self.owner, self.superuser):
+            with self.subTest(user=user.username):
+                self.client.force_login(user)
+                response = self.client.post(self.url("delete"), follow=True)
+                self.assertContains(response, "Acara tidak bisa dihapus karena sudah memiliki laporan.")
+                self.assertTrue(Event.objects.filter(pk=self.event.pk).exists())
+                self.assertTrue(Report.objects.filter(pk=report.pk).exists())
+                self.assertTrue(report.review.is_pending)
 
     def test_event_search_pagination_and_unknown_ids(self):
         for number in range(13):
