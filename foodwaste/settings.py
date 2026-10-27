@@ -187,6 +187,15 @@ SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = PRODUCTION
 CSRF_COOKIE_SECURE = PRODUCTION
 
+# The public Nominatim service is called only after an EO clicks search.
+NOMINATIM_SEARCH_URL = os.getenv(
+    "NOMINATIM_SEARCH_URL", "https://nominatim.openstreetmap.org/search"
+)
+NOMINATIM_USER_AGENT = os.getenv(
+    "NOMINATIM_USER_AGENT",
+    "FoodWastey/1.0 (+https://github.com/pbp-kelompok-c9/foodwaste)",
+)
+
 # Credentials live only in environment variables, never in the repository.
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID', '').strip()
 GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET', '').strip()

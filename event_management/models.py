@@ -63,3 +63,11 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class LocationSearchState(models.Model):
+    """Shared provider cache and request gate, including across web workers."""
+
+    key = models.CharField(max_length=64, primary_key=True)
+    payload = models.JSONField(default=list, blank=True)
+    expires_at = models.DateTimeField(db_index=True)
