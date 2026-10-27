@@ -181,7 +181,7 @@ WHITENOISE_USE_FINDERS = True
 
 # Authentication uses Django's built-in User and session backend.
 LOGIN_URL = 'authentication:login'
-LOGIN_REDIRECT_URL = 'main_landing'
+LOGIN_REDIRECT_URL = 'discovery_dashboard:discovery'
 LOGOUT_REDIRECT_URL = 'authentication:login'
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = PRODUCTION

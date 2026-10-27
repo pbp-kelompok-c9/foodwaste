@@ -23,12 +23,6 @@
 
         <nav class="navbar__menu" aria-label="Navigasi utama">
 
-            <a href="/"
-               class="navbar__link {% if request.path == '/' %}is-active{% endif %}"
-               {% if request.path == '/' %}aria-current="page"{% endif %}>
-                Beranda
-            </a>
-
             <a href="/reporting/"
                class="navbar__link {% if '/reporting' in request.path %}is-active{% endif %}"
                {% if '/reporting' in request.path %}aria-current="page"{% endif %}>
@@ -52,8 +46,8 @@
             <!-- ===== Discovery & Dashboard ===== -->
 
             <a href="{% url 'discovery_dashboard:discovery' %}"
-               class="navbar__link {% if request.path == '/discovery/' %}is-active{% endif %}"
-               {% if request.path == '/discovery/' %}aria-current="page"{% endif %}>
+               class="navbar__link {% if request.path == '/' %}is-active{% endif %}"
+               {% if request.path == '/' %}aria-current="page"{% endif %}>
                 Discovery
             </a>
 

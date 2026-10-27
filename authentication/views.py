@@ -8,7 +8,7 @@ from .forms import RegistrationForm
 @require_http_methods(['GET', 'POST'])
 def register(request):
     if request.user.is_authenticated:
-        return redirect('main_landing')
+        return redirect('discovery_dashboard:discovery')
     form = RegistrationForm(request.POST if request.method == 'POST' else None)
     if request.method == 'POST' and form.is_valid():
         # Only explicitly allowed fields are saved; role/admin flags are not inputs.
