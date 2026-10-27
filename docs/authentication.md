@@ -10,7 +10,7 @@ Gunakan `.env.example` sebagai `.env` dengan `CHECKPOINT_ONLY=False`. Instal req
 - `/login/`: login menggunakan **username**, bukan email. Setelah berhasil, kembali ke beranda atau tujuan `next` yang aman pada host yang sama.
 - `/logout/`: POST dengan CSRF; mengakhiri session dan kembali ke login. GET tidak mengubah session.
 
-Username mengikuti aturan dan keunikan bawaan Django. Email belum diverifikasi dan belum diperlakukan sebagai identitas unik. Akun baru tidak memiliki izin staff/superuser; formulir tidak menerima pilihan role admin. Penetapan role EO dan pengelolaan profil belum termasuk tahap ini. Halaman Management belum dibatasi menjadi khusus EO karena kebijakan role tersebut belum diimplementasikan.
+Username mengikuti aturan dan keunikan bawaan Django. Email belum diverifikasi dan belum diperlakukan sebagai identitas unik. Akun baru tidak memiliki izin staff/superuser atau keanggotaan EO; formulir tidak menerima pilihan role admin. Group `EO` disediakan oleh migration Event Management dan ditetapkan oleh admin. EO dapat membuat serta mengubah/menghapus acara miliknya tanpa `is_staff`. Food Waste Management tetap dibatasi untuk staff, terpisah dari EO. Pengelolaan profil belum tersedia. Lihat [panduan Event Management](event-management.md) untuk penetapan EO dan pengujian akses.
 
 Formulir memakai desain responsif hijau–krem, tombol Google, pesan validasi, dan tombol tampilkan password. Proteksi brute-force/rate limiting dan pemulihan password belum diimplementasikan. Sebelum aplikasi dipakai publik, tambahkan pembatasan percobaan login.
 

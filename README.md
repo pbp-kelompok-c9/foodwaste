@@ -62,7 +62,8 @@ Pembagian tanggung jawab pengembangan modul kelompok C9 adalah sebagai berikut. 
 
 | Peran | Target pengguna | Hak akses yang direncanakan |
 | --- | --- | --- |
-| Admin Mode | EO/panitia dan tim pengelola FoodWaste | Mengelola acara, memeriksa foto dan informasi laporan, menerima atau menolak laporan, mengoordinasikan pengambilan, serta menentukan pengolahan, penjualan kembali, atau publikasi ulang makanan. |
+| EO | Penyelenggara acara dalam Group `EO`, tanpa memerlukan staff | Membuat acara, mengubah/menghapus acara miliknya, dan membuat laporan. Tidak otomatis mendapat akses Kelola laporan. |
+| Admin Mode | Staff pengelola laporan | Memeriksa foto dan informasi laporan, menerima atau menolak laporan, mengoordinasikan pengambilan, serta menentukan tindak lanjut makanan. |
 | User Mode | Peserta acara yang sudah login | Melihat postingan, mengirim laporan ketersediaan makanan, dan mengajukan pengambilan makanan yang ditawarkan. |
 | Pengunjung / Non-Role | Pengunjung yang belum login | Hanya melihat postingan; tidak dapat memposting laporan atau mengajukan pengambilan makanan. |
 
@@ -156,4 +157,4 @@ Untuk memenuhi ketentuan minimal 50 initial data utama pada database aplikasi sa
 
 ## Pengembangan authentication
 
-Logic registrasi, login, dan logout tersedia pada modul `authentication` ketika `CHECKPOINT_ONLY=False`. Formulir masih berupa tampilan sederhana untuk pengujian; profil dan role EO belum diimplementasikan. Lihat [panduan authentication](docs/authentication.md) untuk menjalankan dan menguji modul serta [acuan palet warna](docs/color-palette.md) untuk tahap desain berikutnya.
+Registrasi, login, dan logout memakai User bawaan Django. Role EO memakai Group `EO`, terpisah dari staff Kelola laporan. Event Management menyediakan CRUD dengan ownership, pencarian lokasi, dan dropdown acara pada Reporting. Kolom teks acara laporan lama dipertahankan. Lihat [panduan authentication](docs/authentication.md), [panduan Event Management dan pengecekan di VS Code](docs/event-management.md), serta [acuan palet warna](docs/color-palette.md). Pengelolaan profil belum tersedia.
