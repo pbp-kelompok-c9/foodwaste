@@ -207,3 +207,11 @@ section {
     transform: translateY(-50%);
     color: var(--ink-dark);
 }
+
+.danger {
+    background-color: #973838;
+}
+
+.danger:hover {
+    background-color: #5a2424;
+}
