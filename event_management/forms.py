@@ -5,6 +5,7 @@ from .models import Event
 class EventForm(forms.ModelForm):
     event_date = forms.DateTimeField(
         label="Tanggal dan waktu acara (WIB)",
+        help_text="Waktu Indonesia Barat (UTC+7).",
         input_formats=["%Y-%m-%dT%H:%M"],
         widget=forms.DateTimeInput(
             attrs={"type": "datetime-local"},

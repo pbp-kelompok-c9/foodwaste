@@ -1,121 +1,78 @@
-
-from functools import wraps
-
-from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
-from django.db.models.deletion import ProtectedError
 from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.db.models.deletion import ProtectedError
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_http_methods, require_safe
 
-from .models import Event
 from .forms import EventForm
+from .models import Event
+from .permissions import eo_required, is_eo
 
 
-def eo_required(view_func):
-    @wraps(view_func)
-    @login_required
-    def wrapper(request, *args, **kwargs):
-        is_eo = request.user.groups.filter(name="EO").exists()
-
-        if not is_eo:
-            raise PermissionDenied("Hanya EO yang boleh mengelola event.")
-
-        return view_func(request, *args, **kwargs)
-
-    return wrapper
-
-
+@require_safe
 def main(request):
-    events = Event.objects.select_related(
-        "created_by"
-    ).order_by("-event_date")
-
-    is_eo = (
-        request.user.is_authenticated
-        and request.user.groups.filter(name="EO").exists()
-    )
-
+    query = request.GET.get("q", "").strip()[:200]
+    events = Event.objects.select_related("created_by")
+    if query:
+        events = events.filter(Q(name__icontains=query) | Q(location__icontains=query))
+    page = Paginator(events, 12).get_page(request.GET.get("page"))
     return render(request, "event_management/main.html", {
-        "events": events,
-        "is_eo": is_eo,
+        "events": page.object_list,
+        "page_obj": page,
+        "q": query,
+        "is_eo": is_eo(request.user),
     })
 
 
+@require_safe
 def event_detail(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
-
-    is_owner = (
-        request.user.is_authenticated
-        and event.created_by_id == request.user.id
-        and request.user.groups.filter(name="EO").exists()
-    )
-
+    event = get_object_or_404(Event.objects.select_related("created_by"), pk=event_id)
     return render(request, "event_management/detail.html", {
         "event": event,
-        "is_owner": is_owner,
+        "is_owner": is_eo(request.user) and event.created_by_id == request.user.pk,
     })
 
 
 @eo_required
+@require_http_methods(["GET", "POST"])
 def event_create(request):
-    if request.method == "POST":
-        form = EventForm(request.POST)
-
-        if form.is_valid():
-            event = form.save(commit=False)
-            event.created_by = request.user
-            event.save()
-            return redirect("event_management:main")
-    else:
-        form = EventForm()
-
+    form = EventForm(request.POST if request.method == "POST" else None)
+    if request.method == "POST" and form.is_valid():
+        event = form.save(commit=False)
+        event.created_by = request.user
+        event.save()
+        messages.success(request, "Acara berhasil dibuat.")
+        return redirect("event_management:detail", event_id=event.pk)
     return render(request, "event_management/form.html", {
-        "form": form,
-        "title": "Tambah Event",
+        "form": form, "title": "Tambah acara",
     })
 
 
 @eo_required
+@require_http_methods(["GET", "POST"])
 def event_update(request, event_id):
-    event = get_object_or_404(
-        Event, pk=event_id, created_by=request.user
-    )
-
-    if request.method == "POST":
-        form = EventForm(request.POST, instance=event)
-
-        if form.is_valid():
-            form.save()
-            return redirect("event_management:detail", event_id=event.id)
-    else:
-        form = EventForm(instance=event)
-
+    event = get_object_or_404(Event, pk=event_id, created_by=request.user)
+    form = EventForm(request.POST if request.method == "POST" else None, instance=event)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Acara berhasil diperbarui.")
+        return redirect("event_management:detail", event_id=event.pk)
     return render(request, "event_management/form.html", {
-        "form": form,
-        "title": "Edit Event",
+        "form": form, "title": "Edit acara", "event": event,
     })
 
 
 @eo_required
+@require_http_methods(["GET", "POST"])
 def event_delete(request, event_id):
-    event = get_object_or_404(
-        Event, pk=event_id, created_by=request.user
-    )
-
+    event = get_object_or_404(Event, pk=event_id, created_by=request.user)
     if request.method == "POST":
         try:
             event.delete()
-            messages.success(request, "Event berhasil dihapus.")
         except ProtectedError:
-            messages.error(
-                request,
-                "Event tidak bisa dihapus karena sudah memiliki laporan."
-            )
-
+            messages.error(request, "Acara tidak bisa dihapus karena sudah memiliki laporan.")
+            return redirect("event_management:detail", event_id=event.pk)
+        messages.success(request, "Acara berhasil dihapus.")
         return redirect("event_management:main")
-
-    return render(
-        request,
-        "event_management/confirm_delete.html",
-        {"event": event}
-    )
+    return render(request, "event_management/confirm_delete.html", {"event": event})
