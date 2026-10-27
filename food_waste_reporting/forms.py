@@ -56,7 +56,7 @@ class ReportForm(ModelForm):
         )
     )
 
-    pickup_options = ChoiceField(
+    pickup_option = ChoiceField(
         label="Opsi Penjemputan",
         choices = Report.PICKUP_OPTIONS,
         widget=Select(attrs={'class': 'input'})
@@ -81,6 +81,6 @@ class ReportForm(ModelForm):
             "best_before",
             "location",
             "event",
-            "pickup_options",
+            "pickup_option",
             "details",
         ]
