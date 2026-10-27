@@ -1,7 +1,7 @@
 from datetime import timezone
 
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import JsonResponse
 from food_waste_reporting.models import Report
 from food_waste_reporting.forms import ReportForm
@@ -27,8 +27,8 @@ def get_reports_json(request):
         {
             "id": report.pk,
             "food_name": report.food_name,
-            "portion": report.food_portion,
-            "best_before": report.best_before,
+            "food_portion": report.food_portion,
+            "best_before": report.best_before.strftime("%d/%m/%Y"),
             "location": report.location,
             "event": report.event,
         }
@@ -50,3 +50,8 @@ def create_report_ajax(request):
             status=201,
         )
     return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
+
+def view_report_detail(request, report_id):
+    report = get_object_or_404(Report, pk=report_id)
+    return render(request, "components/report_detail_modal.html", {"report": report})
+    
