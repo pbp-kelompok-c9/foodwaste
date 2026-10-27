@@ -123,24 +123,43 @@
     }
 
     // dummy UUID
-        const DUMMY_ID = "00000000-0000-0000-0000-000000000000";
-        const viewUrl = "{% url 'food_waste_reporting:view_report_detail' '00000000-0000-0000-0000-000000000000' %}"
-        const detailBody = document.getElementById("detail-body");
-        const detailContainer = document.getElementById("detail-modal-container");
+    const DUMMY_ID = "00000000-0000-0000-0000-000000000000";
+    const viewUrl = "{% url 'food_waste_reporting:view_report_detail' '00000000-0000-0000-0000-000000000000' %}";
+    const deleteUrl = "{% url 'food_waste_reporting:delete_report' '00000000-0000-0000-0000-000000000000' %}";
+    const detailBody = document.getElementById("detail-body");
+    const detailContainer = document.getElementById("detail-modal-container");
 
     // Event listener for view report details
     reportsGrid.addEventListener("click", async (event) => {
         const button = event.target.closest("[data-report-id]");
         if(!button) return;
         try {
-            const result = await fetch(viewUrl.replace(DUMMY_ID, button.dataset.reportId));
-            if(!result.ok) throw new Error(result.status);
-            detailContainer.innerHTML = await result.text();
+            const response = await fetch(viewUrl.replace(DUMMY_ID, button.dataset.reportId));
+            if(!response.ok) throw new Error(response.status);
+            detailContainer.innerHTML = await response.text();
             const detailModal = detailContainer.querySelector("#view-report-modal");
             detailModal.showPopover();
         }
         catch(error) {
             console.error("Gagal memuat detail laporan: ", error);
+        }
+    });
+
+    // Event listener for delete report
+    detailContainer.addEventListener("click", async (event) => {
+        const button = event.target.closest("[data-delete-id]");
+        if(!button) return;
+
+        if(!confirm("Apakah Anda yakin ingin menghapus laporan ini?")) return;
+
+        const response = await fetch(deleteUrl.replace(DUMMY_ID, button.dataset.deleteId), {
+            method: "POST",
+            headers: { "X-CSRFToken": getCookie("csrftoken") },
+        });
+
+        if(response.ok) {
+            detailContainer.querySelector("#view-report-modal").hidePopover();
+            fetchReports(searchInput.value.trim());
         }
     });
 
@@ -224,12 +243,52 @@
         return cookieValue;
     }
 
+    // Form editing handling
+    const editUrl = "{% url 'food_waste_reporting:edit_report' '00000000-0000-0000-0000-000000000000' %}";
+    let currentEditUrl = null;
+
+    const reportModal = document.getElementById("add-report-modal");
+    const modalTitle = reportModal.querySelector("h2");
+    const submitButton = reportForm.querySelector('button[type="submit"]');
+
+    detailContainer.addEventListener("click", async (event) => {
+        const button = event.target.closest("[data-edit-id]");
+        if(!button) return;
+
+        try {
+            const response = await fetch(editUrl.replace(DUMMY_ID, button.dataset.editId), { headers: { Accept: "application/json" } });
+            if(!response.ok) throw new Error(`Status ${response.status}`);
+            const data = await response.json();
+
+            for(const [name, val] of Object.entries(data)) {
+                const field = reportForm.elements[name];
+                if(field) field.value = val ?? "";
+            }
+
+            currentEditUrl = editUrl.replace(DUMMY_ID, button.dataset.editId);
+            modalTitle.textContent = "Edit Laporan";
+            submitButton.textContent = "✓ Simpan Perubahan";
+            reportModal.showPopover();
+        } catch (error) {
+            console.error("Gagal memuat data edit: ", error);
+        }
+    });
+
+    reportModal.addEventListener("toggle", (event) => {
+        if(event.newState === "closed") {
+            reportForm.reset();
+            currentEditUrl = null;
+            modalTitle.textContent = "Laporan Baru";
+            submitButton.textContent = "✓ Buat Laporan";
+        }
+    });
+
     async function addReport(event) {
         event.preventDefault();
         reportFormErrors.hidden = true;
         reportFormErrors.textContent = '';
 
-        const url = CREATE_REPORT_ENDPOINT;
+        const url = currentEditUrl || CREATE_REPORT_ENDPOINT;
 
         const submitButton = reportForm.querySelector('button[type="submit"]');
         submitButton.disabled = true;
