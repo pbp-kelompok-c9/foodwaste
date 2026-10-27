@@ -16,7 +16,9 @@ FollowUp = ReportReview.FollowUp
 
 
 def _reviews():
-    return ReportReview.objects.select_related("report", "report__reported_by", "reviewed_by")
+    return ReportReview.objects.select_related(
+        "report", "report__reported_by", "report__related_event", "reviewed_by"
+    )
 
 
 def _base_context(active):
@@ -71,7 +73,8 @@ def handling_list(request):
         queryset = queryset.filter(
             Q(report__food_name__icontains=search)
             | Q(report__location__icontains=search)
-            | Q(report__event__icontains=search)
+            | Q(report__related_event__name__icontains=search)
+            | Q(report__related_event__isnull=True, report__event__icontains=search)
         )
     params = {k: v for k, v in (("status", status), ("q", search)) if v}
     context = _base_context("handling")

@@ -32,7 +32,7 @@
         <div><dt>Jumlah Porsi</dt><dd>{{ report.food_portion }} porsi</dd></div>
         <div><dt>Waktu Kedaluwarsa</dt><dd>{{ report.best_before|date:"j/n/Y, H:i" }}</dd></div>
         <div><dt>Lokasi</dt><dd>{{ report.location }}</dd></div>
-        <div><dt>Event</dt><dd>{{ report.event }}</dd></div>
+        <div><dt>Event</dt><dd>{{ report.event_label }}</dd></div>
         <div><dt>Opsi Penjemputan</dt><dd>{{ report.get_pickup_option_display }}</dd></div>
         <div><dt>Pelapor</dt><dd>{{ report.reported_by.username }}</dd></div>
         <div class="mgmt-dl__wide"><dt>Deskripsi</dt><dd>{{ report.details|default:"–"|linebreaksbr }}</dd></div>

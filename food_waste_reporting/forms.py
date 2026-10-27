@@ -1,8 +1,9 @@
 from django.db.models.fields import *
 from django.forms.fields import *
-from django.forms.models import ModelForm
+from django.forms.models import ModelChoiceField, ModelForm
 from django.forms.widgets import *
 from food_waste_reporting.models import Report
+from event_management.models import Event
 
 class ReportForm(ModelForm):
     food_name = CharField(
@@ -46,14 +47,12 @@ class ReportForm(ModelForm):
         )
     )
 
-    event = CharField(
+    related_event = ModelChoiceField(
         label="Event",
-        widget=TextInput(
-            attrs={
-                "placeholder": "Burhan & Sofita Wedding",
-                "maxlength": 255,
-            }
-        )
+        queryset=Event.objects.order_by("event_date", "name", "pk"),
+        empty_label="Pilih event",
+        widget=Select(attrs={"class": "input"}),
+        help_text="Pilih acara yang sudah dibuat EO. Jika belum ada, minta EO membuat acara dahulu.",
     )
 
     pickup_option = ChoiceField(
@@ -80,7 +79,16 @@ class ReportForm(ModelForm):
             "food_portion",
             "best_before",
             "location",
-            "event",
+            "related_event",
             "pickup_option",
             "details",
         ]
+
+    def save(self, commit=True):
+        report = super().save(commit=False)
+        # Store a text snapshot too, so old consumers/data exports retain a name.
+        report.event = report.related_event.name
+        if commit:
+            report.save()
+            self.save_m2m()
+        return report
