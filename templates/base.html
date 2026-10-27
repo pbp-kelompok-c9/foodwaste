@@ -41,13 +41,7 @@
                 Kelola
             </a>
 
-            <!-- ===== Discovery & Dashboard ===== -->
-
-            <a href="{% url 'discovery_dashboard:discovery' %}"
-               class="navbar__link {% if request.path == '/discovery/' %}is-active{% endif %}"
-               {% if request.path == '/discovery/' %}aria-current="page"{% endif %}>
-                Discovery
-            </a>
+            <!-- ===== Dashboard ===== -->
 
             <a href="{% url 'discovery_dashboard:dashboard' %}"
                class="navbar__link {% if request.path == '/dashboard/' %}is-active{% endif %}"

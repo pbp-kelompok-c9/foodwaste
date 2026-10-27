@@ -1,14 +1,14 @@
 
 {% extends 'base.html' %}
 
-{% block title %}Discovery - FoodWastey{% endblock %}
+{% block title %}Beranda - FoodWastey{% endblock %}
 
 {% block extra_head %}
 <style>
     .discovery-container {
-        max-width: 1100px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 40px 20px 60px;
+        padding: 45px 25px 70px;
     }
 
     .discovery-title {
@@ -22,12 +22,13 @@
         margin-bottom: 30px;
     }
 
+    /* SEARCH */
+
     .discovery-search {
-        background-color: white;
+        background: white;
         padding: 25px;
-        border-radius: 14px;
-        margin-bottom: 35px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        border-radius: 15px;
+        margin-bottom: 40px;
     }
 
     .discovery-form {
@@ -44,70 +45,217 @@
         border: 1px solid #ddd;
         border-radius: 8px;
         font-family: inherit;
-        font-size: 14px;
     }
 
     .discovery-button {
-        background-color: #5E7534;
+        background: #607A37;
         color: white;
         padding: 12px 22px;
         border: none;
         border-radius: 8px;
         cursor: pointer;
-        font-family: inherit;
-    }
-
-    .discovery-button:hover {
-        background-color: #477A3B;
     }
 
     .discovery-reset {
-        color: #477A3B;
+        color: #607A37;
         text-decoration: none;
         font-weight: bold;
     }
 
     .discovery-section-title {
-        margin-bottom: 20px;
         color: #382A20;
+        margin-bottom: 22px;
     }
+
+    /* FOOD GRID */
 
     .discovery-list {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(min(100%, 290px), 1fr)
+        );
+        gap: 24px;
     }
 
-    .discovery-card {
-        background-color: white;
-        padding: 22px;
-        border-radius: 14px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    /* FOOD CARD */
+
+    .food-card {
+        background: #FFFCF7;
+        border: 2px solid #9CAF79;
+        border-radius: 17px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        min-width: 0;
+        transition: 0.2s;
     }
 
-    .discovery-card h3 {
-        color: #477A3B;
-        margin-bottom: 15px;
+    .food-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
 
-    .discovery-card p {
-        margin-bottom: 10px;
-        color: #555;
+    /* FOOD IMAGE */
+
+    .food-image {
+        width: 100%;
+        height: 205px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 2px solid #9CAF79;
+        background: #E8ECD9;
+    }
+
+    .food-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .food-no-image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #607A37;
+        gap: 10px;
+    }
+
+    .food-no-image span {
+        font-size: 48px;
+    }
+
+    /* NAME AND STATUS */
+
+    .food-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .food-name {
+        color: #302015;
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .food-status {
+        background: #9CAF79;
+        color: white;
+        padding: 7px 12px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    /* FOOD INFORMATION */
+
+    .food-info {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        color: #302015;
+    }
+
+    .food-info-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
         font-size: 14px;
+        line-height: 1.5;
     }
+
+    .food-info-row .icon {
+        width: 20px;
+        flex-shrink: 0;
+        text-align: center;
+        font-size: 17px;
+    }
+
+    .food-info-top {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    /* DETAILS BUTTON */
+
+    .food-more {
+        margin-top: auto;
+        padding-top: 8px;
+    }
+
+    .food-button {
+        display: block;
+        background: #607A37;
+        color: white;
+        text-align: center;
+        padding: 13px;
+        border-radius: 11px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .food-button::-webkit-details-marker {
+        display: none;
+    }
+
+    .food-button:hover {
+        background: #496129;
+    }
+
+    .food-details {
+        padding: 15px 5px 0;
+        font-size: 14px;
+        line-height: 1.7;
+        color: #382A20;
+        overflow-wrap: anywhere;
+    }
+
+    /* EMPTY STATE */
 
     .discovery-empty {
-        background-color: white;
-        padding: 40px;
-        border-radius: 14px;
+        grid-column: 1 / -1;
+        background: white;
+        padding: 45px;
+        border-radius: 15px;
         text-align: center;
         color: #666;
-        grid-column: 1 / -1;
     }
 
-    .discovery-empty h3 {
-        margin-bottom: 10px;
-        color: #382A20;
+    @media (max-width: 600px) {
+        .discovery-container {
+            padding: 25px 15px;
+        }
+
+        .discovery-title {
+            font-size: 26px;
+        }
+
+        .discovery-form {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .discovery-input {
+            flex: auto;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
     }
 </style>
 {% endblock %}
@@ -118,13 +266,15 @@
 <div class="discovery-container">
 
     <h1 class="discovery-title">
-        Discover Available Food
+        Temukan Makanan Tersedia
     </h1>
 
     <p class="discovery-description">
         Temukan makanan surplus dari berbagai acara
         dan bantu mengurangi food waste bersama.
     </p>
+
+    <!-- SEARCH -->
 
     <div class="discovery-search">
 
@@ -158,14 +308,15 @@
                 Cari Makanan
             </button>
 
-            <a href="{% url 'discovery_dashboard:discovery' %}"
-               class="discovery-reset">
+            <a href="/" class="discovery-reset">
                 Reset
             </a>
 
         </form>
 
     </div>
+
+    <!-- FOOD LIST -->
 
     <h2 class="discovery-section-title">
         Daftar Makanan
@@ -175,45 +326,139 @@
 
         {% for makanan in laporan %}
 
-        <div class="discovery-card">
+        <article class="food-card">
 
-            <h3>{{ makanan.food_name }}</h3>
+            <!-- IMAGE -->
 
-            <p>
-                <strong>Jumlah Porsi:</strong>
-                {{ makanan.food_portion }}
-            </p>
+            <div class="food-image">
 
-            <p>
-                <strong>Lokasi:</strong>
-                {{ makanan.location }}
-            </p>
+                {% if makanan.picture %}
 
-            <p>
-                <strong>Acara:</strong>
-                {{ makanan.event }}
-            </p>
+                <img
+                    src="{{ makanan.picture }}"
+                    alt="Foto {{ makanan.food_name }}"
+                    loading="lazy"
+                >
 
-            <p>
-                <strong>Best Before:</strong>
-                {{ makanan.best_before }}
-            </p>
+                {% else %}
 
-            <p>
-                <strong>Detail:</strong>
-                {{ makanan.details }}
-            </p>
+                <div class="food-no-image">
+                    <span>🍽️</span>
+                    <p>Belum ada foto</p>
+                </div>
 
-        </div>
+                {% endif %}
+
+            </div>
+
+            <!-- NAME AND STATUS -->
+
+            <div class="food-heading">
+
+                <h3 class="food-name">
+                    {{ makanan.food_name }}
+                </h3>
+
+                <span class="food-status">
+                    {% if makanan.review.verification_status %}
+                        {{ makanan.review.get_verification_status_display }}
+                    {% else %}
+                        Belum Diverifikasi
+                    {% endif %}
+                </span>
+
+            </div>
+
+            <!-- INFORMATION -->
+
+            <div class="food-info">
+
+                <div class="food-info-top">
+
+                    <div class="food-info-row">
+                        <span class="icon">🍴</span>
+                        <span>
+                            {{ makanan.food_portion }} porsi
+                        </span>
+                    </div>
+
+                    <div class="food-info-row">
+                        <span class="icon">◷</span>
+                        <span>
+                            {{ makanan.best_before|date:"d/m/Y" }}
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="food-info-row">
+                    <span class="icon">📍</span>
+                    <span>
+                        {{ makanan.location }}
+                    </span>
+                </div>
+
+                <div class="food-info-row">
+                    <span class="icon">▤</span>
+                    <span>
+                        {{ makanan.event|default:"Tidak ada acara" }}
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- DETAIL BUTTON -->
+
+            <details class="food-more">
+
+                <summary class="food-button">
+                    Lihat Detail
+                </summary>
+
+                <div class="food-details">
+
+                    <p>
+                        <strong>Nama:</strong>
+                        {{ makanan.food_name }}
+                    </p>
+
+                    <p>
+                        <strong>Jumlah Porsi:</strong>
+                        {{ makanan.food_portion }}
+                    </p>
+
+                    <p>
+                        <strong>Best Before:</strong>
+                        {{ makanan.best_before }}
+                    </p>
+
+                    <p>
+                        <strong>Opsi Penjemputan:</strong>
+                        {{ makanan.pickup_option|default:"-" }}
+                    </p>
+
+                    <p>
+                        <strong>Detail:</strong>
+                        {{ makanan.details|default:"Tidak ada detail" }}
+                    </p>
+
+                </div>
+
+            </details>
+
+        </article>
 
         {% empty %}
 
         <div class="discovery-empty">
+
             <h3>Belum Ada Makanan Ditemukan</h3>
+
             <p>
                 Belum ada makanan yang tersedia
                 atau sesuai dengan pencarianmu.
             </p>
+
         </div>
 
         {% endfor %}
