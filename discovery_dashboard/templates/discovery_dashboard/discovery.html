@@ -54,6 +54,7 @@
         border: none;
         border-radius: 8px;
         cursor: pointer;
+        font-family: inherit;
     }
 
     .discovery-reset {
@@ -76,6 +77,7 @@
             minmax(min(100%, 290px), 1fr)
         );
         gap: 24px;
+        align-items: start;
     }
 
     /* FOOD CARD */
@@ -89,12 +91,20 @@
         flex-direction: column;
         gap: 15px;
         min-width: 0;
-        transition: 0.2s;
+        transition: box-shadow 0.2s;
     }
 
     .food-card:hover {
-        transform: translateY(-4px);
         box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .food-card.is-taken {
+        background: #E2E2E2;
+        border-color: #AAAAAA;
+    }
+
+    .food-card.is-taken .food-image {
+        filter: grayscale(100%);
     }
 
     /* FOOD IMAGE */
@@ -105,7 +115,8 @@
         border-radius: 10px;
         overflow: hidden;
         border: 2px solid #9CAF79;
-        background: #E8ECD9;
+        background: #9CAF79;
+        box-sizing: border-box;
     }
 
     .food-image img {
@@ -122,15 +133,26 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        color: #607A37;
+        color: white;
         gap: 10px;
+        text-align: center;
     }
 
-    .food-no-image span {
-        font-size: 48px;
+    .upload-icon {
+        width: 65px;
+        height: 65px;
+        stroke: white;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
     }
 
-    /* NAME AND STATUS */
+    .food-no-image p {
+        margin: 0;
+    }
+
+    /* FOOD NAME AND STATUS */
 
     .food-heading {
         display: flex;
@@ -155,7 +177,10 @@
         border-radius: 10px;
         font-size: 12px;
         font-weight: bold;
-        text-transform: uppercase;
+    }
+
+    .food-card.is-taken .food-status {
+        background: #999999;
     }
 
     /* FOOD INFORMATION */
@@ -189,40 +214,263 @@
         gap: 12px;
     }
 
-    /* DETAILS BUTTON */
+    /* FOOD BUTTONS */
 
     .food-more {
         margin-top: auto;
         padding-top: 8px;
+        min-width: 0;
+    }
+
+    .food-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .food-button,
+    .pickup-button {
+        display: block;
+        width: 100%;
+        padding: 13px 8px;
+        border: none;
+        border-radius: 11px;
+        color: white;
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        font-family: inherit;
+        cursor: pointer;
+        box-sizing: border-box;
+        text-decoration: none;
     }
 
     .food-button {
-        display: block;
         background: #607A37;
-        color: white;
-        text-align: center;
-        padding: 13px;
-        border-radius: 11px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        list-style: none;
-    }
-
-    .food-button::-webkit-details-marker {
-        display: none;
     }
 
     .food-button:hover {
         background: #496129;
     }
 
+    .pickup-button {
+        background: #9CAF79;
+    }
+
+    .pickup-button:hover:not(:disabled) {
+        background: #607A37;
+    }
+
+    .pickup-button:disabled {
+        background: #AAAAAA;
+        cursor: not-allowed;
+    }
+
+    /* EXPANDABLE DETAIL */
+
     .food-details {
-        padding: 15px 5px 0;
+        margin-top: 22px;
+        padding-top: 20px;
+        border-top: 1px solid #E2E5D7;
+    }
+
+    .food-details[hidden] {
+        display: none;
+    }
+
+    .detail-image {
+        width: 100%;
+        height: 220px;
+        background: #9CAF79;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .detail-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .detail-no-image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        color: white;
+        text-align: center;
+    }
+
+    .detail-no-image .upload-icon {
+        width: 85px;
+        height: 85px;
+    }
+
+    .detail-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+
+    .detail-field {
+        margin-bottom: 17px;
+        min-width: 0;
+    }
+
+    .detail-label {
+        display: block;
+        font-weight: bold;
+        color: #302015;
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+
+    .detail-value {
+        background: #FFFCF7;
+        border: 1.5px solid #9CAF79;
+        border-radius: 10px;
+        padding: 12px 13px;
+        color: #777067;
         font-size: 14px;
-        line-height: 1.7;
-        color: #382A20;
+        line-height: 1.5;
         overflow-wrap: anywhere;
+    }
+
+    .detail-description {
+        min-height: 90px;
+        white-space: pre-wrap;
+    }
+
+    /* PICKUP POPUP */
+
+    .pickup-modal {
+        width: calc(100% - 30px);
+        max-width: 450px;
+        max-height: 85vh;
+        padding: 25px;
+        box-sizing: border-box;
+        border: 2px solid #9CAF79;
+        border-radius: 16px;
+        background: #FFFCF7;
+        color: #302015;
+        margin: auto;
+        overflow-y: auto;
+    }
+
+    .pickup-modal::backdrop {
+        background: rgba(0, 0, 0, 0.65);
+    }
+
+    .pickup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .pickup-header h2 {
+        font-size: 23px;
+        margin: 0;
+        color: #302015;
+    }
+
+    .pickup-close {
+        background: none;
+        border: none;
+        font-size: 32px;
+        color: #302015;
+        cursor: pointer;
+    }
+
+    .pickup-description {
+        font-size: 14px;
+        color: #716960;
+        margin-bottom: 20px;
+    }
+
+    /* TIMER */
+
+    .pickup-timer-box {
+        background: #E8ECD9;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .pickup-timer-box p {
+        margin: 0;
+        color: #607A37;
+    }
+
+    .pickup-timer-box h1 {
+        font-size: 44px;
+        color: #607A37;
+        margin: 10px 0;
+    }
+
+    .pickup-timer-box small {
+        color: #716960;
+    }
+
+    /* UPLOAD PHOTO */
+
+    .pickup-label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .pickup-upload-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        background: #9CAF79;
+        border-radius: 12px;
+        padding: 35px 20px;
+        color: white;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .pickup-upload-box input {
+        display: none;
+    }
+
+    #pickup-file-name {
+        font-size: 13px;
+        color: #607A37;
+        overflow-wrap: anywhere;
+    }
+
+    #pickup-error {
+        color: #B42318;
+        font-size: 13px;
+    }
+
+    .pickup-submit {
+        width: 100%;
+        background: #607A37;
+        color: white;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        font-family: inherit;
+    }
+
+    .pickup-submit:hover {
+        background: #496129;
     }
 
     /* EMPTY STATE */
@@ -235,6 +483,8 @@
         text-align: center;
         color: #666;
     }
+
+    /* RESPONSIVE */
 
     @media (max-width: 600px) {
         .discovery-container {
@@ -277,7 +527,6 @@
     <!-- SEARCH -->
 
     <div class="discovery-search">
-
         <form method="GET" class="discovery-form">
 
             <input
@@ -313,7 +562,6 @@
             </a>
 
         </form>
-
     </div>
 
     <!-- FOOD LIST -->
@@ -326,9 +574,9 @@
 
         {% for makanan in laporan %}
 
-        <article class="food-card">
+        <article class="food-card {% if makanan.display_status == 'SUDAH DIAMBIL' %}is-taken{% endif %}">
 
-            <!-- IMAGE -->
+            <!-- FOOD IMAGE -->
 
             <div class="food-image">
 
@@ -343,8 +591,15 @@
                 {% else %}
 
                 <div class="food-no-image">
-                    <span>🍽️</span>
+
+                    <svg class="upload-icon" viewBox="0 0 24 24">
+                        <path d="M12 16V3"></path>
+                        <path d="M7 8l5-5 5 5"></path>
+                        <path d="M4 16v4h16v-4"></path>
+                    </svg>
+
                     <p>Belum ada foto</p>
+
                 </div>
 
                 {% endif %}
@@ -360,16 +615,12 @@
                 </h3>
 
                 <span class="food-status">
-                    {% if makanan.review.verification_status %}
-                        {{ makanan.review.get_verification_status_display }}
-                    {% else %}
-                        Belum Diverifikasi
-                    {% endif %}
+                    {{ makanan.display_status }}
                 </span>
 
             </div>
 
-            <!-- INFORMATION -->
+            <!-- FOOD INFORMATION -->
 
             <div class="food-info">
 
@@ -393,9 +644,7 @@
 
                 <div class="food-info-row">
                     <span class="icon">📍</span>
-                    <span>
-                        {{ makanan.location }}
-                    </span>
+                    <span>{{ makanan.location }}</span>
                 </div>
 
                 <div class="food-info-row">
@@ -407,58 +656,204 @@
 
             </div>
 
-            <!-- DETAIL BUTTON -->
+            <!-- FOOD BUTTONS -->
 
-            <details class="food-more">
+            <div class="food-more">
 
-                <summary class="food-button">
-                    Lihat Detail
-                </summary>
+                <div class="food-actions">
 
-                <div class="food-details">
+                    <button
+                        type="button"
+                        class="food-button"
+                        data-detail-id="detail-{{ makanan.pk }}"
+                        aria-expanded="false"
+                    >
+                        Lihat Detail
+                    </button>
 
-                    <p>
-                        <strong>Nama:</strong>
-                        {{ makanan.food_name }}
-                    </p>
+                    {% if makanan.display_status == "AVAILABLE" %}
 
-                    <p>
-                        <strong>Jumlah Porsi:</strong>
-                        {{ makanan.food_portion }}
-                    </p>
+                        {% if user.is_authenticated %}
 
-                    <p>
-                        <strong>Best Before:</strong>
-                        {{ makanan.best_before }}
-                    </p>
+                        <button
+                            type="button"
+                            class="pickup-button"
+                            data-start-url="{% url 'discovery_dashboard:start_pickup' makanan.pk %}"
+                        >
+                            Ambil
+                        </button>
 
-                    <p>
-                        <strong>Opsi Penjemputan:</strong>
-                        {{ makanan.pickup_option|default:"-" }}
-                    </p>
+                        {% else %}
 
-                    <p>
-                        <strong>Detail:</strong>
-                        {{ makanan.details|default:"Tidak ada detail" }}
-                    </p>
+                        <a
+                            href="{% url 'authentication:login' %}"
+                            class="pickup-button"
+                        >
+                            Masuk untuk Ambil
+                        </a>
+
+                        {% endif %}
+
+                    {% elif makanan.display_status == "DIPESAN" and makanan.own_pending_claim %}
+
+                    <button
+                        type="button"
+                        class="pickup-button"
+                        data-start-url="{% url 'discovery_dashboard:start_pickup' makanan.pk %}"
+                    >
+                        Lanjutkan
+                    </button>
+
+                    {% else %}
+
+                    <button
+                        type="button"
+                        class="pickup-button"
+                        disabled
+                    >
+                        Tidak Tersedia
+                    </button>
+
+                    {% endif %}
 
                 </div>
 
-            </details>
+                <!-- EXPANDABLE DETAIL -->
+
+                <div
+                    class="food-details"
+                    id="detail-{{ makanan.pk }}"
+                    hidden
+                >
+
+                    <!-- DETAIL IMAGE -->
+
+                    <div class="detail-image">
+
+                        {% if makanan.picture %}
+
+                        <img
+                            src="{{ makanan.picture }}"
+                            alt="Foto {{ makanan.food_name }}"
+                        >
+
+                        {% else %}
+
+                        <div class="detail-no-image">
+
+                            <svg class="upload-icon" viewBox="0 0 24 24">
+                                <path d="M12 16V3"></path>
+                                <path d="M7 8l5-5 5 5"></path>
+                                <path d="M4 16v4h16v-4"></path>
+                            </svg>
+
+                            <p>Belum ada foto makanan</p>
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                    <!-- FOOD NAME AND PORTION -->
+
+                    <div class="detail-row">
+
+                        <div class="detail-field">
+                            <span class="detail-label">
+                                Jenis Makanan
+                            </span>
+
+                            <div class="detail-value">
+                                {{ makanan.food_name }}
+                            </div>
+                        </div>
+
+                        <div class="detail-field">
+                            <span class="detail-label">
+                                Porsi
+                            </span>
+
+                            <div class="detail-value">
+                                {{ makanan.food_portion }}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- BEST BEFORE -->
+
+                    <div class="detail-field">
+                        <span class="detail-label">
+                            Waktu Kedaluwarsa
+                        </span>
+
+                        <div class="detail-value">
+                            {{ makanan.best_before|date:"H:i, d/m/Y" }}
+                        </div>
+                    </div>
+
+                    <!-- LOCATION -->
+
+                    <div class="detail-field">
+                        <span class="detail-label">
+                            Lokasi
+                        </span>
+
+                        <div class="detail-value">
+                            {{ makanan.location }}
+                        </div>
+                    </div>
+
+                    <!-- EVENT -->
+
+                    <div class="detail-field">
+                        <span class="detail-label">
+                            Event
+                        </span>
+
+                        <div class="detail-value">
+                            {{ makanan.event|default:"Tidak ada acara" }}
+                        </div>
+                    </div>
+
+                    <!-- PICKUP OPTION -->
+
+                    <div class="detail-field">
+                        <span class="detail-label">
+                            Opsi Penjemputan
+                        </span>
+
+                        <div class="detail-value">
+                            {{ makanan.pickup_option|default:"-" }}
+                        </div>
+                    </div>
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="detail-field">
+                        <span class="detail-label">
+                            Deskripsi Tambahan
+                        </span>
+
+                        <div class="detail-value detail-description">{{ makanan.details|default:"Tidak ada deskripsi" }}</div>
+                    </div>
+
+                </div>
+
+            </div>
 
         </article>
 
         {% empty %}
 
         <div class="discovery-empty">
-
             <h3>Belum Ada Makanan Ditemukan</h3>
 
             <p>
                 Belum ada makanan yang tersedia
                 atau sesuai dengan pencarianmu.
             </p>
-
         </div>
 
         {% endfor %}
@@ -467,4 +862,128 @@
 
 </div>
 
+
+<!-- POP-UP PENGAMBILAN MAKANAN -->
+
+<dialog id="pickup-modal" class="pickup-modal">
+
+    <div class="pickup-header">
+
+        <h2>Konfirmasi Pengambilan</h2>
+
+        <button
+            type="button"
+            id="pickup-close"
+            class="pickup-close"
+            aria-label="Tutup"
+        >
+            &times;
+        </button>
+
+    </div>
+
+    <p class="pickup-description">
+        Silakan unggah foto bukti pengambilan makanan
+        sebelum waktu habis.
+    </p>
+
+    <!-- TIMER -->
+
+    <div class="pickup-timer-box">
+        <p>Sisa Waktu</p>
+
+        <h1 id="pickup-timer">05:00</h1>
+
+        <small>
+            Jika waktu habis, reservasi akan dibatalkan.
+        </small>
+    </div>
+
+    <!-- FORM UPLOAD -->
+
+    <form
+        id="pickup-form"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+        {% csrf_token %}
+
+        <label class="pickup-label" for="pickup-photo">
+            Foto Bukti Pengambilan
+        </label>
+
+        <label for="pickup-photo" class="pickup-upload-box">
+
+            <svg viewBox="0 0 24 24" width="60" height="60"
+                 fill="none" stroke="white" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 16V3"></path>
+                <path d="M7 8l5-5 5 5"></path>
+                <path d="M4 16v4h16v-4"></path>
+            </svg>
+
+            <span>Klik untuk upload foto</span>
+
+            <input
+                type="file"
+                id="pickup-photo"
+                name="proof_photo"
+                accept="image/*"
+                required
+            >
+
+        </label>
+
+        <p id="pickup-file-name"></p>
+        <p id="pickup-error" role="alert"></p>
+
+        <button type="submit" class="pickup-submit">
+            Kirim Foto
+        </button>
+
+    </form>
+
+</dialog>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+    // Lihat Detail: memperpanjang card ke bawah
+    document.querySelectorAll(".food-button[data-detail-id]")
+        .forEach(function(tombol) {
+
+            tombol.addEventListener("click", function() {
+
+                const detail = document.getElementById(
+                    tombol.dataset.detailId
+                );
+
+                detail.hidden = !detail.hidden;
+
+                if (detail.hidden) {
+                    tombol.textContent = "Lihat Detail";
+                    tombol.setAttribute("aria-expanded", "false");
+                } else {
+                    tombol.textContent = "Tutup Detail";
+                    tombol.setAttribute("aria-expanded", "true");
+                }
+
+            });
+
+        });
+
+    // Menampilkan nama file foto yang dipilih
+    const pickupPhoto = document.getElementById("pickup-photo");
+    const pickupFileName = document.getElementById("pickup-file-name");
+
+    pickupPhoto.addEventListener("change", function() {
+        if (pickupPhoto.files.length > 0) {
+            pickupFileName.textContent = pickupPhoto.files[0].name;
+        } else {
+            pickupFileName.textContent = "";
+        }
+    });
+</script>
 {% endblock %}

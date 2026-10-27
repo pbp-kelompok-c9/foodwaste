@@ -13,3 +13,4 @@ staticfiles/
 media/
 .DS_Store
 .idea/
+/media/
