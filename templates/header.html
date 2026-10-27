@@ -1,8 +1,14 @@
-<!-- ===== Navbar ===== -->
+
 <header class="navbar">
     <a href="/" class="navbar__brand">FoodWastey</a>
 
     <nav class="navbar__menu" aria-label="Navigasi utama">
+
+        <a href="{% url 'discovery_dashboard:discovery' %}"
+           class="navbar__link {% if request.path == '/' or request.path == '/discovery/' %}is-active{% endif %}"
+           {% if request.path == '/' or request.path == '/discovery/' %}aria-current="page"{% endif %}>
+            Beranda
+        </a>
 
         <a href="/reporting/"
            class="navbar__link {% if '/reporting' in request.path %}is-active{% endif %}"
@@ -24,21 +30,11 @@
         </a>
         {% endif %}
 
-        <!-- ===== Discovery & Dashboard ===== -->
-
-        <a href="{% url 'discovery_dashboard:discovery' %}"
-           class="navbar__link {% if request.path == '/' %}is-active{% endif %}"
-           {% if request.path == '/' %}aria-current="page"{% endif %}>
-            Discovery
-        </a>
-
         <a href="{% url 'discovery_dashboard:dashboard' %}"
            class="navbar__link {% if request.path == '/dashboard/' %}is-active{% endif %}"
            {% if request.path == '/dashboard/' %}aria-current="page"{% endif %}>
             Dashboard
         </a>
-
-        <!-- ===== Notifikasi ===== -->
 
         <a href="#" class="navbar__icon-btn" aria-label="Notifikasi">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -46,9 +42,8 @@
             </svg>
         </a>
 
-        <!-- ===== User Authentication ===== -->
-
         {% if user.is_authenticated %}
+
         <details class="user">
             <summary>
                 <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -64,8 +59,14 @@
             </summary>
 
             <div class="user__dropdown">
-                <a href="{% url 'authentication:profile' %}">Profil saya</a>
-                <a href="{% url 'authentication:user_list' %}">Direktori pengguna</a>
+                <a href="{% url 'authentication:profile' %}">
+                    Profil saya
+                </a>
+
+                <a href="{% url 'authentication:user_list' %}">
+                    Direktori pengguna
+                </a>
+
                 <form method="post" action="{% url 'authentication:logout' %}">
                     {% csrf_token %}
                     <button type="submit">Keluar</button>

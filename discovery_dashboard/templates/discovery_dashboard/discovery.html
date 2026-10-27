@@ -1,14 +1,14 @@
 
 {% extends 'base.html' %}
 
-{% block title %}Discovery - FoodWastey{% endblock %}
+{% block title %}Beranda - FoodWastey{% endblock %}
 
 {% block extra_head %}
 <style>
     .discovery-container {
-        max-width: 1100px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 40px 20px 60px;
+        padding: 45px 25px 70px;
     }
 
     .discovery-title {
@@ -23,11 +23,10 @@
     }
 
     .discovery-search {
-        background-color: white;
+        background: white;
         padding: 25px;
-        border-radius: 14px;
-        margin-bottom: 35px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        border-radius: 15px;
+        margin-bottom: 40px;
     }
 
     .discovery-form {
@@ -44,11 +43,11 @@
         border: 1px solid #ddd;
         border-radius: 8px;
         font-family: inherit;
-        font-size: 14px;
+        box-sizing: border-box;
     }
 
     .discovery-button {
-        background-color: #5E7534;
+        background: #607A37;
         color: white;
         padding: 12px 22px;
         border: none;
@@ -57,57 +56,417 @@
         font-family: inherit;
     }
 
-    .discovery-button:hover {
-        background-color: #477A3B;
-    }
-
     .discovery-reset {
-        color: #477A3B;
+        color: #607A37;
         text-decoration: none;
         font-weight: bold;
     }
 
     .discovery-section-title {
-        margin-bottom: 20px;
         color: #382A20;
+        margin-bottom: 22px;
     }
 
     .discovery-list {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+        gap: 24px;
+        align-items: start;
     }
 
-    .discovery-card {
-        background-color: white;
-        padding: 22px;
-        border-radius: 14px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    .food-card {
+        background: #FFFCF7;
+        border: 2px solid #9CAF79;
+        border-radius: 17px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        min-width: 0;
+        transition: box-shadow 0.2s;
     }
 
-    .discovery-card h3 {
-        color: #477A3B;
+    .food-card:hover {
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .food-card.is-taken {
+        background: #E2E2E2;
+        border-color: #AAAAAA;
+    }
+
+    .food-card.is-taken .food-image {
+        filter: grayscale(100%);
+    }
+
+    .food-card.is-taken .food-status {
+        background: #888888;
+    }
+
+    .food-card.is-expired .food-status {
+        background: #9B8272;
+    }
+
+    .food-image {
+        width: 100%;
+        height: 205px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 2px solid #9CAF79;
+        background: #9CAF79;
+        box-sizing: border-box;
+    }
+
+    .food-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .food-no-image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .upload-icon {
+        width: 65px;
+        height: 65px;
+        stroke: white;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .food-no-image p {
+        margin: 0;
+    }
+
+    .food-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .food-name {
+        color: #302015;
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .food-status {
+        background: #9CAF79;
+        color: white;
+        padding: 7px 12px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .food-info {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        color: #302015;
+    }
+
+    .food-info-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .food-info-row .icon {
+        width: 20px;
+        flex-shrink: 0;
+        text-align: center;
+        font-size: 17px;
+    }
+
+    .food-info-top {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .food-more {
+        margin-top: auto;
+        padding-top: 8px;
+        min-width: 0;
+    }
+
+    .food-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .food-button,
+    .pickup-button {
+        display: block;
+        width: 100%;
+        padding: 13px 8px;
+        border: none;
+        border-radius: 11px;
+        color: white;
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        font-family: inherit;
+        cursor: pointer;
+        box-sizing: border-box;
+        text-decoration: none;
+    }
+
+    .food-button {
+        background: #607A37;
+    }
+
+    .food-button:hover {
+        background: #496129;
+    }
+
+    .pickup-button {
+        background: #9CAF79;
+    }
+
+    .pickup-button:hover:not(:disabled) {
+        background: #607A37;
+    }
+
+    .pickup-button:disabled {
+        background: #AAAAAA;
+        cursor: not-allowed;
+    }
+
+    .food-details {
+        margin-top: 22px;
+        padding-top: 20px;
+        border-top: 1px solid #E2E5D7;
+    }
+
+    .food-details[hidden] {
+        display: none;
+    }
+
+    .detail-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+
+    .detail-field {
+        margin-bottom: 17px;
+        min-width: 0;
+    }
+
+    .detail-label {
+        display: block;
+        font-weight: bold;
+        color: #302015;
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+
+    .detail-value {
+        background: #FFFCF7;
+        border: 1.5px solid #9CAF79;
+        border-radius: 10px;
+        padding: 12px 13px;
+        color: #777067;
+        font-size: 14px;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+    }
+
+    .detail-description {
+        min-height: 90px;
+        white-space: pre-wrap;
+    }
+
+    .pickup-modal {
+        width: calc(100% - 30px);
+        max-width: 450px;
+        max-height: 85vh;
+        max-height: 85dvh;
+        padding: 25px;
+        box-sizing: border-box;
+        border: 2px solid #9CAF79;
+        border-radius: 16px;
+        background: #FFFCF7;
+        color: #302015;
+        margin: auto;
+        overflow-y: auto;
+    }
+
+    .pickup-modal::backdrop {
+        background: rgba(0, 0, 0, 0.65);
+    }
+
+    .pickup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
         margin-bottom: 15px;
     }
 
-    .discovery-card p {
-        margin-bottom: 10px;
-        color: #555;
+    .pickup-header h2 {
+        font-size: 23px;
+        margin: 0;
+        color: #302015;
+    }
+
+    .pickup-close {
+        background: none;
+        border: none;
+        font-size: 32px;
+        color: #302015;
+        cursor: pointer;
+    }
+
+    .pickup-description {
         font-size: 14px;
+        color: #716960;
+        margin-bottom: 20px;
+    }
+
+    .pickup-timer-box {
+        background: #E8ECD9;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .pickup-timer-box p {
+        margin: 0;
+        color: #607A37;
+    }
+
+    .pickup-timer-box h1 {
+        font-size: 44px;
+        color: #607A37;
+        margin: 10px 0;
+    }
+
+    .pickup-timer-box small {
+        color: #716960;
+    }
+
+    .pickup-timer-box.is-ending {
+        background: #FCE8E6;
+    }
+
+    .pickup-timer-box.is-ending h1 {
+        color: #B42318;
+    }
+
+    .pickup-label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .pickup-upload-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        background: #9CAF79;
+        border-radius: 12px;
+        padding: 35px 20px;
+        color: white;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .pickup-upload-box input {
+        display: none;
+    }
+
+    #pickup-file-name {
+        font-size: 13px;
+        color: #607A37;
+        overflow-wrap: anywhere;
+    }
+
+    #pickup-error {
+        color: #B42318;
+        font-size: 13px;
+        overflow-wrap: anywhere;
+    }
+
+    .pickup-submit {
+        width: 100%;
+        background: #607A37;
+        color: white;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        font-family: inherit;
+    }
+
+    .pickup-submit:hover {
+        background: #496129;
+    }
+
+    .pickup-submit:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
     }
 
     .discovery-empty {
-        background-color: white;
-        padding: 40px;
-        border-radius: 14px;
+        grid-column: 1 / -1;
+        background: white;
+        padding: 45px;
+        border-radius: 15px;
         text-align: center;
         color: #666;
-        grid-column: 1 / -1;
     }
 
-    .discovery-empty h3 {
-        margin-bottom: 10px;
-        color: #382A20;
+    @media (max-width: 600px) {
+        .discovery-container {
+            padding: 25px 15px;
+        }
+
+        .discovery-title {
+            font-size: 26px;
+        }
+
+        .discovery-form {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .discovery-input {
+            flex: auto;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .pickup-modal {
+            padding: 18px;
+        }
     }
 </style>
 {% endblock %}
@@ -118,7 +477,7 @@
 <div class="discovery-container">
 
     <h1 class="discovery-title">
-        Discover Available Food
+        Temukan Makanan Tersedia
     </h1>
 
     <p class="discovery-description">
@@ -127,7 +486,6 @@
     </p>
 
     <div class="discovery-search">
-
         <form method="GET" class="discovery-form">
 
             <input
@@ -158,13 +516,11 @@
                 Cari Makanan
             </button>
 
-            <a href="{% url 'discovery_dashboard:discovery' %}"
-               class="discovery-reset">
+            <a href="/" class="discovery-reset">
                 Reset
             </a>
 
         </form>
-
     </div>
 
     <h2 class="discovery-section-title">
@@ -175,41 +531,229 @@
 
         {% for makanan in laporan %}
 
-        <div class="discovery-card">
+        <article
+            class="food-card {% if makanan.display_status == 'NOT AVAILABLE' %}is-taken{% elif makanan.display_status == 'EXPIRED' %}is-expired{% endif %}"
+        >
 
-            <h3>{{ makanan.food_name }}</h3>
+            <div class="food-image">
 
-            <p>
-                <strong>Jumlah Porsi:</strong>
-                {{ makanan.food_portion }}
-            </p>
+                {% if makanan.picture %}
 
-            <p>
-                <strong>Lokasi:</strong>
-                {{ makanan.location }}
-            </p>
+                <img
+                    src="{{ makanan.picture }}"
+                    alt="Foto {{ makanan.food_name }}"
+                    loading="lazy"
+                >
 
-            <p>
-                <strong>Acara:</strong>
-                {{ makanan.event_label }}
-            </p>
+                {% else %}
 
-            <p>
-                <strong>Best Before:</strong>
-                {{ makanan.best_before }}
-            </p>
+                <div class="food-no-image">
+                    <svg class="upload-icon" viewBox="0 0 24 24">
+                        <path d="M12 16V3"></path>
+                        <path d="M7 8l5-5 5 5"></path>
+                        <path d="M4 16v4h16v-4"></path>
+                    </svg>
 
-            <p>
-                <strong>Detail:</strong>
-                {{ makanan.details }}
-            </p>
+                    <p>Belum ada foto</p>
+                </div>
 
-        </div>
+                {% endif %}
+
+            </div>
+
+            <div class="food-heading">
+
+                <h3 class="food-name">
+                    {{ makanan.food_name }}
+                </h3>
+
+                <span class="food-status">
+                    {{ makanan.display_status }}
+                </span>
+
+            </div>
+
+            <div class="food-info">
+
+                <div class="food-info-top">
+
+                    <div class="food-info-row">
+                        <span class="icon">🍴</span>
+                        <span>{{ makanan.food_portion }} porsi</span>
+                    </div>
+
+                    <div class="food-info-row">
+                        <span class="icon">◷</span>
+                        <span>
+                            {{ makanan.best_before|date:"d/m/Y" }}
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="food-info-row">
+                    <span class="icon">📍</span>
+                    <span>{{ makanan.location }}</span>
+                </div>
+
+                <div class="food-info-row">
+                    <span class="icon">▤</span>
+                    <span>
+                        {{ makanan.event_label|default:"Tidak ada acara" }}
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="food-more">
+
+                <div class="food-actions">
+
+                    <button
+                        type="button"
+                        class="food-button"
+                        data-detail-id="detail-{{ makanan.pk }}"
+                        aria-expanded="false"
+                    >
+                        Lihat Detail
+                    </button>
+
+                    {% if makanan.display_status == "AVAILABLE" %}
+
+                        {% if user.is_authenticated %}
+
+                        <button
+                            type="button"
+                            class="pickup-button"
+                            data-start-url="{% url 'discovery_dashboard:start_pickup' makanan.pk %}"
+                        >
+                            Ambil
+                        </button>
+
+                        {% else %}
+
+                        <a
+                            href="{% url 'authentication:login' %}"
+                            class="pickup-button"
+                        >
+                            Masuk untuk Ambil
+                        </a>
+
+                        {% endif %}
+
+                    {% elif makanan.display_status == "DIPESAN" and makanan.own_pending_claim %}
+
+                    <button
+                        type="button"
+                        class="pickup-button"
+                        data-start-url="{% url 'discovery_dashboard:start_pickup' makanan.pk %}"
+                    >
+                        Lanjutkan
+                    </button>
+
+                    {% else %}
+
+                    <button
+                        type="button"
+                        class="pickup-button"
+                        disabled
+                    >
+                        Tidak Tersedia
+                    </button>
+
+                    {% endif %}
+
+                </div>
+
+                <div
+                    class="food-details"
+                    id="detail-{{ makanan.pk }}"
+                    hidden
+                >
+
+                    <div class="detail-row">
+
+                        <div class="detail-field">
+                            <span class="detail-label">
+                                Jenis Makanan
+                            </span>
+
+                            <div class="detail-value">
+                                {{ makanan.food_name }}
+                            </div>
+                        </div>
+
+                        <div class="detail-field">
+                            <span class="detail-label">
+                                Porsi
+                            </span>
+
+                            <div class="detail-value">
+                                {{ makanan.food_portion }}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="detail-field">
+                        <span class="detail-label">
+                            Waktu Kedaluwarsa
+                        </span>
+
+                        <div class="detail-value">
+                            {{ makanan.best_before|date:"H:i, d/m/Y" }}
+                        </div>
+                    </div>
+
+                    <div class="detail-field">
+                        <span class="detail-label">
+                            Lokasi
+                        </span>
+
+                        <div class="detail-value">
+                            {{ makanan.location }}
+                        </div>
+                    </div>
+
+                    <div class="detail-field">
+                        <span class="detail-label">
+                            Event
+                        </span>
+
+                        <div class="detail-value">
+                            {{ makanan.event_label|default:"Tidak ada acara" }}
+                        </div>
+                    </div>
+
+                    <div class="detail-field">
+                        <span class="detail-label">
+                            Opsi Penjemputan
+                        </span>
+
+                        <div class="detail-value">
+                            {{ makanan.get_pickup_option_display }}
+                        </div>
+                    </div>
+
+                    <div class="detail-field">
+                        <span class="detail-label">
+                            Deskripsi Tambahan
+                        </span>
+
+                        <div class="detail-value detail-description">{{ makanan.details|default:"Tidak ada deskripsi" }}</div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
 
         {% empty %}
 
         <div class="discovery-empty">
             <h3>Belum Ada Makanan Ditemukan</h3>
+
             <p>
                 Belum ada makanan yang tersedia
                 atau sesuai dengan pencarianmu.
@@ -222,4 +766,383 @@
 
 </div>
 
+
+<dialog id="pickup-modal" class="pickup-modal">
+
+    <div class="pickup-header">
+
+        <h2>Konfirmasi Pengambilan</h2>
+
+        <button
+            type="button"
+            id="pickup-close"
+            class="pickup-close"
+            aria-label="Tutup"
+        >
+            &times;
+        </button>
+
+    </div>
+
+    <p class="pickup-description">
+        Silakan unggah foto bukti pengambilan makanan
+        sebelum waktu habis.
+    </p>
+
+    <div class="pickup-timer-box" id="pickup-timer-box">
+
+        <p>Sisa Waktu</p>
+
+        <h1 id="pickup-timer" aria-live="off">
+            05:00
+        </h1>
+
+        <small>
+            Jika waktu habis, reservasi akan dibatalkan.
+        </small>
+
+    </div>
+
+    <form
+        id="pickup-form"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+        {% csrf_token %}
+
+        <label class="pickup-label" for="pickup-photo">
+            Foto Bukti Pengambilan
+        </label>
+
+        <label for="pickup-photo" class="pickup-upload-box">
+
+            <svg
+                viewBox="0 0 24 24"
+                width="60"
+                height="60"
+                fill="none"
+                stroke="white"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M12 16V3"></path>
+                <path d="M7 8l5-5 5 5"></path>
+                <path d="M4 16v4h16v-4"></path>
+            </svg>
+
+            <span>Klik untuk upload foto</span>
+
+            <input
+                type="file"
+                id="pickup-photo"
+                name="proof_photo"
+                accept="image/*"
+                required
+            >
+
+        </label>
+
+        <p id="pickup-file-name"></p>
+
+        <p id="pickup-error" role="alert"></p>
+
+        <button type="submit" class="pickup-submit">
+            Kirim Foto
+        </button>
+
+    </form>
+
+</dialog>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+    document.querySelectorAll(
+        ".food-button[data-detail-id]"
+    ).forEach(function(tombol) {
+
+        tombol.addEventListener("click", function() {
+
+            const detail = document.getElementById(
+                tombol.dataset.detailId
+            );
+
+            detail.hidden = !detail.hidden;
+
+            if (detail.hidden) {
+                tombol.textContent = "Lihat Detail";
+                tombol.setAttribute("aria-expanded", "false");
+            } else {
+                tombol.textContent = "Tutup Detail";
+                tombol.setAttribute("aria-expanded", "true");
+            }
+        });
+    });
+
+
+    const pickupModal = document.getElementById("pickup-modal");
+    const pickupForm = document.getElementById("pickup-form");
+    const pickupTimer = document.getElementById("pickup-timer");
+    const pickupTimerBox = document.getElementById("pickup-timer-box");
+    const pickupPhoto = document.getElementById("pickup-photo");
+    const pickupFileName = document.getElementById("pickup-file-name");
+    const pickupError = document.getElementById("pickup-error");
+    const pickupClose = document.getElementById("pickup-close");
+
+    const csrfToken = pickupForm.querySelector(
+        "[name=csrfmiddlewaretoken]"
+    ).value;
+
+    let timerInterval = null;
+    let batasWaktu = null;
+    let sedangMengirim = false;
+
+
+    pickupPhoto.addEventListener("change", function() {
+
+        if (pickupPhoto.files.length > 0) {
+            pickupFileName.textContent = pickupPhoto.files[0].name;
+        } else {
+            pickupFileName.textContent = "";
+        }
+    });
+
+
+    function stopTimer() {
+        if (timerInterval !== null) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+    }
+
+
+    function updateTimer() {
+
+        if (batasWaktu === null) {
+            return;
+        }
+
+        const sisa = Math.max(0, batasWaktu - Date.now());
+        const totalDetik = Math.ceil(sisa / 1000);
+
+        const menit = Math.floor(totalDetik / 60);
+        const detik = totalDetik % 60;
+
+        pickupTimer.textContent =
+            String(menit).padStart(2, "0") + ":" +
+            String(detik).padStart(2, "0");
+
+        if (sisa <= 60000) {
+            pickupTimerBox.classList.add("is-ending");
+        } else {
+            pickupTimerBox.classList.remove("is-ending");
+        }
+
+        if (sisa <= 0) {
+
+            stopTimer();
+
+            if (pickupModal.open) {
+                pickupModal.close();
+            }
+
+            alert("Waktu pengambilan sudah habis.");
+            window.location.reload();
+        }
+    }
+
+
+    document.querySelectorAll(
+        ".pickup-button[data-start-url]"
+    ).forEach(function(tombol) {
+
+        tombol.addEventListener("click", async function() {
+
+            tombol.disabled = true;
+            pickupError.textContent = "";
+
+            try {
+
+                const response = await fetch(
+                    tombol.dataset.startUrl,
+                    {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": csrfToken
+                        },
+                        credentials: "same-origin"
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    alert(
+                        data.error ||
+                        "Gagal memulai pengambilan."
+                    );
+
+                    if (response.status === 409) {
+                        window.location.reload();
+                    }
+
+                    return;
+                }
+
+                pickupForm.action = data.upload_url;
+                pickupForm.reset();
+                pickupFileName.textContent = "";
+                pickupError.textContent = "";
+                sedangMengirim = false;
+
+                const sisaWaktu =
+                    Date.parse(data.expired_at) -
+                    Date.parse(data.server_now);
+
+                if (
+                    !Number.isFinite(sisaWaktu) ||
+                    sisaWaktu <= 0
+                ) {
+                    alert("Waktu pengambilan sudah habis.");
+                    window.location.reload();
+                    return;
+                }
+
+                batasWaktu = Date.now() + sisaWaktu;
+
+                stopTimer();
+                pickupTimerBox.classList.remove("is-ending");
+
+                pickupModal.showModal();
+                updateTimer();
+
+                timerInterval = setInterval(updateTimer, 1000);
+
+            } catch (error) {
+
+                alert(
+                    "Tidak dapat terhubung ke server. " +
+                    "Silakan coba kembali."
+                );
+
+            } finally {
+                tombol.disabled = false;
+            }
+        });
+    });
+
+
+    pickupClose.addEventListener("click", function() {
+        if (!sedangMengirim) {
+            pickupModal.close();
+        }
+    });
+
+
+    pickupModal.addEventListener("cancel", function(event) {
+        if (sedangMengirim) {
+            event.preventDefault();
+        }
+    });
+
+
+    pickupModal.addEventListener("close", function() {
+        stopTimer();
+    });
+
+
+    pickupForm.addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        if (sedangMengirim) {
+            return;
+        }
+
+        pickupError.textContent = "";
+
+        if (pickupPhoto.files.length === 0) {
+            pickupError.textContent =
+                "Silakan pilih foto terlebih dahulu.";
+            return;
+        }
+
+        if (pickupPhoto.files[0].size > 5 * 1024 * 1024) {
+            pickupError.textContent =
+                "Ukuran foto maksimal 5 MB.";
+            return;
+        }
+
+        const submitButton = pickupForm.querySelector(
+            "button[type=submit]"
+        );
+
+        sedangMengirim = true;
+        submitButton.disabled = true;
+        submitButton.textContent = "Mengirim...";
+
+        try {
+
+            const response = await fetch(
+                pickupForm.action,
+                {
+                    method: "POST",
+                    body: new FormData(pickupForm),
+                    headers: {
+                        "X-CSRFToken": csrfToken
+                    },
+                    credentials: "same-origin"
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+
+                pickupError.textContent =
+                    data.error || "Gagal mengirim foto.";
+
+                if (
+                    data.error &&
+                    data.error.toLowerCase().includes("waktu")
+                ) {
+
+                    stopTimer();
+                    pickupModal.close();
+
+                    alert(data.error);
+                    window.location.reload();
+                }
+
+                return;
+            }
+
+            stopTimer();
+            batasWaktu = null;
+            pickupModal.close();
+
+            alert(
+                "Foto berhasil dikirim dan " +
+                "menunggu verifikasi admin."
+            );
+
+            window.location.reload();
+
+        } catch (error) {
+
+            pickupError.textContent =
+                "Terjadi kesalahan koneksi. " +
+                "Silakan coba kembali.";
+
+        } finally {
+
+            sedangMengirim = false;
+            submitButton.disabled = false;
+            submitButton.textContent = "Kirim Foto";
+        }
+    });
+</script>
 {% endblock %}

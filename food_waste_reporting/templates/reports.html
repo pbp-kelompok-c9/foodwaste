@@ -132,7 +132,6 @@
     reportsGrid.addEventListener("click", async (event) => {
         const button = event.target.closest("[data-report-id]");
         if(!button) return;
-        
         try {
             const result = await fetch(viewUrl.replace(DUMMY_ID, button.dataset.reportId));
             if(!result.ok) throw new Error(result.status);
@@ -152,9 +151,9 @@
 
         try {
             displayPageSection({ showLoading: true });
-            
+
             const url = searchQuery ? `${BASE_REPORTS_ENDPOINT}?name=${encodeURIComponent(searchQuery)}` : BASE_REPORTS_ENDPOINT;
-            
+
             const response = await fetch(url, {
                 headers: { 'Accept': 'application/json' },
                 signal: reportsAbortController.signal,
@@ -266,7 +265,7 @@
     if (reportForm) {
         reportForm.addEventListener('submit', addReport);
     }
-    
+
     // Start application
     fetchReports(searchInput.value.trim());
 </script>
