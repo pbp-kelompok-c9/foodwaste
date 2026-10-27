@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Direktori Pengguna - FoodWastey{% endblock %}
+{% block extra_head %}{% include 'authentication/_tailwind.html' %}{% endblock %}
+
+{% block content %}
+<section class="tw-mx-auto tw-max-w-6xl tw-px-5 tw-py-10 md:tw-px-[58px] md:tw-py-14">
+  <header class="tw-mb-6">
+    <h1 class="tw-m-0 tw-font-brand tw-text-4xl tw-font-normal tw-text-accent">Direktori Pengguna</h1>
+    <p class="tw-m-0 tw-mt-2 tw-text-accent-deep">
+      Kenali sesama peserta dan penyelenggara acara.{% if not user.is_authenticated %} Masuk untuk melihat kontak mereka.{% endif %}
+    </p>
+  </header>
+
+  <form method="get" role="search" class="tw-mb-6 tw-grid tw-gap-3 tw-rounded-3xl tw-bg-white tw-p-4 tw-shadow-sm sm:tw-grid-cols-[1fr_220px_auto]">
+    <label class="tw-sr-only" for="q">Cari nama atau username</label>
+    <input id="q" name="q" type="search" value="{{ q }}" maxlength="100" placeholder="Cari nama atau username"
+           class="tw-w-full tw-rounded-xl tw-border tw-border-solid tw-border-accent-soft tw-bg-white tw-px-3 tw-py-2 tw-text-ink tw-[font:inherit] focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-accent">
+    <label class="tw-sr-only" for="kota">Kota</label>
+    <select id="kota" name="kota"
+            class="tw-w-full tw-rounded-xl tw-border tw-border-solid tw-border-accent-soft tw-bg-white tw-px-3 tw-py-2 tw-text-ink tw-[font:inherit] focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-accent">
+      <option value="">Semua kota</option>
+      {% for city in cities %}<option value="{{ city }}"{% if city == kota %} selected{% endif %}>{{ city }}</option>{% endfor %}
+    </select>
+    <div class="tw-flex tw-items-center tw-gap-3">
+      <button type="submit" class="tw-cursor-pointer tw-rounded-xl tw-border-0 tw-bg-accent tw-px-5 tw-py-2 tw-font-bold tw-text-accent-light tw-[font:inherit] hover:tw-bg-accent-deep">Terapkan</button>
+      {% if q or kota %}<a class="tw-text-sm tw-font-bold tw-text-accent hover:tw-underline" href="{% url 'authentication:user_list' %}">Reset</a>{% endif %}
+    </div>
+  </form>
+
+  <p class="tw-m-0 tw-mb-4 tw-text-sm tw-text-accent-deep">
+    {{ page_obj.paginator.count }} pengguna{% if q or kota %} cocok dengan filter{% endif %}
+  </p>
+
+  {% if page_obj.object_list %}
+  <ul class="tw-m-0 tw-grid tw-list-none tw-gap-5 tw-p-0 sm:tw-grid-cols-2 lg:tw-grid-cols-3">
+    {% for profile in page_obj %}
+    <li class="tw-flex tw-flex-col tw-rounded-3xl tw-bg-white tw-p-5 tw-shadow-sm">
+      <a class="tw-break-words tw-text-lg tw-font-bold hover:tw-underline" href="{% url 'authentication:user_detail' profile.user.username %}">{{ profile.name }}</a>
+      <p class="tw-m-0 tw-text-sm tw-text-accent">@{{ profile.user.username }}{% if profile.city %} · {{ profile.city }}{% endif %}</p>
+      {% if profile.bio %}<p class="tw-m-0 tw-mt-3 tw-line-clamp-2 tw-text-sm">{{ profile.bio }}</p>{% endif %}
+      <div class="tw-mt-auto tw-pt-4">
+        <div class="tw-border-0 tw-border-t tw-border-solid tw-border-accent-soft tw-pt-3">
+          {% include 'authentication/_contact.html' %}
+        </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="tw-m-0 tw-rounded-3xl tw-bg-white tw-p-8 tw-text-center tw-shadow-sm">Tidak ada pengguna yang cocok dengan filter ini.</p>
+  {% endif %}
+
+  {% if page_obj.has_other_pages %}
+  <nav class="tw-mt-8 tw-flex tw-items-center tw-justify-center tw-gap-5 tw-text-sm tw-font-bold" aria-label="Halaman direktori">
+    {% if page_obj.has_previous %}<a class="tw-text-accent hover:tw-underline" href="{% querystring page=page_obj.previous_page_number %}">← Sebelumnya</a>{% endif %}
+    <span>Halaman {{ page_obj.number }} dari {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}<a class="tw-text-accent hover:tw-underline" href="{% querystring page=page_obj.next_page_number %}">Berikutnya →</a>{% endif %}
+  </nav>
+  {% endif %}
+</section>
+{% endblock %}
