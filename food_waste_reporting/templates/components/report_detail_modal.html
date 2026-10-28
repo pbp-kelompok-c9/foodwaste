@@ -16,8 +16,8 @@
                 popovertargetaction="hide"
                 class="close-button">×</button>
         </div>
-        {% if report.image %}
-            <img src="{{ report.image.url }}" alt="{{ report.food_name }}" class="report-img">
+        {% if report.picture %}
+            <img src="{{ report.picture.url }}" alt="{{ report.food_name }}" class="report-img" style="height: 200px;">
         {% else %}
             <div class="temp-placeholder-img"><i class="fa-regular fa-camera"></i></div>
         {% endif %}
