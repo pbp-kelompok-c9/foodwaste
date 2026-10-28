@@ -79,7 +79,7 @@ def edit_report(request, report_id):
     data = {
         "food_name": report.food_name,
         "food_portion": report.food_portion,
-        "best_before": report.best_before.strftime("%d/%m/%Y"),
+        "best_before": report.best_before.strftime("%Y-%m-%dT%H:%M"),
         "location": report.location,
         "event": report.event_label,
         "pickup_option": report.pickup_option,
