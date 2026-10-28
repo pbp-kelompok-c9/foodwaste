@@ -16,7 +16,14 @@
                 popovertargetaction="hide"
                 class="close-button">×</button>
         </div>
-        <div class="temp-placeholder-img">Photo Here</div>
+        <label class="upload-box report-img" for="{{ form.image.id_for_label }}">
+            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+            <span id="upload-hint">
+                Klik untuk unggah foto
+            </span>
+            {{ form.picture }}
+        </label>
+        {{ form.image.errors }}
         <form id="report-form"
             method="post"
             class="form">

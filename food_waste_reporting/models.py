@@ -26,7 +26,7 @@ class Report(models.Model):
     )
     pickup_option = models.CharField(max_length=255, choices=PICKUP_OPTIONS)
     details = models.TextField()
-    picture = models.URLField()
+    picture = models.ImageField(upload_to="reports/%Y/%m/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
