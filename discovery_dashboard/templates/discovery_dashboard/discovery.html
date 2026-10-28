@@ -4,6 +4,7 @@
 {% block title %}Beranda - FoodWastey{% endblock %}
 
 {% block extra_head %}
+<script src="https://kit.fontawesome.com/eb11a84bc3.js" crossorigin="anonymous"></script>
 <style>
     .discovery-container {
         max-width: 1200px;
@@ -254,50 +255,48 @@
         cursor: not-allowed;
     }
 
-    .food-details {
-        margin-top: 22px;
-        padding-top: 20px;
-        border-top: 1px solid #E2E5D7;
-    }
-
-    .food-details[hidden] {
-        display: none;
-    }
-
-    .detail-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-    }
-
-    .detail-field {
-        margin-bottom: 17px;
-        min-width: 0;
-    }
-
-    .detail-label {
-        display: block;
-        font-weight: bold;
-        color: #302015;
-        font-size: 15px;
-        margin-bottom: 8px;
-    }
-
-    .detail-value {
-        background: #FFFCF7;
-        border: 1.5px solid #9CAF79;
+    .detail-modal {
+        width: calc(100% - 32px);
+        max-width: 700px;
+        max-height: 90vh;
+        margin: auto;
+        padding: 8px 20px 18px;
+        border: 1px solid #A5B17C;
         border-radius: 10px;
-        padding: 12px 13px;
-        color: #777067;
-        font-size: 14px;
-        line-height: 1.5;
-        overflow-wrap: anywhere;
+        background: #FFFDF8;
+        color: #261306;
+        box-sizing: border-box;
+        overflow-y: auto;
     }
+    .detail-modal::backdrop { background: rgba(28, 25, 23, 0.58); }
 
-    .detail-description {
-        min-height: 90px;
-        white-space: pre-wrap;
+    .detail-modal-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .detail-modal-head h2 { margin: 10px 0; font-size: 24px; }
+    .detail-modal-close {
+        width: 26px; height: 26px; border: 0; border-radius: 50%;
+        background: #EEF2EA; font-size: 18px; font-weight: bold; line-height: 1; cursor: pointer;
     }
+    .detail-modal-close:hover { background: #CCD5BC; }
+
+    .detail-photo {
+        display: flex; align-items: center; justify-content: center;
+        height: 160px; margin-bottom: 14px; border-radius: 6px;
+        background: #A5B17C; overflow: hidden;
+    }
+    .detail-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+    .detail-group { display: flex; flex-wrap: wrap; gap: 8px 5%; margin-bottom: 8px; }
+    .detail-field { display: flex; flex-direction: column; min-width: 0; margin-bottom: 8px; }
+    .detail-group .detail-field { margin-bottom: 0; }
+    .detail-label { margin: 2px; font-weight: bold; font-size: 16px; }
+    .detail-value {
+        padding: 0.7rem; border: 2px solid #91AC67; border-radius: 10px;
+        background: #FFFDF8; font-weight: 500; line-height: 1.4; overflow-wrap: anywhere;
+    }
+    .detail-description { min-height: 60px; white-space: pre-wrap; }
+
+    .detail-actions { display: flex; justify-content: center; gap: 16px; margin-top: 14px; }
+    .detail-actions .pickup-button { flex: 0 1 220px; }
 
     .pickup-modal {
         width: calc(100% - 30px);
@@ -578,12 +577,12 @@
                 <div class="food-info-top">
 
                     <div class="food-info-row">
-                        <span class="icon">🍴</span>
+                        <i class="fas fa-utensils icon"></i>
                         <span>{{ makanan.food_portion }} porsi</span>
                     </div>
 
                     <div class="food-info-row">
-                        <span class="icon">◷</span>
+                        <i class="fa-solid fa-circle-exclamation icon"></i>
                         <span>
                             {{ makanan.best_before|date:"d/m/Y" }}
                         </span>
@@ -592,12 +591,12 @@
                 </div>
 
                 <div class="food-info-row">
-                    <span class="icon">📍</span>
+                    <i class="fa-solid fa-location-dot icon"></i>
                     <span>{{ makanan.location }}</span>
                 </div>
 
                 <div class="food-info-row">
-                    <span class="icon">▤</span>
+                    <i class="fa-regular fa-map icon"></i>
                     <span>
                         {{ makanan.event_label|default:"Tidak ada acara" }}
                     </span>
@@ -613,7 +612,6 @@
                         type="button"
                         class="food-button"
                         data-detail-id="detail-{{ makanan.pk }}"
-                        aria-expanded="false"
                     >
                         Lihat Detail
                     </button>
@@ -665,86 +663,30 @@
 
                 </div>
 
-                <div
-                    class="food-details"
-                    id="detail-{{ makanan.pk }}"
-                    hidden
-                >
-
-                    <div class="detail-row">
-
-                        <div class="detail-field">
-                            <span class="detail-label">
-                                Jenis Makanan
-                            </span>
-
-                            <div class="detail-value">
-                                {{ makanan.food_name }}
-                            </div>
-                        </div>
-
-                        <div class="detail-field">
-                            <span class="detail-label">
-                                Porsi
-                            </span>
-
-                            <div class="detail-value">
-                                {{ makanan.food_portion }}
-                            </div>
-                        </div>
-
+                <template id="detail-{{ makanan.pk }}">
+                    <div class="detail-photo">
+                        {% if makanan.picture %}
+                        <img src="{{ makanan.picture }}" alt="Foto {{ makanan.food_name }}">
+                        {% else %}
+                        <span>Belum ada foto</span>
+                        {% endif %}
                     </div>
 
-                    <div class="detail-field">
-                        <span class="detail-label">
-                            Waktu Kedaluwarsa
-                        </span>
-
-                        <div class="detail-value">
-                            {{ makanan.best_before|date:"H:i, d/m/Y" }}
-                        </div>
+                    <div class="detail-group">
+                        <div class="detail-field"><span class="detail-label">Jenis Makanan</span><div class="detail-value">{{ makanan.food_name }}</div></div>
+                        <div class="detail-field"><span class="detail-label">Porsi</span><div class="detail-value">{{ makanan.food_portion }}</div></div>
+                        <div class="detail-field"><span class="detail-label">Waktu Kedaluwarsa</span><div class="detail-value">{{ makanan.best_before|date:"d/m/Y H:i" }}</div></div>
                     </div>
 
-                    <div class="detail-field">
-                        <span class="detail-label">
-                            Lokasi
-                        </span>
-
-                        <div class="detail-value">
-                            {{ makanan.location }}
-                        </div>
+                    <div class="detail-group">
+                        <div class="detail-field"><span class="detail-label">Lokasi</span><div class="detail-value">{{ makanan.location }}</div></div>
+                        <div class="detail-field"><span class="detail-label">Event</span><div class="detail-value">{{ makanan.event_label|default:"Tidak ada acara" }}</div></div>
+                        <div class="detail-field"><span class="detail-label">Status</span><div class="detail-value">{{ makanan.display_status }}</div></div>
                     </div>
 
-                    <div class="detail-field">
-                        <span class="detail-label">
-                            Event
-                        </span>
-
-                        <div class="detail-value">
-                            {{ makanan.event_label|default:"Tidak ada acara" }}
-                        </div>
-                    </div>
-
-                    <div class="detail-field">
-                        <span class="detail-label">
-                            Opsi Penjemputan
-                        </span>
-
-                        <div class="detail-value">
-                            {{ makanan.get_pickup_option_display }}
-                        </div>
-                    </div>
-
-                    <div class="detail-field">
-                        <span class="detail-label">
-                            Deskripsi Tambahan
-                        </span>
-
-                        <div class="detail-value detail-description">{{ makanan.details|default:"Tidak ada deskripsi" }}</div>
-                    </div>
-
-                </div>
-
+                    <div class="detail-field"><span class="detail-label">Opsi Penjemputan</span><div class="detail-value">{{ makanan.get_pickup_option_display }}</div></div>
+                    <div class="detail-field"><span class="detail-label">Deskripsi Tambahan</span><div class="detail-value detail-description">{{ makanan.details|default:"Tidak ada deskripsi" }}</div></div>
+                </template>
             </div>
 
         </article>
@@ -766,6 +708,14 @@
 
 </div>
 
+<dialog id="detail-modal" class="detail-modal" aria-labelledby="detail-modal-title">
+    <div class="detail-modal-head">
+        <h2 id="detail-modal-title">Detail Makanan</h2>
+        <button type="button" class="detail-modal-close" id="detail-modal-close" aria-label="Tutup">×</button>
+    </div>
+    <div id="detail-modal-body"></div>
+    <div class="detail-actions" id="detail-modal-actions"></div>
+</dialog>
 
 <dialog id="pickup-modal" class="pickup-modal">
 
@@ -860,28 +810,38 @@
 
 {% block extra_js %}
 <script>
-    document.querySelectorAll(
-        ".food-button[data-detail-id]"
-    ).forEach(function(tombol) {
+    const detailModal = document.getElementById("detail-modal");
+    const detailBody = document.getElementById("detail-modal-body");
+    const detailActions = document.getElementById("detail-modal-actions");
 
+    document.querySelectorAll(".food-button[data-detail-id]").forEach(function(tombol) {
         tombol.addEventListener("click", function() {
+            const templateDetail = document.getElementById(tombol.dataset.detailId);
+            detailBody.replaceChildren(templateDetail.content.cloneNode(true));
+            detailActions.replaceChildren();
 
-            const detail = document.getElementById(
-                tombol.dataset.detailId
-            );
-
-            detail.hidden = !detail.hidden;
-
-            if (detail.hidden) {
-                tombol.textContent = "Lihat Detail";
-                tombol.setAttribute("aria-expanded", "false");
-            } else {
-                tombol.textContent = "Tutup Detail";
-                tombol.setAttribute("aria-expanded", "true");
+            const tombolAsli = tombol.closest(".food-card").querySelector(".pickup-button");
+            if (tombolAsli) {
+                const salinan = tombolAsli.cloneNode(true);
+                salinan.removeAttribute("data-start-url");
+                if (salinan.tagName === "BUTTON" && !salinan.disabled) {
+                    salinan.addEventListener("click", function() {
+                        detailModal.close();
+                        tombolAsli.click();
+                    });
+                }
+                detailActions.appendChild(salinan);
             }
+            detailModal.showModal();
         });
     });
 
+    document.getElementById("detail-modal-close").addEventListener("click", function() {
+        detailModal.close();
+    });
+    detailModal.addEventListener("click", function(event) {
+        if (event.target === detailModal) detailModal.close();
+    });
 
     const pickupModal = document.getElementById("pickup-modal");
     const pickupForm = document.getElementById("pickup-form");
