@@ -94,7 +94,8 @@ section {
     justify-content: flex-start;
 }
 
-.field p {
+.field p,
+.field label {
     margin: 2px;
     font-weight: bold;
     color: var(--ink-dark);
@@ -117,8 +118,15 @@ section {
 
 .field-group {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 5%;
+}
+
+#help-text {
+    margin: 2px;
+    font-weight: lighter;
+    color: var(--ink-dark);
+    font-size: smaller;
 }
 
 .button {
