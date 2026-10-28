@@ -73,6 +73,7 @@ section {
     color: var(--ink-dark);
 }
 
+.report-img,
 .temp-placeholder-img {
     display: flex;
     align-items: center;
@@ -120,6 +121,17 @@ section {
     display: flex;
     align-items: flex-start;
     gap: 5%;
+}
+
+.upload-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--accent-light);
+    text-align: center;
+    gap: 8px;
+    margin: 32px;
 }
 
 #help-text {

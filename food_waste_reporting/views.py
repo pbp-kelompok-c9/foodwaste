@@ -28,6 +28,7 @@ def get_reports_json(request):
     data = [
         {
             "id": report.pk,
+            "picture": report.image.url if report.picture else "",
             "food_name": report.food_name,
             "food_portion": report.food_portion,
             "best_before": report.best_before.strftime("%d/%m/%Y"),
@@ -43,7 +44,7 @@ def get_reports_json(request):
 @login_required(login_url="authentication:login")
 @require_POST
 def create_report_ajax(request):
-    form = ReportForm(request.POST)
+    form = ReportForm(request.POST, request.FILES)
     if form.is_valid():
         report = form.save(commit=False)
         report.reported_by = request.user
@@ -69,7 +70,7 @@ def edit_report(request, report_id):
     report = get_object_or_404(Report, pk=report_id)
 
     if request.method == "POST":
-        form = ReportForm(request.POST, instance=report)
+        form = ReportForm(request.POST, request.FILES, instance=report)
         if form.is_valid():
             form.save()
             return JsonResponse({"message": "Laporan berhasil diedit!"})

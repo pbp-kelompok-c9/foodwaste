@@ -2,6 +2,7 @@ from django.db.models.fields import *
 from django.forms.fields import *
 from django.forms.models import ModelChoiceField, ModelForm
 from django.forms.widgets import *
+from django.forms import ValidationError
 from food_waste_reporting.models import Report
 from event_management.models import Event
 
@@ -71,10 +72,20 @@ class ReportForm(ModelForm):
         )
     )
 
+    picture = ImageField(
+        label="Klik di sini untuk unggah foto",
+        required=False,
+        widget=FileInput(
+            attrs={
+                "accept": "image/*",
+            }
+        ),
+    )
 
     class Meta:
         model = Report
         fields = [
+            "picture",
             "food_name",
             "food_portion",
             "best_before",
@@ -92,3 +103,18 @@ class ReportForm(ModelForm):
             report.save()
             self.save_m2m()
         return report
+
+    def clean_picture(self):
+            picture = self.cleaned_data.get("picture")
+    
+            if not picture:
+                raise ValidationError(
+                    "Foto wajib diunggah."
+                )
+    
+            if picture.size > 5 * 1024 * 1024:
+                raise ValidationError(
+                    "Ukuran foto maksimal 5 MB."
+                )
+    
+            return picture

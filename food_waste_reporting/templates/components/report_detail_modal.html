@@ -16,7 +16,11 @@
                 popovertargetaction="hide"
                 class="close-button">×</button>
         </div>
-        <div class="temp-placeholder-img">Photo Here</div>
+        {% if report.image %}
+            <img src="{{ report.image.url }}" alt="{{ report.food_name }}" class="report-img">
+        {% else %}
+            <div class="temp-placeholder-img"><i class="fa-regular fa-camera"></i></div>
+        {% endif %}
         <div class="field-group" style="margin-bottom: 8px;">
             <div class="field">
                 <p>Jenis Makanan</p>
