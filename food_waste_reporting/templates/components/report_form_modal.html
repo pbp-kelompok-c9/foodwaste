@@ -16,18 +16,18 @@
                 popovertargetaction="hide"
                 class="close-button">×</button>
         </div>
-        <label class="upload-box report-img" for="{{ form.image.id_for_label }}">
-            <i class="fa-solid fa-arrow-up-from-bracket"></i>
-            <span id="upload-hint">
-                Klik untuk unggah foto
-            </span>
-            {{ form.picture }}
-        </label>
-        {{ form.image.errors }}
         <form id="report-form"
             method="post"
             class="form">
             {% csrf_token %}
+            <label class="upload-box report-img" for="{{ form.picture.id_for_label }}">
+                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                <span id="upload-hint">
+                    Klik untuk unggah foto
+                </span>
+                    {{ form.picture }}
+            </label>
+            {{ form.picture.errors }}
             <p id="report-form-errors" role="alert" hidden></p>
             <div class="field-group">
                 <div class="field">

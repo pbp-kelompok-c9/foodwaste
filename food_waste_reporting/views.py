@@ -28,7 +28,7 @@ def get_reports_json(request):
     data = [
         {
             "id": report.pk,
-            "picture": report.image.url if report.picture else "",
+            "picture": report.picture.url if report.picture else "",
             "food_name": report.food_name,
             "food_portion": report.food_portion,
             "best_before": report.best_before.strftime("%d/%m/%Y"),

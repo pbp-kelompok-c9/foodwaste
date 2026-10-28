@@ -81,7 +81,9 @@ section {
     background-color: #a5b17c;
     border-radius: 6px;
     height: 100px;
+    width: 100%;
     margin-bottom: 12px;
+    object-fit: cover;
 }
 
 .form {
