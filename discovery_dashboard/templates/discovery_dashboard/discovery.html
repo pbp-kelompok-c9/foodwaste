@@ -539,7 +539,7 @@
                 {% if makanan.picture %}
 
                 <img
-                    src="{{ makanan.picture }}"
+                    src="{{ makanan.picture.url }}"
                     alt="Foto {{ makanan.food_name }}"
                     loading="lazy"
                 >
@@ -666,7 +666,7 @@
                 <template id="detail-{{ makanan.pk }}">
                     <div class="detail-photo">
                         {% if makanan.picture %}
-                        <img src="{{ makanan.picture }}" alt="Foto {{ makanan.food_name }}">
+                        <img src="{{ makanan.picture.url }}" alt="Foto {{ makanan.food_name }}">
                         {% else %}
                         <span>Belum ada foto</span>
                         {% endif %}

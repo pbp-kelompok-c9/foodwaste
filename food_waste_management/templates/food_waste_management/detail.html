@@ -142,10 +142,10 @@
                 </span>
             </div>
 
-            {% if report.picture|slice:":4" == "http" %}
+            {% if report.picture %}
                 <img
                     class="mgmt-photo"
-                    src="{{ report.picture }}"
+                    src="{{ report.picture.url }}"
                     alt="Foto {{ report.food_name }}"
                 >
             {% else %}

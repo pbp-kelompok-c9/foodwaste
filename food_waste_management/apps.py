@@ -6,4 +6,4 @@ class FoodWasteManagementConfig(AppConfig):
     name = 'food_waste_management'
 
     def ready(self):
-        from food_waste_management import signals  # noqa: F401
+        from food_waste_management import signals  

@@ -292,7 +292,12 @@ class WorkflowViewTests(ManagementTestBase):
         self.assertNotContains(response, "<script>alert(1)</script>")
         self.assertContains(response, "&lt;script&gt;")
 
-    def test_non_http_picture_is_not_rendered_as_image(self):
-        report = self.make_report(picture="javascript:alert(1)")
+    def test_uploaded_picture_is_rendered_from_media_url(self):
+        report = self.make_report(picture="reports/2026/10/nasi.jpg")
         response = self.client.get(self.url("detail", report))
-        self.assertNotContains(response, "javascript:alert(1)")
+        self.assertContains(response, 'src="/media/reports/2026/10/nasi.jpg"')
+
+    def test_missing_picture_shows_placeholder(self):
+        report = self.make_report(picture="")
+        response = self.client.get(self.url("detail", report))
+        self.assertContains(response, "Tidak ada foto")
