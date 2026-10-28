@@ -31,9 +31,10 @@ class ReportForm(ModelForm):
         label="Waktu Kedaluwarsa",
         input_formats=["%d/%m/%Y"],  
         widget=DateTimeInput(
-            format="%d/%m/%Y",
+            format="%Y-%m-%dT%H:%M",
             attrs={
-                "placeholder": "6/10/2026",
+                "type": "datetime-local",
+                "placeholder": "Pilih waktu kedaluwarsa...",
             }
         )
     )
@@ -42,7 +43,7 @@ class ReportForm(ModelForm):
         label="Lokasi",
         widget=TextInput(
             attrs={
-                "placeholder": "Dekat Pintu A, PBP Convention Hall",
+                "placeholder": "Lokasi spesifik makanan...",
                 "maxlength": 255,
             }
         )
@@ -51,7 +52,7 @@ class ReportForm(ModelForm):
     related_event = ModelChoiceField(
         label="Event",
         queryset=Event.objects.order_by("event_date", "name", "pk"),
-        empty_label="Pilih event",
+        empty_label="Pilih event yang sesuai...",
         widget=Select(attrs={"class": "input"}),
         help_text="Pilih acara yang sudah dibuat EO. Jika belum ada, minta EO membuat acara dahulu.",
     )
@@ -66,7 +67,7 @@ class ReportForm(ModelForm):
         label="Deskripsi Tambahan",
         widget=Textarea(
             attrs={
-                "placeholder": "Bisa kontak @pbpc9 di LINE untuk info lebih lanjut",
+                "placeholder": "Tambahkan deskripsi terkait laporan makanan, bisa berupa info kontak dan sebagainya...",
                 "rows": 3,
             }
         )
