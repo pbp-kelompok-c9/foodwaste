@@ -79,6 +79,7 @@ section {
     align-items: center;
     justify-content: center;
     background-color: #a5b17c;
+    border: 1px solid #a5b17c;
     border-radius: 6px;
     height: 100px;
     width: 100%;
@@ -133,7 +134,7 @@ section {
     color: var(--accent-light);
     text-align: center;
     gap: 8px;
-    margin: 32px;
+    padding: 32px;
 }
 
 #help-text {
