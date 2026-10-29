@@ -278,3 +278,23 @@ section {
 .danger:hover {
     background-color: #5a2424;
 }
+
+.success-status {
+    margin-bottom: 16px;
+    margin: 0 0 8px; 
+    padding: 12px 16px; 
+    border-radius: 10px; 
+    font-weight: 500;
+    background: var(--accent-light);
+    color: var(--accent-dark-active);
+}
+
+.fail-status {
+    margin-bottom: 16px;
+    margin: 0 0 8px; 
+    padding: 12px 16px; 
+    border-radius: 10px; 
+    font-weight: 500;
+    background: #f3dcdc;
+    color: #973838;
+}
