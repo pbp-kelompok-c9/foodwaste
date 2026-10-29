@@ -76,7 +76,7 @@ def edit_report(request, report_id):
         form = ReportForm(request.POST, request.FILES, instance=report)
         if form.is_valid():
             form.save()
-            return JsonResponse({"message": "Laporan berhasil diedit!"})
+            return JsonResponse({"message": "Laporan berhasil diedit!"},status=200)
         return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
 
     data = {
