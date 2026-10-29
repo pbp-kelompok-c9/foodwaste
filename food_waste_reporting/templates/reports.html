@@ -18,16 +18,17 @@
                         class="close-button">×</button>
                 </div>
             </div>
-            <div class="header">
-                <h1 style="margin-bottom: 8px;">Laporan Telah Dibuat</h1>
+            <div class="header" style="margin-bottom: 16px;">
+                <div class="header-text">
+                    <h1>Laporan Anda</h1>
+                    <p>Laporkan sisa makanan yang Anda sendiri temukan pada acara.</p>
+                </div>
                 <button type="button"
                         class="button"
-                        popovertarget="add-report-modal"
-                        style="margin-bottom: 8px;">
+                        popovertarget="add-report-modal">
                     + Buat Laporan
                 </button>
             </div>
-            <p style="margin-top: 0px; color: #666;">Laporkan sisa makanan yang Anda sendiri temukan pada acara.</p>
             <div class="header">
                 <form method="get"
                     id="report-search"
@@ -108,13 +109,13 @@
             ${report.picture
                 ? `<img src="${escapeHtml(report.picture)}" alt="Gambar Laporan" class="report-img">`
                 : `<div class="temp-placeholder-img">Tidak ada foto</div>`}
-            <h3 style="margin-bottom: 8px; font-size: 24px">${escapeHtml(report.food_name)}</h3>
-            <div class="modal-horizontal-layout" style="justify-content:start; gap: 20px; height: 20px; margin-bottom: 4px;">
+            <h3 style="font-size: 24px">${escapeHtml(report.food_name)}</h3>
+            <div class="modal-horizontal-layout">
                 <p><i class="fas fa-utensils" style="margin-right:4px;"></i>${escapeHtml(report.food_portion)} porsi</p>
                 <p><i class="fa-solid fa-circle-exclamation" style="margin-right:4px;"></i>${escapeHtml(report.best_before)}</p>
             </div>
-            <p style="margin-bottom: 8px;"><i class="fa-solid fa-location-dot" style="margin-right:4px;"></i>${escapeHtml(report.location)}</p>
-            <p style="margin-bottom: 12px;"><i class="fa-regular fa-map" style="margin-right:4px;"></i>${escapeHtml(report.event)}</p>
+            <p><i class="fa-solid fa-location-dot" style="margin-right:4px;"></i>${escapeHtml(report.location)}</p>
+            <p><i class="fa-regular fa-map" style="margin-right:4px;"></i>${escapeHtml(report.event)}</p>
             <div class="modal-horizontal-layout">
                 <button type="button"
                         class="button"

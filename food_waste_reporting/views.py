@@ -55,19 +55,22 @@ def create_report_ajax(request):
         )
     return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
 
+@login_required(login_url="authentication:login")
 def view_report_detail(request, report_id):
-    report = get_object_or_404(Report.objects.select_related("related_event"), pk=report_id)
+    report = get_object_or_404(Report.objects.select_related("related_event"), pk=report_id, reported_by=request.user)
     return render(request, "components/report_detail_modal.html", {"report": report})
 
+@login_required(login_url="authentication:login")
 @require_POST
 def delete_report(request, report_id):
-    report = get_object_or_404(Report, pk=report_id)
+    report = get_object_or_404(Report, pk=report_id, reported_by=request.user)
     report.delete()
     return JsonResponse({"message": "Laporan berhasil dhapus!"})
 
+@login_required(login_url="authentication:login")
 @require_http_methods(["GET", "POST"])
 def edit_report(request, report_id):
-    report = get_object_or_404(Report, pk=report_id)
+    report = get_object_or_404(Report, pk=report_id, reported_by=request.user)
 
     if request.method == "POST":
         form = ReportForm(request.POST, request.FILES, instance=report)
