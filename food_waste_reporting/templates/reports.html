@@ -10,6 +10,14 @@
 <main>
     <section>
         <div class="container">
+            <div id="report-status" class="hide">
+                <div class="modal-horizontal-layout">
+                    <p id="message-text"></p>
+                    <button type="button"
+                        id="status-close"
+                        class="close-button">×</button>
+                </div>
+            </div>
             <div class="header">
                 <h1 style="margin-bottom: 8px;">Laporan Telah Dibuat</h1>
                 <button type="button"
@@ -127,6 +135,25 @@
     const deleteUrl = "{% url 'food_waste_reporting:delete_report' '00000000-0000-0000-0000-000000000000' %}";
     const detailBody = document.getElementById("detail-body");
     const detailContainer = document.getElementById("detail-modal-container");
+    const statusMessage = document.getElementById("report-status");
+    const statusText = document.getElementById("message-text");
+    const statusClose = document.getElementById("status-close");
+    
+    // Showing status messages success/fail for CRUD operations
+    function showMessage(message, status) {
+        statusText.textContent = message;
+        if(status === "success") {
+            statusMessage.setAttribute("class", "success-status");
+        }
+        else {
+            statusMessage.setAttribute("class", "fail-status");
+        }
+        statusClose.addEventListener("click", closeMessage);
+    }
+
+    function closeMessage() {
+        statusMessage.setAttribute("class", "hide");
+    }
 
     // Event listener for view report details
     reportsGrid.addEventListener("click", async (event) => {
@@ -158,6 +185,7 @@
 
         if(response.ok) {
             detailContainer.querySelector("#view-report-modal").hidePopover();
+            showMessage("Laporan berhasil dihapus.", "success");
             fetchReports(searchInput.value.trim());
         }
     });
@@ -304,6 +332,7 @@
                 reportForm.reset();
                 closeReportModal();
                 fetchReports(searchInput.value.trim());
+                showMessage("Laporan berhasil ditambahkan.", "success")
             } else {
                 const errorMessages = result.errors
                     ? Object.values(result.errors).flat().map(error => error.message)
