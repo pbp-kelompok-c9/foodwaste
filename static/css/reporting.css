@@ -12,10 +12,16 @@
 
 body {
     color: var(--ink-dark);
+    font-size: 16px;
 }
 
 section {
     padding: 2rem 4rem;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 45px 25px 70px;
 }
 
 .report-form-modal {
@@ -73,6 +79,10 @@ section {
     color: var(--ink-dark);
 }
 
+.header h1 {
+    font-size: 32px;
+}
+
 .report-img,
 .temp-placeholder-img {
     display: flex;
@@ -120,10 +130,24 @@ section {
     font-weight: lighter;
 }
 
+.field input:focus-visible,
+.field textarea:focus-visible,
+.field select:focus-visible,
+.search-bar:focus-visible,
+.filled-field:focus-visible {
+    outline: 3px solid var(--accent-dark);
+    outline-offset: 3px
+}
+
 .field-group {
     display: flex;
     align-items: flex-start;
     gap: 5%;
+}
+
+.field-group > .field {
+    flex: 1;
+    min-width: 0;
 }
 
 .upload-box {
@@ -135,13 +159,26 @@ section {
     text-align: center;
     gap: 8px;
     padding: 32px;
+    font-size: 24px;
+    cursor: pointer;
+    font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+.upload-box input[type="file"] {
+    width: 100%;
+    text-align: center;
+    text-align-last: center;
+    color: inherit;
+}
+.upload-box input[type="file"]::file-selector-button { 
+    display: none; 
 }
 
 #help-text {
     margin: 2px;
     font-weight: lighter;
     color: var(--ink-dark);
-    font-size: smaller;
+    font-size: 12px;
 }
 
 .button {
@@ -150,9 +187,11 @@ section {
     border: 0px;
     border-radius: 10px;
     padding: 8px 16px;
-    height: 40px;
+    line-height: 1.35;
+    font-size: 16px;
     font-family: 'DM Sans', system-ui, sans-serif;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .button:hover {
@@ -210,7 +249,7 @@ section {
 
 .report-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 1rem;
     justify-content: start;
     margin-top: 24px;
