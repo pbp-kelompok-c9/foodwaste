@@ -30,7 +30,13 @@ class ReportForm(ModelForm):
 
     best_before = DateTimeField(
         label="Waktu Kedaluwarsa",
-        input_formats=["%d/%m/%Y"],  
+        input_formats=[
+            "%Y-%m-%dT%H:%M",
+            "%Y-%m-%d %H:%M:%S",
+            "%Y-%m-%d %H:%M",
+            "%d/%m/%Y %H:%M",
+            "%d/%m/%Y",
+        ],
         widget=DateTimeInput(
             format="%Y-%m-%dT%H:%M",
             attrs={
@@ -99,8 +105,8 @@ class ReportForm(ModelForm):
 
     def save(self, commit=True):
         report = super().save(commit=False)
-        # Store a text snapshot too, so old consumers/data exports retain a name.
-        report.event = report.related_event.name
+        if report.related_event:
+            report.event = report.related_event.name
         if commit:
             report.save()
             self.save_m2m()

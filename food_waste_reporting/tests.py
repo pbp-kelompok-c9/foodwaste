@@ -1,4 +1,5 @@
 from datetime import timedelta
+import io
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
@@ -7,6 +8,8 @@ from django.db.migrations.executor import MigrationExecutor
 from django.db.models.deletion import ProtectedError
 from django.test import TestCase, TransactionTestCase
 from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
+from PIL import Image
 from django.utils import timezone
 
 from discovery_dashboard.models import DiscoveryReport
@@ -319,6 +322,7 @@ class ReportEventIntegrationTests(TestCase):
             created_by=cls.eo,
         )
 
+    
     def form_data(self, **extra):
         data = {
             "food_name": "Nasi Kotak", "food_portion": 5,
@@ -538,3 +542,8 @@ class ReportEventMigrationTests(TransactionTestCase):
         self.assertEqual(rolled_back.details, "Original details")
         self.assertEqual(OldReport.objects.get(pk=new_report.pk).event, "Acara baru")
         self.assertEqual(OldReport.objects.count(), 2)
+
+    def fake_image(name="food.jpg"):
+        buf = io.BytesIO()
+        Image.new("RGB", (10, 10), "red").save(buf, format="JPEG")
+        return SimpleUploadedFile(name, buf.getvalue(), content_type="image/jpeg")
