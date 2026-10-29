@@ -11,7 +11,7 @@ class ReportForm(ModelForm):
         label="Jenis Makanan",
         widget=TextInput(
             attrs={
-                "placeholder": "Ayam Goreng",
+                "placeholder": "Nama makanan...",
                 "maxlength": 255,
             }
         )
@@ -23,7 +23,7 @@ class ReportForm(ModelForm):
         max_value=1000,
         widget=NumberInput(
             attrs={
-                "placeholder": "5"
+                "placeholder": "Maks. 1000"
             }
         ),
     )
