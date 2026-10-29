@@ -11,13 +11,15 @@
     <section>
         <div class="container">
             <div class="header">
-                <h2>Laporan Telah Dibuat</h1>
+                <h1 style="margin-bottom: 8px;">Laporan Telah Dibuat</h1>
                 <button type="button"
                         class="button"
-                        popovertarget="add-report-modal">
+                        popovertarget="add-report-modal"
+                        style="margin-bottom: 8px;">
                     + Buat Laporan
                 </button>
             </div>
+            <p style="margin-top: 0px; color: #666;">Laporkan sisa makanan yang Anda sendiri temukan pada acara.</p>
             <div class="header">
                 <form method="get"
                     id="report-search"
@@ -98,7 +100,7 @@
             ${report.picture
                 ? `<img src="${escapeHtml(report.picture)}" alt="Gambar Laporan" class="report-img">`
                 : `<div class="temp-placeholder-img">Tidak ada foto</div>`}
-            <h3 style="margin-bottom: 8px;">${escapeHtml(report.food_name)}</h3>
+            <h3 style="margin-bottom: 8px; font-size: 24px">${escapeHtml(report.food_name)}</h3>
             <div class="modal-horizontal-layout" style="justify-content:start; gap: 20px; height: 20px; margin-bottom: 4px;">
                 <p><i class="fas fa-utensils" style="margin-right:4px;"></i>${escapeHtml(report.food_portion)} porsi</p>
                 <p><i class="fa-solid fa-circle-exclamation" style="margin-right:4px;"></i>${escapeHtml(report.best_before)}</p>

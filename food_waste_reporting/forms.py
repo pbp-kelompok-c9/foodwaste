@@ -20,6 +20,7 @@ class ReportForm(ModelForm):
     food_portion = IntegerField(
         label="Porsi",
         min_value=0,
+        max_value=1000,
         widget=NumberInput(
             attrs={
                 "placeholder": "5"
@@ -54,7 +55,7 @@ class ReportForm(ModelForm):
         queryset=Event.objects.order_by("event_date", "name", "pk"),
         empty_label="Pilih event yang sesuai...",
         widget=Select(attrs={"class": "input"}),
-        help_text="Pilih acara yang sudah dibuat EO. Jika belum ada, minta EO membuat acara dahulu.",
+        help_text="Pilih acara yang sudah dibuat EO",
     )
 
     pickup_option = ChoiceField(
