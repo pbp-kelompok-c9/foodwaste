@@ -72,6 +72,12 @@ Pemeriksaan role dan pemilik dijalankan pada server untuk setiap aksi. Field
 Saat superuser mengedit acara milik EO, akun pemilik acara tetap dipertahankan.
 Acara yang sudah dipakai laporan dilindungi dari penghapusan agar riwayat tetap ada.
 
+Acara baru tidak boleh memakai tanggal dan waktu yang sudah lewat menurut WIB.
+Pemilih tanggal memiliki batas minimum, dan server memeriksa ulang saat formulir
+disimpan, dengan ketelitian satu menit. Tanggal acara lama yang tidak diubah tetap
+dipertahankan saat mengedit keterangan; jika dijadwalkan ulang, waktu barunya harus
+sekarang atau di masa mendatang. Perubahan ini tidak memerlukan migration.
+
 ## Alur pengecekan manual
 
 1. Buka `/events/` tanpa login; daftar dan detail acara dapat dibaca.
