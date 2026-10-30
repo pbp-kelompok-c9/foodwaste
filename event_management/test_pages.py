@@ -71,6 +71,7 @@ class EventPageTests(TestCase):
         self.assertContains(response, reverse("event_management:create"))
 
     def test_navigation_shows_events_to_everyone_and_management_to_staff(self):
+        self.client.force_login(self.participant)
         url = reverse("event_management:main")
         response = self.client.get(url)
         self.assertContains(response, 'href="/events/"')
