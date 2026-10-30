@@ -138,7 +138,11 @@ Untuk Checkpoint 1, deployment menampilkan halaman roket bawaan Django. Telah di
 
 ## 🔐 Pengembangan Authentication
 
-Registrasi, login, dan logout memakai User bawaan Django. Role EO memakai Group `EO`, terpisah dari staff Kelola laporan. Event Management menyediakan CRUD dengan ownership, pencarian lokasi, dan dropdown acara pada Reporting. Kolom teks acara laporan lama dipertahankan. Lihat [panduan authentication](docs/authentication.md), [panduan Event Management dan pengecekan di VS Code](docs/event-management.md), serta [acuan palet warna](docs/color-palette.md). Pengelolaan profil belum tersedia.
+Registrasi, login, dan logout memakai User bawaan Django. Role EO memakai Group `EO`, terpisah dari staff Kelola laporan. Event Management menyediakan CRUD dengan ownership, pencarian lokasi, dan dropdown acara pada Reporting. Kolom teks acara laporan lama dipertahankan. Lihat [panduan authentication](docs/authentication.md), [panduan Event Management dan pengecekan di VS Code](docs/event-management.md), serta [acuan palet warna](docs/color-palette.md).
+
+Pengelolaan profil sudah tersedia. Setiap akun otomatis memiliki profil saat dibuat, berisi nama tampilan, kota, bio, nomor HP, dan ID LINE. Pengguna yang sudah login dapat melihat profilnya di halaman **Profil saya** (`/profil/`), mengubah profil, dan menghapus akun. Perubahan profil disimpan secara asinkronus dengan AJAX tanpa memuat ulang halaman, dan pesan validasi ditampilkan langsung di bawah kolom yang salah. Penghapusan akun meminta konfirmasi berupa pengetikan ulang username. Akun admin tidak bisa dihapus dari halaman ini, begitu pula akun yang masih memiliki acara.
+
+Halaman **Direktori pengguna** (`/pengguna/`) menampilkan daftar pengguna aktif yang dapat dicari berdasarkan nama atau username serta disaring berdasarkan kota, dengan 12 pengguna per halaman. Setiap pengguna juga memiliki halaman profil publik (`/pengguna/<username>/`). Nomor HP dan ID LINE hanya ditampilkan kepada pengguna yang sudah login; pengunjung lain diarahkan untuk masuk terlebih dahulu. Data yang sama tersedia dalam format JSON melalui `/api/profil/`, `/api/pengguna/`, dan `/api/pengguna/<username>/`, dengan aturan tampilan kontak yang sama.
 
 ## 📝 Pengembangan Food Waste Reporting
 
