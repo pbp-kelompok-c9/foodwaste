@@ -1,8 +1,8 @@
 .events-page { max-width: 1180px; margin: 0 auto; padding: 44px 28px 72px; }
 .events-page h1, .events-page h2, .events-page p { margin-top: 0; }
-.events-page h1 { margin-bottom: 12px; color: var(--accent-dark-deep); font-family: 'Lilita One', sans-serif; font-size: clamp(32px, 5vw, 44px); font-weight: 400; overflow-wrap: anywhere; }
+.events-page h1 { margin-bottom: 12px; color: #261306; font-size: clamp(32px, 5vw); font-weight: bold; overflow-wrap: anywhere; }
 .events-page h2 { color: var(--accent-dark-deep); font-size: 22px; line-height: 1.35; }
-.events-page p { line-height: 1.65; }
+.events-page p { line-height: 1.65; color: #666}
 .events-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
 .events-heading > div { min-width: 0; }
 .events-heading p:last-child { margin-bottom: 0; }
@@ -19,7 +19,7 @@
 .events-text-link:hover { color: var(--ink); }
 .events-back { display: inline-block; margin-bottom: 28px; }
 .events-search { margin-bottom: 28px; }
-.events-search label, .event-field > label { display: block; font-weight: 700; margin-bottom: 8px; }
+.events-search label, .event-field > label { display: block; font-weight: 700; margin-bottom: 8px; color: #261306}
 .events-search-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .events-search-row input { flex: 1 1 260px; }
 .events-search input, .event-field input, .event-field textarea, .event-field select { display: block; width: 100%; min-height: 46px; padding: 12px 14px; border: 1px solid #a79b86; border-radius: 8px; background: #fffefb; color: var(--ink); font: inherit; }

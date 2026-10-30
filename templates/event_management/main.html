@@ -3,14 +3,12 @@
 {% block event_content %}
 <header class="events-heading">
     <div>
-        <p class="events-eyebrow">Bersama mengurangi makanan terbuang</p>
         <h1>Acara</h1>
         <p>Temukan acara dan laporkan makanan berlebih di lokasi.</p>
     </div>
     {% if can_manage_events %}<a class="events-button" href="{% url 'event_management:create' %}">+ Tambah acara</a>{% endif %}
 </header>
 <form class="events-search" method="get" action="{% url 'event_management:main' %}" role="search">
-    <label for="event-query">Cari nama acara atau lokasi</label>
     <div class="events-search-row">
         <input type="search" name="q" id="event-query" value="{{ q }}" maxlength="200" placeholder="Nama acara atau lokasi">
         <button class="events-button" type="submit">Cari</button>
