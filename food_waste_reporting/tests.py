@@ -158,6 +158,35 @@ class ReportFormExtraTests(ReportBase):
         self.assertIn("picture", form.errors)
         self.assertIn("5 MB", str(form.errors["picture"]))
 
+class ReportFormSaveTests(ReportBase):
+    def test_save_commit_true_persists_and_sets_event_snapshot(self):
+        instance = Report(reported_by=self.owner)        
+        form = ReportForm(self.form_data(), self.files(), instance=instance)
+        self.assertTrue(form.is_valid(), form.errors)
+        report = form.save()                             
+        self.assertTrue(Report.objects.filter(pk=report.pk).exists())
+        self.assertEqual(report.reported_by, self.owner)
+        self.assertEqual(report.related_event, self.event)
+        self.assertEqual(report.event, "Bazar Kampus")
+
+    def test_save_commit_false_does_not_hit_db(self):
+        form = ReportForm(self.form_data(), self.files())
+        self.assertTrue(form.is_valid(), form.errors)
+        report = form.save(commit=False)
+        self.assertTrue(report._state.adding)
+        self.assertEqual(report.event, "Bazar Kampus")
+        self.assertEqual(Report.objects.count(), 0)
+
+    def test_save_without_related_event_keeps_event_text(self):
+        form = ReportForm(self.form_data(), self.files())
+        self.assertTrue(form.is_valid(), form.errors)
+        report = form.save(commit=False)
+        report.related_event = None
+        report.event = "Teks lama"
+        form.instance = report
+        result = form.save(commit=False)
+        self.assertEqual(result.event, "Teks lama")
+
 class ShowReportsTests(ReportBase):
     def test_renders_with_context(self):
         self.client.force_login(self.owner)
