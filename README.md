@@ -10,7 +10,7 @@ Peserta yang sudah login dapat mengirim laporan ketersediaan makanan berisi foto
 
 Nilai utama FoodWastey adalah menghubungkan laporan peserta dengan tindakan panitia dalam satu alur yang terpusat. Peserta mendapat cara praktis untuk melaporkan makanan, sementara EO dapat memantau ketersediaan dan proses penanganannya. Dengan demikian, aplikasi diharapkan membantu mengurangi makanan terbuang dan menjaga kebersihan lokasi setelah acara berakhir.
 
-Alur yang direncanakan: peserta mengirim laporan → admin menerima atau menolak laporan → pemeriksaan dan penjemputan → admin menentukan penanganan atau menawarkan kembali makanan → selesai. Penerimaan laporan merupakan penerimaan untuk ditindaklanjuti, bukan sertifikasi kelayakan konsumsi. Kondisi makanan perlu diperiksa oleh petugas sebelum keputusan penanganan dibuat.
+Alur aplikasi: peserta mengirim laporan → admin menerima atau menolak laporan → pemeriksaan dan penjemputan → admin menentukan penanganan atau menawarkan kembali makanan → selesai. Penerimaan laporan merupakan penerimaan untuk ditindaklanjuti, bukan sertifikasi kelayakan konsumsi. Kondisi makanan perlu diperiksa oleh petugas sebelum keputusan penanganan dibuat.
 
 ## ⚙️ Panduan Instalasi (Menjalankan Local)
 
@@ -28,45 +28,29 @@ python manage.py runserver
 
 Windows: gunakan `python -m venv .venv`, `.venv\Scripts\activate`, dan `copy .env.example .env`.
 
-Buka http://127.0.0.1:8000/ untuk melihat roket Django. Hentikan server dengan Ctrl+C.
+Buka http://127.0.0.1:8000/ untuk membuka halaman Beranda FoodWastey. Hentikan server dengan Ctrl+C.
+
+Untuk menjalankan seluruh unit test: `python manage.py test`.
 
 ## 🌐 Menyiapkan PWS
 
-1. Proyek PWS bernama `foodwaste`. Checkpoint roket dapat dideploy tanpa mengisi database. Untuk mengaktifkan aplikasi lengkap nanti, set `CHECKPOINT_ONLY=False` dan ikuti konfigurasi berikut.
+1. Proyek PWS bernama `foodwaste`.
 2. Isi Environs berdasarkan `.env.prod.example` menggunakan kredensial database ITF salah satu anggota. Gunakan schema `tugas_kelompok` untuk proyek kelompok.
 3. Buat SECRET_KEY acak melalui `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"` lalu simpan hanya di PWS Environs.
 4. Isi ALLOWED_HOSTS dengan hostname deployment yang benar dan CSRF_TRUSTED_ORIGINS dengan URL HTTPS-nya.
 5. Ikuti Project Command PWS untuk menambahkan remote. Jangan cantumkan password dalam README atau commit.
-6. Push dengan `git push pws main:master`, periksa status Running dan buka View Project.
-7. Buka tautan Deployment PWS di atas untuk memeriksa hasil deployment.
+6. Push dengan `git push pws main`, periksa status Running dan buka View Project.
 
-Konfigurasi PostgreSQL menggunakan schema `tugas_kelompok`; SQLite digunakan untuk pengembangan lokal dan database sementara di memori pada mode checkpoint. `.env`, database lokal, dan virtual environment tidak diikutkan ke Git.
+Saat aplikasi dijalankan di PWS, `scripts/ensure_schema.py` membuat schema `tugas_kelompok` jika belum ada, lalu migration dijalankan otomatis sebelum gunicorn dimulai. PostgreSQL dipakai di PWS, sedangkan SQLite dipakai untuk pengembangan lokal. `.env`, database lokal, dan virtual environment tidak diikutkan ke Git.
+
+### CI/CD
+
+Repository ini memakai dua workflow GitHub Actions:
+
+- **Django CI** (`.github/workflows/ci.yml`): menjalankan `manage.py check`, pengecekan migration, dan seluruh unit test pada setiap push ke `main`.
+- **Push to PWS** (`.github/workflows/deploy.yml`): setiap push ke `main` otomatis diteruskan ke branch `main` di PWS, sehingga PWS selalu memakai versi terbaru tanpa push manual. Workflow ini membaca URL PWS beserta kredensialnya dari repository secret `PWS_URL`.
 
 Referensi setup: https://pbp.cs.ui.ac.id/tutorial/tutorial-0.html dan https://pbp.cs.ui.ac.id/tutorial/tutorial-1.html
-
-## ✅ Status Checkpoint 1
-
-Diperbarui pada 15 September 2026. Code base dan dokumentasi awal FoodWaste sudah tersedia dengan rincian berikut:
-
-- [x] Repository `foodwaste` tersedia di GitHub Organization `pbp-kelompok-c9`.
-- [x] Code base Django 5.2 tersedia.
-- [x] Nama aplikasi, nama anggota, dan NPM seluruh anggota tercantum.
-- [x] Deskripsi aplikasi dan nilai manfaatnya tercantum.
-- [x] Perbandingan dengan Surplus Indonesia dan Olio dilengkapi sumber referensi.
-- [x] Lima modul, deskripsi, dan PIC masing-masing sudah ditentukan.
-- [x] Nominatim dipilih sebagai Public API; sumber dan rencana penggunaannya tercantum.
-- [x] Peran pengguna dan target pengguna sudah dijelaskan.
-- [x] [Deployment PWS](https://adinata-alaudin51-foodwaste.pws.cs.ui.ac.id/) berhasil menampilkan halaman roket Django.
-- [x] [Tautan desain Figma](https://www.figma.com/design/wSGPDUl78i7Bzpfz7zeWil/Untitled?node-id=0-1&t=KkgO6a6FgNbzobOW-1) sudah dicantumkan.
-
-Implementasi lima modul, integrasi Nominatim, dan konfigurasi database persisten merupakan pekerjaan pengembangan selanjutnya. Checklist ini mencatat ketersediaan hasil kerja dan dokumentasi, bukan konfirmasi pengumpulan atau penilaian tugas.
-
-<details>
-<summary>Catatan teknis deployment checkpoint</summary>
-
-Secara bawaan `CHECKPOINT_ONLY=True`: hanya halaman roket, tanpa akun/admin atau database persisten; SQLite sementara di memori digunakan agar langkah migrasi otomatis PWS tetap berjalan tanpa kredensial database. Untuk mulai mengembangkan fitur, gunakan `.env.example` (`CHECKPOINT_ONLY=False`). Halaman `/` menampilkan halaman roket bawaan Django, termasuk ketika `PRODUCTION=True`. Route sementara ini menggunakan halaman bawaan Django, sehingga teks bawaannya tentang DEBUG tidak mencerminkan konfigurasi server.
-
-</details>
 
 ## 👥 Anggota kelompok
 
@@ -78,21 +62,21 @@ Secara bawaan `CHECKPOINT_ONLY=True`: hanya halaman roket, tanpa akun/admin atau
 | Adinata Alaudin Pranaja | 2506656356 | Sistem Informasi | [adinatapranaja](https://github.com/adinatapranaja) |
 | Angga Restha Rustyanto | 2506656444 | Ilmu Komputer | [AnggaRestha](https://github.com/AnggaRestha) |
 
-## 💻 Rencana modul dan PIC
+## 💻 Modul dan PIC
 
-Pembagian tanggung jawab pengembangan modul kelompok C9 adalah sebagai berikut. Fitur di bawah merupakan rencana pengembangan; Checkpoint 1 masih berupa code base Django dan halaman roket.
+Pembagian tanggung jawab pengembangan modul kelompok C9 adalah sebagai berikut.
 
 | Modul | Deskripsi | PIC |
 | --- | --- | --- |
-| User & Authentication | Registrasi, login, logout, pengelolaan profil, serta peran dan pembatasan hak akses pengguna. | Adinata Alaudin Pranaja |
-| Event Management | Membuat, melihat, mengubah, dan menghapus acara (CRUD), menampilkan detail acara, serta mengelola vendor terkait. Pencarian lokasi acara direncanakan menggunakan Nominatim. | Khansa Khairunnisa Haikal |
+| User & Authentication | Registrasi, login (termasuk Masuk dengan Google), logout, pengelolaan profil, hapus akun, serta direktori pengguna dengan kontak yang hanya terlihat oleh pengguna yang sudah login. | Adinata Alaudin Pranaja |
+| Event Management | Membuat, melihat, mengubah, dan menghapus acara (CRUD) oleh EO, menampilkan detail acara, serta pencarian lokasi acara menggunakan Nominatim. | Khansa Khairunnisa Haikal |
 | Food Waste Reporting | Membuat dan melihat laporan serta detail makanan sisa, meliputi foto, jenis makanan, jumlah porsi, tenggat best before, lokasi, dan opsi penjemputan. | Stefani Gwen Rolanda Tumbelaka |
 | Food Waste Management | Memverifikasi dan menerima atau menolak laporan, memperbarui status penanganan, serta menentukan tindak lanjut berupa penjualan, pembagian, atau pengolahan makanan. | Angga Restha Rustyanto |
-| Discovery & Dashboard | Pencarian dan penyaringan makanan, dashboard, serta statistik laporan dan penanganan makanan. | Muhammad Fatahillah Widodo |
+| Discovery & Dashboard | Pencarian dan penyaringan makanan, pengajuan pengambilan makanan beserta unggah bukti pengambilan, dashboard, serta statistik laporan dan penanganan makanan. | Muhammad Fatahillah Widodo |
 
 ## 👤 Peran dan target pengguna
 
-| Peran | Target pengguna | Hak akses yang direncanakan |
+| Peran | Target pengguna | Hak akses |
 | --- | --- | --- |
 | EO | Penyelenggara acara dalam Group `EO`, tanpa memerlukan staff | Membuat acara, mengubah/menghapus acara miliknya, dan membuat laporan. Tidak otomatis mendapat akses Kelola laporan. |
 | Admin Mode | Staff pengelola laporan | Memeriksa foto dan informasi laporan, menerima atau menolak laporan, mengoordinasikan pengambilan, serta menentukan tindak lanjut makanan. |
@@ -108,11 +92,11 @@ Surplus Indonesia dan Olio memiliki tujuan yang berkaitan dengan pengurangan pem
 | Surplus Indonesia | Marketplace untuk penjualan stok berlebih dari mitra usaha kepada pelanggan. Mitra mengunggah produk melalui Surplus Merchant, sementara pelanggan membeli produk yang ditawarkan. Sumber: [Surplus Mitra](https://surplus.id/mitra/). | FoodWaste berangkat dari laporan peserta dalam suatu acara. Peserta dapat melaporkan makanan, lalu EO memeriksa dan menentukan tindak lanjutnya, termasuk opsi selain penjualan. |
 | Olio | Berbagi makanan dan barang dalam komunitas lokal. Olio juga memiliki program Food Waste Heroes untuk pengambilan dan redistribusi makanan surplus dari bisnis. Sumber: [Olio](https://olioapp.com/en/) dan [Food Waste Heroes](https://olioapp.com/business/food-waste-heroes-programme/). | FoodWaste dirancang dengan acara sebagai pusat koordinasi: laporan peserta diteruskan ke admin EO untuk diperiksa, dijemput, dan ditangani atau ditawarkan kembali kepada peserta. |
 
-Pembeda yang diusulkan adalah alur **peserta melapor → EO memoderasi → EO mengoordinasikan penanganan** dalam konteks acara yang sama. Perbandingan ini menekankan fokus rancangan FoodWaste, bukan klaim bahwa kompetitor tidak dapat melayani skala besar atau kegiatan katering. Fitur FoodWaste pada tabel masih berupa rencana pengembangan.
+Pembeda yang diusulkan adalah alur **peserta melapor → EO memoderasi → EO mengoordinasikan penanganan** dalam konteks acara yang sama. Perbandingan ini menekankan fokus rancangan FoodWaste, bukan klaim bahwa kompetitor tidak dapat melayani skala besar atau kegiatan katering.
 
 ## 🌏 Public API / mock API
 
-Untuk memenuhi ketentuan minimal 50 initial data utama pada database aplikasi saat deployment, kami mengonsumsi data dari Public API eksternal **Nominatim**, layanan pencarian lokasi berdasarkan data OpenStreetMap. FoodWaste berencana memakainya pada modul Acara untuk mengubah nama tempat atau alamat yang dimasukkan EO menjadi pilihan lokasi beserta koordinat lintang dan bujur.
+Public API yang digunakan adalah **Nominatim**, layanan pencarian lokasi berdasarkan data OpenStreetMap. FoodWastey memakainya pada modul Acara untuk mengubah nama tempat atau alamat yang dimasukkan EO menjadi pilihan lokasi beserta koordinat lintang dan bujur.
 
 Alur penggunaan: EO mengetik nama tempat atau alamat acara → menekan tombol **Cari lokasi** → memilih hasil pencarian → aplikasi menyimpan alamat dan koordinat pada data acara. Detail internal acara, seperti nomor stan atau posisi pos pengumpulan, tetap diisi oleh EO.
 
@@ -120,17 +104,15 @@ Alur penggunaan: EO mengetik nama tempat atau alamat acara → menekan tombol **
 - Endpoint pencarian: `https://nominatim.openstreetmap.org/search` dengan parameter `q` dan `format=jsonv2`.
 - Dokumentasi: [Search API](https://nominatim.org/release-docs/latest/api/Search/).
 - Ketentuan: [Nominatim Usage Policy](https://operations.osmfoundation.org/policies/nominatim/).
--  Deskripsi Data: Digunakan untuk *forward & reverse geocoding* dalam memetakan koordinat lokasi penjemputan makanan (latitude & longitude) secara visual pada peta interaktif Leaflet.js.
+- Deskripsi data: hasil *forward geocoding* berupa nama lokasi, alamat, serta koordinat lintang dan bujur. Koordinat yang disimpan dipakai untuk tautan **Lihat di OpenStreetMap** pada halaman detail acara.
 
-Nominatim merupakan perangkat lunak open source dan layanan publiknya dapat digunakan tanpa biaya sesuai kebijakan penggunaan. Integrasi direncanakan melalui backend Django dengan pembatasan maksimal satu request per detik untuk seluruh aplikasi, identitas aplikasi pada User-Agent, penyimpanan hasil pencarian (cache), serta atribusi **© OpenStreetMap contributors** yang ditautkan ke [informasi hak cipta OpenStreetMap](https://www.openstreetmap.org/copyright). Pencarian hanya dijalankan saat tombol ditekan, bukan autocomplete setiap kali pengguna mengetik. Alamat layanan dibuat dapat dikonfigurasi agar bisa diganti bila diperlukan.
-
-**Status Checkpoint 1:** API sudah dipilih sebagai rencana integrasi; belum diimplementasikan. Deployment saat ini tetap menampilkan halaman roket Django.
+Nominatim merupakan perangkat lunak open source dan layanan publiknya dapat digunakan tanpa biaya sesuai kebijakan penggunaan. Integrasi dilakukan melalui backend Django dengan pembatasan maksimal satu request per detik untuk seluruh aplikasi, identitas aplikasi pada User-Agent, penyimpanan hasil pencarian (cache), serta atribusi **© OpenStreetMap contributors** yang ditautkan ke [informasi hak cipta OpenStreetMap](https://www.openstreetmap.org/copyright). Pencarian hanya dijalankan saat tombol ditekan, bukan autocomplete setiap kali pengguna mengetik. Alamat layanan dibuat dapat dikonfigurasi agar bisa diganti bila diperlukan.
 
 ## 🌐 Deployment PWS
 
 [Buka deployment FoodWastey di PWS](https://adinata-alaudin51-foodwaste.pws.cs.ui.ac.id/)
 
-Untuk Checkpoint 1, deployment menampilkan halaman roket bawaan Django. Telah diperiksa pada 15 September 2026: respons HTTP 200 dan halaman “The install worked successfully! Congratulations!”.
+Deployment menjalankan aplikasi lengkap dengan database PostgreSQL ITF (schema `tugas_kelompok`) dan diperbarui otomatis melalui workflow CD setiap ada push ke `main`.
 
 ## 🎨 Desain Figma
 
