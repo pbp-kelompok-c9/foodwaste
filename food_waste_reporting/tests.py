@@ -134,6 +134,11 @@ class ReportFormExtraTests(ReportBase):
         self.assertFalse(form.is_valid())
         self.assertIn("best_before", form.errors)
 
+    def test_past_best_before_rejected(self):
+        form = ReportForm(self.form_data(best_before="2025-12-31T14:30"), self.files())
+        self.assertFalse(form.is_valid())
+        self.assertIn("best_before", form.errors)
+
     def test_invalid_pickup_option_and_portion(self):
         self.assertIn("pickup_option",
                       ReportForm(self.form_data(pickup_option="xxx")).errors)

@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db.models.fields import *
 from django.forms.fields import *
 from django.forms.models import ModelChoiceField, ModelForm
@@ -126,3 +127,11 @@ class ReportForm(ModelForm):
                 )
     
             return picture
+
+    def clean_best_before(self):
+        best_before = self.cleaned_data["best_before"]
+        if best_before and best_before < timezone.now():
+            raise ValidationError(
+                "Waktu kedaluwarsa tidak boleh sudah lewat.", code="past_best_before"
+            )
+        return best_before
