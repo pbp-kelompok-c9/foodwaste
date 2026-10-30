@@ -8,7 +8,7 @@
   <a class="tw-text-sm tw-font-bold tw-text-accent hover:tw-underline" href="{% url 'authentication:user_list' %}">← Direktori pengguna</a>
 
   <article class="tw-mt-4 tw-rounded-3xl tw-bg-white tw-p-6 tw-shadow-sm md:tw-p-8">
-    <h1 class="tw-m-0 tw-break-words tw-font-brand tw-text-4xl tw-font-normal tw-text-accent">{{ profile.name }}</h1>
+    <h1 class="tw-m-0 tw-break-words tw-text-[26px] tw-font-bold tw-text-heading md:tw-text-[32px]">{{ profile.name }}</h1>
     <p class="tw-m-0 tw-text-accent">@{{ profile.user.username }}{% if profile.city %} · {{ profile.city }}{% endif %}</p>
 
     {% if profile.bio %}<p class="tw-m-0 tw-mt-5 tw-whitespace-pre-line tw-break-words">{{ profile.bio }}</p>{% endif %}
