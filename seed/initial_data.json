@@ -112,6 +112,106 @@
       "location": "Istana Olahraga Gelora Bung Karno, Jalan Plaza Selatan, RW 01, Gelora, Tanah Abang, Jakarta Pusat, Daerah Khusus Ibukota Jakarta, 10270, Indonesia",
       "latitude": -6.220338,
       "longitude": 106.80575
+    },
+    {
+      "key": "tmii",
+      "name": "Festival Pangan Nusantara: Dari Sabang sampai Merauke",
+      "organizer": "sinar.organizer",
+      "start_hours_ago": 14,
+      "description": "Festival kuliner tiga hari yang menampilkan makanan khas dari 34 provinsi lengkap dengan demo masak. Panitia menyiapkan pos donasi di dekat dapur umum untuk makanan matang yang tidak terjual.",
+      "location": "Taman Mini Indonesia Indah, Jalan Raya Taman Mini, Ceger, Cipayung, Jakarta Timur, Daerah Khusus Ibukota Jakarta, 13820, Indonesia",
+      "latitude": -6.3025,
+      "longitude": 106.8951
+    },
+    {
+      "key": "kebunraya",
+      "name": "Piknik Zero Waste Kebun Raya Bogor",
+      "organizer": "komunitas.hijau",
+      "start_hours_ago": 38,
+      "description": "Piknik komunitas dengan aturan tanpa plastik sekali pakai. Peserta membawa bekal sendiri, sedangkan kelebihan makanan dikumpulkan di meja berbagi sebelum acara selesai.",
+      "location": "Kebun Raya Bogor, Jalan Ir. H. Juanda, Paledang, Bogor Tengah, Kota Bogor, Jawa Barat, 16122, Indonesia",
+      "latitude": -6.5971,
+      "longitude": 106.7996
+    },
+    {
+      "key": "hackathon",
+      "name": "Hackathon 24 Jam: Solusi Digital Anti Food Waste",
+      "organizer": "bem.fasilkom",
+      "start_hours_ago": 62,
+      "description": "Lomba pemrograman 24 jam untuk mahasiswa se-Jabodetabek dengan tema pengurangan sampah makanan. Konsumsi peserta disediakan sepanjang malam.",
+      "location": "Fakultas Ilmu Komputer UI, Jalan Professor Doctor Nugroho Notosusanto, Pondok Cina, Beji, Depok, Jawa Barat, 16424, Indonesia",
+      "latitude": -6.364488,
+      "longitude": 106.828722
+    },
+    {
+      "key": "charityrun",
+      "name": "Senayan Charity Run 10K untuk Bank Makanan",
+      "organizer": "sinar.organizer",
+      "start_hours_ago": 84,
+      "description": "Lari amal 10 kilometer dengan 2.500 peserta. Seluruh donasi pendaftaran disalurkan ke bank makanan, dan sarapan finisher disiapkan dari katering lokal.",
+      "location": "Stadion Utama Gelora Bung Karno, Jalan Pintu Satu Senayan, Gelora, Tanah Abang, Jakarta Pusat, Daerah Khusus Ibukota Jakarta, 10270, Indonesia",
+      "latitude": -6.2185,
+      "longitude": 106.8018
+    },
+    {
+      "key": "santunan",
+      "name": "Santunan Anak Yatim dan Pasar Pangan Murah",
+      "organizer": "remaja.masjidui",
+      "start_hours_ago": 118,
+      "description": "Santunan untuk anak yatim sekitar kampus, dilanjutkan pasar pangan murah dan makan siang bersama jamaah.",
+      "location": "Masjid Ukhuwah Islamiyah, Jalan Professor Doctor Nugroho Notosusanto, Pondok Cina, Beji, Depok, Jawa Barat, 16424, Indonesia",
+      "latitude": -6.365781,
+      "longitude": 106.831035
+    },
+    {
+      "key": "kotatua",
+      "name": "Pasar Rakyat Kota Tua: Jajanan Betawi Tempo Dulu",
+      "organizer": "komunitas.hijau",
+      "start_hours_ago": -26,
+      "description": "Pasar rakyat akhir pekan dengan puluhan pedagang jajanan Betawi seperti kerak telor, soto tangkar, dan kue rangi. Pedagang diajak menyetor sisa dagangan yang masih layak ke posko komunitas.",
+      "location": "Taman Fatahillah, Jalan Taman Fatahillah, Pinangsia, Taman Sari, Jakarta Barat, Daerah Khusus Ibukota Jakarta, 11110, Indonesia",
+      "latitude": -6.1352,
+      "longitude": 106.8133
+    },
+    {
+      "key": "ancol",
+      "name": "Ancol Sunset Charity Dinner",
+      "organizer": "sinar.organizer",
+      "start_hours_ago": -96,
+      "description": "Makan malam amal di tepi pantai dengan menu seafood dan penampilan musik akustik. Porsi yang tidak habis dikemas ulang untuk disalurkan ke panti asuhan di Jakarta Utara.",
+      "location": "Taman Impian Jaya Ancol, Jalan Lodan Timur, Ancol, Pademangan, Jakarta Utara, Daerah Khusus Ibukota Jakarta, 14430, Indonesia",
+      "latitude": -6.1253,
+      "longitude": 106.8337
+    },
+    {
+      "key": "itb",
+      "name": "Bandung Tech and Career Fair 2026",
+      "organizer": "sinar.organizer",
+      "start_hours_ago": -150,
+      "description": "Bursa kerja dan pameran teknologi dua hari dengan puluhan perusahaan rintisan, ditambah area food truck untuk pengunjung dan panitia.",
+      "location": "Institut Teknologi Bandung, Jalan Ganesha, Lebak Siliwangi, Coblong, Bandung, Jawa Barat, 40132, Indonesia",
+      "latitude": -6.8915,
+      "longitude": 107.6107
+    },
+    {
+      "key": "pekanwirausaha",
+      "name": "Pekan Kewirausahaan Mahasiswa UI",
+      "organizer": "bem.fasilkom",
+      "start_hours_ago": -200,
+      "description": "Pekan pameran produk dan bazar wirausaha mahasiswa UI, dilengkapi seminar bisnis kuliner dan sesi konsultasi dengan pelaku usaha.",
+      "location": "Universitas Indonesia, Jalan Prof. Dr. Sudjono D. Pusponegoro, Pondok Cina, Beji, Depok, Jawa Barat, 16424, Indonesia",
+      "latitude": -6.360316,
+      "longitude": 106.827186
+    },
+    {
+      "key": "panenwarga",
+      "name": "Panen Sayur Warga dan Masak Bersama",
+      "organizer": "komunitas.hijau",
+      "start_hours_ago": -300,
+      "description": "Warga memanen sayur dari kebun komunitas, lalu memasaknya bersama untuk makan siang. Hasil panen dan masakan yang berlebih dibagikan ke tetangga sekitar.",
+      "location": "Alun-Alun Kota Depok, Kalimulya, Depok, Jawa Barat, Indonesia",
+      "latitude": -6.43895,
+      "longitude": 106.827512
     }
   ],
   "reports": [
