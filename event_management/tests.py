@@ -1,5 +1,6 @@
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone as datetime_timezone
 from decimal import Decimal
+from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
@@ -41,8 +42,9 @@ class EventTestBase(TestCase):
                        if name in ("detail", "edit", "delete") else [])
 
     def data(self, **changes):
+        event_date = timezone.localtime(timezone.now() + timedelta(days=3)).replace(hour=9, minute=30)
         data = {
-            "name": "Festival Baru", "event_date": "2027-01-17T09:30",
+            "name": "Festival Baru", "event_date": event_date.strftime("%Y-%m-%dT%H:%M"),
             "description": "Deskripsi lengkap", "location": "Jakarta",
             "latitude": "-6.200000", "longitude": "106.816666",
         }
@@ -90,7 +92,77 @@ class EventFormTests(EventTestBase):
         event = form.save(commit=False)
         event.created_by = self.owner
         event.save()
-        self.assertIn('value="2027-01-17T09:30"', str(EventForm(instance=event)["event_date"]))
+        self.assertIn(f'value="{self.data()["event_date"]}"', str(EventForm(instance=event)["event_date"]))
+
+
+@patch("event_management.forms.timezone.now", return_value=datetime(
+    2030, 1, 1, 17, 5, 45, tzinfo=datetime_timezone.utc
+))
+class EventDateTests(EventTestBase):
+    def test_picker_minimum_uses_wib_across_utc_date_boundary(self, mocked_now):
+        self.client.force_login(self.owner)
+        response = self.client.get(self.url("create"))
+        self.assertContains(response, 'min="2030-01-02T00:05"')
+        self.assertContains(response, "Pilih waktu sekarang atau yang akan datang")
+
+    def test_past_day_and_earlier_time_today_are_rejected(self, mocked_now):
+        for value in ("2030-01-01T23:59", "2030-01-02T00:04"):
+            with self.subTest(value=value):
+                form = EventForm(self.data(event_date=value))
+                self.assertFalse(form.is_valid())
+                self.assertEqual(form.errors.as_data()["event_date"][0].code, "past_event_date")
+
+    def test_current_minute_and_future_times_are_accepted(self, mocked_now):
+        for value in ("2030-01-02T00:05", "2030-01-02T00:06", "2030-01-03T00:00"):
+            with self.subTest(value=value):
+                form = EventForm(self.data(event_date=value))
+                self.assertTrue(form.is_valid(), form.errors)
+
+    def test_time_is_checked_again_when_form_is_submitted(self, mocked_now):
+        form = EventForm(self.data(event_date="2030-01-02T00:05"))
+        mocked_now.return_value += timedelta(minutes=1)
+        self.assertFalse(form.is_valid())
+        self.assertIn("event_date", form.errors)
+
+    def test_direct_post_cannot_create_past_event_for_eo_or_superuser(self, mocked_now):
+        for user in (self.owner, self.superuser):
+            with self.subTest(user=user.username):
+                self.client.force_login(user)
+                response = self.client.post(self.url("create"), self.data(event_date="2030-01-01T23:59"))
+                self.assertContains(response, "Tanggal dan waktu acara tidak boleh sudah lewat.")
+                self.assertIn("event_date", response.context["form"].errors)
+                self.assertEqual(Event.objects.count(), 1)
+
+    def test_unchanged_historical_date_and_seconds_survive_edit(self, mocked_now):
+        original = datetime(2029, 12, 31, 17, 0, 23, tzinfo=datetime_timezone.utc)
+        self.event.event_date = original
+        self.event.save()
+        self.client.force_login(self.owner)
+        page = self.client.get(self.url("edit"))
+        self.assertNotIn("min", page.context["form"].fields["event_date"].widget.attrs)
+        response = self.client.post(self.url("edit"), self.data(
+            name="Keterangan diperbaiki", event_date="2030-01-01T00:00"
+        ))
+        self.assertRedirects(response, self.url("detail"))
+        self.event.refresh_from_db()
+        self.assertEqual(self.event.name, "Keterangan diperbaiki")
+        self.assertEqual(self.event.event_date, original)
+
+    def test_event_cannot_be_rescheduled_to_another_past_time(self, mocked_now):
+        original = self.event.event_date
+        self.client.force_login(self.owner)
+        response = self.client.post(self.url("edit"), self.data(event_date="2030-01-01T23:59"))
+        self.assertContains(response, "Tanggal dan waktu acara tidak boleh sudah lewat.")
+        self.event.refresh_from_db()
+        self.assertEqual(self.event.event_date, original)
+
+    def test_historical_event_can_be_rescheduled_to_future(self, mocked_now):
+        self.client.force_login(self.owner)
+        response = self.client.post(self.url("edit"), self.data(event_date="2030-01-03T09:30"))
+        self.assertRedirects(response, self.url("detail"))
+        self.event.refresh_from_db()
+        self.assertEqual(timezone.localtime(self.event.event_date).strftime("%Y-%m-%dT%H:%M"),
+                         "2030-01-03T09:30")
 
 
 class EventModelTests(EventTestBase):
