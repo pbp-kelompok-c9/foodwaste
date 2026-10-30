@@ -32,7 +32,7 @@ class SeedDataTests(TestCase):
         run_seed()
         output = run_seed()
         self.assertEqual(Report.objects.count(), 50)
-        self.assertEqual(Event.objects.count(), 10)
+        self.assertEqual(Event.objects.count(), len(SEED["events"]))
         self.assertIn('0 laporan baru', output)
 
     def test_roles_and_profiles(self):
