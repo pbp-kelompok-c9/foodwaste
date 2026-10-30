@@ -1,6 +1,7 @@
 import json
 import os
 from io import StringIO
+from pathlib import Path
 from unittest import mock
 
 from django.contrib.auth import get_user_model
@@ -13,6 +14,7 @@ from event_management.models import Event
 from food_waste_management.models import ReportReview
 from food_waste_reporting.models import Report
 
+SEED = json.loads((Path(__file__).resolve().parent.parent / "seed" / "initial_data.json").read_text(encoding="utf-8"))
 
 def run_seed(**kwargs):
     out = StringIO()
@@ -23,15 +25,15 @@ def run_seed(**kwargs):
 class SeedDataTests(TestCase):
     def test_creates_fifty_reports_with_accounts_and_events(self):
         output = run_seed()
-        self.assertEqual(Report.objects.count(), 50)
-        self.assertEqual(Event.objects.count(), 10)
-        self.assertEqual(get_user_model().objects.count(), 10)
+        self.assertEqual(Report.objects.count(), len(SEED["reports"]))
+        self.assertEqual(Event.objects.count(), len(SEED["events"]))
+        self.assertEqual(get_user_model().objects.count(), len(SEED["users"]))
         self.assertIn('50 laporan baru', output)
 
     def test_running_twice_does_not_duplicate(self):
         run_seed()
         output = run_seed()
-        self.assertEqual(Report.objects.count(), 50)
+        self.assertEqual(Report.objects.count(), len(SEED["reports"]))
         self.assertEqual(Event.objects.count(), len(SEED["events"]))
         self.assertIn('0 laporan baru', output)
 
