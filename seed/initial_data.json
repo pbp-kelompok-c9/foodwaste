@@ -1,0 +1,176 @@
+{
+  "_keterangan": "Data awal FoodWastey. Akun, acara, dan laporan adalah data sintetis buatan LLM (Claude). Alamat dan koordinat acara diambil dari Nominatim (data (c) OpenStreetMap contributors, ODbL). Semua waktu relatif terhadap saat command seed_data dijalankan.",
+  "users": [
+    {"username": "sinar.organizer", "role": "eo", "display_name": "Sinar Abadi Organizer", "city": "Jakarta Utara", "bio": "Event organizer untuk festival, pameran, dan seminar di Jabodetabek. Kelebihan konsumsi di setiap acara kami catat dan laporkan."},
+    {"username": "bem.fasilkom", "role": "eo", "display_name": "BEM Fasilkom UI", "city": "Depok", "bio": "Badan Eksekutif Mahasiswa Fakultas Ilmu Komputer Universitas Indonesia."},
+    {"username": "remaja.masjidui", "role": "eo", "display_name": "Remaja Masjid UI", "city": "Depok", "bio": "Pengurus kegiatan pemuda di Masjid Ukhuwah Islamiyah UI."},
+    {"username": "komunitas.hijau", "role": "eo", "display_name": "Komunitas Jakarta Hijau", "city": "Jakarta Pusat", "bio": "Komunitas relawan lingkungan yang rutin mengadakan aksi bersih-bersih saat car free day."},
+    {"username": "petugas.foodwastey", "role": "staff", "display_name": "Tim Verifikasi FoodWastey", "city": "Depok", "bio": "Memeriksa laporan yang masuk dan mengoordinasikan penjemputan makanan."},
+    {"username": "dimas.pratama", "role": "reporter", "display_name": "Dimas Pratama", "city": "Depok", "bio": "Mahasiswa Ilmu Komputer UI, sering jadi panitia acara kampus."},
+    {"username": "salsabila.rahma", "role": "reporter", "display_name": "Salsabila Rahma", "city": "Jakarta Selatan", "bio": "Relawan bank makanan di akhir pekan."},
+    {"username": "kevin.wijaya", "role": "reporter", "display_name": "Kevin Wijaya", "city": "Tangerang Selatan", "bio": "Bekerja di BSD dan ikut menyalurkan makanan berlebih ke panti asuhan sekitar."},
+    {"username": "nurul.aini", "role": "reporter", "display_name": "Nurul Aini", "city": "Depok", "bio": "Mahasiswi Kesehatan Masyarakat yang tertarik pada isu keamanan pangan."},
+    {"username": "yoga.saputra", "role": "reporter", "display_name": "Yoga Saputra", "city": "Jakarta Utara", "bio": "Kru panggung lepas untuk konser dan festival."}
+  ],
+  "events": [
+    {
+      "key": "festival",
+      "name": "Jakarta Culinary & Music Festival 2026",
+      "organizer": "sinar.organizer",
+      "start_hours_ago": 6,
+      "description": "Festival kuliner dan musik dua hari dengan lebih dari 120 tenant makanan dan tiga panggung. Panitia menyediakan pos pengumpulan kelebihan makanan di dekat gudang logistik Hall C.",
+      "location": "Jiexpo, RW.10, Jalan Pesanggrahan Raya, Jakarta International Expo, Pademangan Timur, Pademangan, Jakarta Utara, Daerah Khusus Ibukota Jakarta, 10610, Indonesia",
+      "latitude": -6.14816,
+      "longitude": 106.848845
+    },
+    {
+      "key": "pameran",
+      "name": "Indonesia Higher Education Expo 2026",
+      "organizer": "sinar.organizer",
+      "start_hours_ago": 4,
+      "description": "Pameran pendidikan tinggi yang diikuti puluhan universitas dalam dan luar negeri, lengkap dengan seminar beasiswa dan konsultasi jurusan.",
+      "location": "Indonesia Convention Exhibition, 1, Jalan BSD Grand Boulevard, BSD City, Pagedangan, Kabupaten Tangerang, Banten, 15339, Indonesia",
+      "latitude": -6.300681,
+      "longitude": 106.636572
+    },
+    {
+      "key": "wisuda",
+      "name": "Ramah Tamah Wisudawan Fasilkom UI 2026",
+      "organizer": "bem.fasilkom",
+      "start_hours_ago": 27,
+      "description": "Acara ramah tamah untuk wisudawan Fasilkom UI beserta keluarga setelah prosesi wisuda, diisi sambutan dekan, penampilan musik, dan makan bersama.",
+      "location": "Balairung UI, Jalan Prof. Dr. Mahar Mardjono, Pondok Cina, Beji, Depok, Jawa Barat, 16424, Indonesia",
+      "latitude": -6.368032,
+      "longitude": 106.82965
+    },
+    {
+      "key": "seminar",
+      "name": "Seminar Nasional Ketahanan Pangan dan Pengurangan Sampah Makanan",
+      "organizer": "sinar.organizer",
+      "start_hours_ago": 29,
+      "description": "Seminar satu hari bersama akademisi, pegiat bank makanan, dan pelaku usaha katering tentang cara mengurangi makanan terbuang dari hulu ke hilir.",
+      "location": "Balai Kartini, Jalan Jenderal Gatot Subroto, RW 03, Kuningan Timur, Setiabudi, Jakarta Selatan, Daerah Khusus Ibukota Jakarta, 12950, Indonesia",
+      "latitude": -6.234617,
+      "longitude": 106.825379
+    },
+    {
+      "key": "fasilkomfest",
+      "name": "Fasilkom Fest 2026",
+      "organizer": "bem.fasilkom",
+      "start_hours_ago": 50,
+      "description": "Festival tahunan Fasilkom UI berisi lomba competitive programming, pameran proyek mahasiswa, turnamen futsal, dan bazar sponsor.",
+      "location": "Fakultas Ilmu Komputer UI, Jalan Professor Doctor Nugroho Notosusanto, Pondok Cina, Beji, Depok, Jawa Barat, 16424, Indonesia",
+      "latitude": -6.364488,
+      "longitude": 106.828722
+    },
+    {
+      "key": "kajian",
+      "name": "Kajian Akbar Pemuda: Hidup Hemat, Hidup Berkah",
+      "organizer": "remaja.masjidui",
+      "start_hours_ago": 76,
+      "description": "Kajian terbuka untuk mahasiswa dan masyarakat umum tentang gaya hidup sederhana dan tidak berlebihan, ditutup dengan makan bersama jamaah.",
+      "location": "Masjid Ukhuwah Islamiyah, Jalan Professor Doctor Nugroho Notosusanto, Pondok Cina, Beji, Depok, Jawa Barat, 16424, Indonesia",
+      "latitude": -6.365781,
+      "longitude": 106.831035
+    },
+    {
+      "key": "cfd",
+      "name": "Jalan Sehat Bebas Sampah di Car Free Day",
+      "organizer": "komunitas.hijau",
+      "start_hours_ago": 100,
+      "description": "Jalan sehat bersama warga sambil memungut sampah di sepanjang Jalan M.H. Thamrin. Peserta mendapat sarapan dan air minum di posko komunitas.",
+      "location": "Bundaran Hotel Indonesia, RW 05, Menteng, Jakarta Pusat, Daerah Khusus Ibukota Jakarta, 10310, Indonesia",
+      "latitude": -6.194985,
+      "longitude": 106.822674
+    },
+    {
+      "key": "pensi",
+      "name": "Pentas Seni dan Bazar Mahasiswa UI",
+      "organizer": "bem.fasilkom",
+      "start_hours_ago": 140,
+      "description": "Pentas seni lintas fakultas dengan bazar makanan dan produk UMKM mahasiswa.",
+      "location": "Universitas Indonesia, Jalan Prof. Dr. Sudjono D. Pusponegoro, Pondok Cina, Beji, Depok, Jawa Barat, 16424, Indonesia",
+      "latitude": -6.360316,
+      "longitude": 106.827186
+    },
+    {
+      "key": "bazar",
+      "name": "Bazar UMKM dan Pasar Murah Depok",
+      "organizer": "komunitas.hijau",
+      "start_hours_ago": -70,
+      "description": "Bazar UMKM dan pasar murah bahan pokok untuk warga Depok. Komunitas membuka meja penitipan kelebihan makanan dari tenant di akhir acara.",
+      "location": "Alun-Alun Kota Depok, Kalimulya, Depok, Jawa Barat, Indonesia",
+      "latitude": -6.43895,
+      "longitude": 106.827512
+    },
+    {
+      "key": "futsal",
+      "name": "Turnamen Futsal Antarkampus Jabodetabek",
+      "organizer": "sinar.organizer",
+      "start_hours_ago": -170,
+      "description": "Turnamen futsal tiga hari yang diikuti 32 tim dari kampus se-Jabodetabek.",
+      "location": "Istana Olahraga Gelora Bung Karno, Jalan Plaza Selatan, RW 01, Gelora, Tanah Abang, Jakarta Pusat, Daerah Khusus Ibukota Jakarta, 10270, Indonesia",
+      "latitude": -6.220338,
+      "longitude": 106.80575
+    }
+  ],
+  "reports": [
+    {"event": "festival", "reporter": "yoga.saputra", "food_name": "Nasi kotak ayam bakar", "food_portion": 35, "spot": "Belakang panggung utama, meja konsumsi kru", "pickup": "ambil sendiri", "details": "Jatah makan kru yang tidak jadi diambil karena jadwal sound check mundur. Kotak masih tertutup rapat dan disimpan di cooler box.", "reported_after_hours": 2, "shelf_life_hours": 5, "review": {"status": "menunggu"}},
+    {"event": "festival", "reporter": "sinar.organizer", "food_name": "Roti sobek isi cokelat", "food_portion": 60, "spot": "Tenda tenant Hall B nomor 12", "pickup": "diantar", "details": "Stok tenant yang tidak terjual sampai sore. Kemasan masih tersegel dan tanggal kedaluwarsa tertera di bungkusnya.", "reported_after_hours": 3, "shelf_life_hours": 60, "review": {"status": "diterima"}},
+    {"event": "festival", "reporter": "sinar.organizer", "food_name": "Air mineral botol 600 ml", "food_portion": 96, "spot": "Gudang logistik dekat pintu masuk Hall C", "pickup": "ambil sendiri", "details": "Kelebihan stok air minum untuk relawan, empat dus yang belum dibuka.", "reported_after_hours": 1.5, "shelf_life_hours": 4320, "review": {"status": "diterima"}},
+    {"event": "festival", "reporter": "kevin.wijaya", "food_name": "Martabak manis potong", "food_portion": 18, "spot": "Food court outdoor, booth martabak di ujung barat", "pickup": "ambil sendiri", "details": "Pesanan rombongan yang dibatalkan. Sudah dipotong dan dikemas per porsi dalam mika.", "reported_after_hours": 3.5, "shelf_life_hours": 8, "review": {"status": "menunggu"}},
+    {"event": "festival", "reporter": "salsabila.rahma", "food_name": "Es teh manis cup", "food_portion": 40, "spot": "Booth minuman dekat panggung kedua", "pickup": "ambil sendiri", "details": "Sudah telanjur dibuat sebelum hujan turun dan pengunjung berkurang. Cup tertutup seal dan disimpan di box es.", "reported_after_hours": 4, "shelf_life_hours": 4, "review": {"status": "menunggu"}},
+    {"event": "festival", "reporter": "sinar.organizer", "food_name": "Snack box risol, lemper, dan kue lapis", "food_portion": 25, "spot": "Ruang VIP lantai 2", "pickup": "ambil sendiri", "details": "Snack untuk tamu undangan yang berhalangan hadir. Box belum dibuka.", "reported_after_hours": 2.5, "shelf_life_hours": 10, "review": {"status": "diterima"}},
+    {"event": "festival", "reporter": "yoga.saputra", "food_name": "Sate ayam dengan lontong", "food_portion": 15, "spot": "Area food court, deretan booth sate", "pickup": "ambil sendiri", "details": "Sudah dibakar tetapi pesanan kru batal. Bumbu kacang dipisah dalam plastik.", "reported_after_hours": 4.5, "shelf_life_hours": 4, "review": {"status": "menunggu"}},
+    {"event": "festival", "reporter": "kevin.wijaya", "food_name": "Pisang cavendish", "food_portion": 30, "spot": "Meja relawan medis, dekat pos P3K", "pickup": "ambil sendiri", "details": "Buah untuk relawan yang masih banyak tersisa. Kondisi segar dan belum terlalu matang.", "reported_after_hours": 2, "shelf_life_hours": 96, "review": {"status": "diterima"}},
+    {"event": "festival", "reporter": "salsabila.rahma", "food_name": "Kopi susu botol 1 liter", "food_portion": 12, "spot": "Deretan tenant minuman, booth kopi nomor 4", "pickup": "diantar", "details": "Produksi berlebih untuk hari ini dan disimpan di kulkas tenant. Mohon dijemput sebelum malam.", "reported_after_hours": 4, "shelf_life_hours": 20, "review": {"status": "menunggu"}},
+
+    {"event": "pameran", "reporter": "kevin.wijaya", "food_name": "Nasi kotak rendang", "food_portion": 40, "spot": "Hall 5, ruang panitia di belakang meja registrasi", "pickup": "ambil sendiri", "details": "Konsumsi makan siang panitia berlebih karena sebagian panitia makan di luar. Kotak belum dibuka.", "reported_after_hours": 2, "shelf_life_hours": 5, "review": {"status": "menunggu"}},
+    {"event": "pameran", "reporter": "sinar.organizer", "food_name": "Kue kering dalam toples", "food_portion": 20, "spot": "Booth peserta nomor A17", "pickup": "diantar", "details": "Suvenir untuk pengunjung yang tersisa. Toples masih tersegel.", "reported_after_hours": 2.5, "shelf_life_hours": 1440, "review": {"status": "diterima"}},
+    {"event": "pameran", "reporter": "sinar.organizer", "food_name": "Susu UHT kotak 200 ml", "food_portion": 72, "spot": "Meja registrasi utama", "pickup": "ambil sendiri", "details": "Isi goodie bag yang tidak terbagi karena jumlah pengunjung di bawah perkiraan. Masih dalam karton.", "reported_after_hours": 1.5, "shelf_life_hours": 2880, "review": {"status": "diterima"}},
+    {"event": "pameran", "reporter": "kevin.wijaya", "food_name": "Lontong isi dan pastel", "food_portion": 30, "spot": "Lounge pembicara, Hall 5", "pickup": "ambil sendiri", "details": "Snack sesi pagi yang tidak tersentuh karena sesi diskusi diperpanjang.", "reported_after_hours": 1, "shelf_life_hours": 8, "review": {"status": "diterima"}},
+    {"event": "pameran", "reporter": "kevin.wijaya", "food_name": "Jeruk medan", "food_portion": 50, "spot": "Ruang istirahat panitia", "pickup": "ambil sendiri", "details": "Sisa buah untuk panitia, masih dalam keranjang.", "reported_after_hours": 2, "shelf_life_hours": 120, "review": {"status": "menunggu"}},
+    {"event": "pameran", "reporter": "salsabila.rahma", "food_name": "Mie goreng kotak", "food_portion": 22, "spot": "Area food truck, parkir timur", "pickup": "diantar", "details": "Pesanan katering untuk sesi sore dibatalkan oleh salah satu sekolah peserta.", "reported_after_hours": 2.5, "shelf_life_hours": 4, "review": {"status": "menunggu"}},
+
+    {"event": "wisuda", "reporter": "bem.fasilkom", "food_name": "Nasi kuning tumpeng mini", "food_portion": 45, "spot": "Selasar timur Balairung, meja konsumsi keluarga wisudawan", "pickup": "ambil sendiri", "details": "Konsumsi keluarga wisudawan yang berlebih, sudah dipisah per porsi dalam kotak.", "reported_after_hours": 4, "shelf_life_hours": 6, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+    {"event": "wisuda", "reporter": "dimas.pratama", "food_name": "Kue basah lapis, lemper, dan onde-onde", "food_portion": 80, "spot": "Ruang transit wisudawan", "pickup": "ambil sendiri", "details": "Snack pagi yang tersisa setelah prosesi selesai.", "reported_after_hours": 3, "shelf_life_hours": 14, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+    {"event": "wisuda", "reporter": "bem.fasilkom", "food_name": "Air mineral gelas 220 ml", "food_portion": 120, "spot": "Pintu masuk utara Balairung", "pickup": "ambil sendiri", "details": "Sisa air minum untuk tamu, masih dalam dus.", "reported_after_hours": 6, "shelf_life_hours": 4320, "review": {"status": "diterima", "handling": "sudah_diperiksa"}},
+    {"event": "wisuda", "reporter": "dimas.pratama", "food_name": "Roti tawar kupas", "food_portion": 25, "spot": "Dapur panitia di belakang panggung", "pickup": "diantar", "details": "Bahan sandwich yang tidak terpakai. Masih tersegel dalam plastik pabrik.", "reported_after_hours": 7, "shelf_life_hours": 48, "review": {"status": "diterima"}},
+    {"event": "wisuda", "reporter": "nurul.aini", "food_name": "Puding cokelat cup", "food_portion": 36, "spot": "Meja konsumsi dosen pendamping", "pickup": "ambil sendiri", "details": "Dessert yang tersisa karena acara selesai lebih cepat. Disimpan di kulkas portable panitia.", "reported_after_hours": 5, "shelf_life_hours": 24, "review": {"status": "diterima"}},
+    {"event": "wisuda", "reporter": "dimas.pratama", "food_name": "Nasi box ayam geprek", "food_portion": 20, "spot": "Tenda petugas parkir motor Balairung", "pickup": "ambil sendiri", "details": "Jatah makan petugas parkir shift sore yang ternyata sudah makan.", "reported_after_hours": 8, "shelf_life_hours": 5, "review": {"status": "ditolak", "reason": "Sebagian kotak sudah dibuka dan sambal tercampur ke nasi, sehingga tidak memenuhi standar kebersihan untuk dibagikan."}},
+    {"event": "wisuda", "reporter": "nurul.aini", "food_name": "Teh kotak 300 ml", "food_portion": 48, "spot": "Ruang transit wisudawan", "pickup": "ambil sendiri", "details": "Minuman yang tersisa, masih dalam karton.", "reported_after_hours": 5, "shelf_life_hours": 2160, "review": {"status": "diterima"}},
+    {"event": "wisuda", "reporter": "bem.fasilkom", "food_name": "Buah potong melon dan semangka", "food_portion": 30, "spot": "Selasar timur Balairung", "pickup": "ambil sendiri", "details": "Dipotong pagi hari dan disimpan di box es. Sudah dikemas per cup.", "reported_after_hours": 4, "shelf_life_hours": 10, "review": {"status": "diterima", "handling": "selesai", "follow_up": "diolah"}},
+
+    {"event": "seminar", "reporter": "sinar.organizer", "food_name": "Nasi kotak gudeg", "food_portion": 50, "spot": "Ballroom lantai 1, pojok konsumsi peserta", "pickup": "ambil sendiri", "details": "Kelebihan pesanan katering karena peserta yang hadir lebih sedikit daripada pendaftar.", "reported_after_hours": 5, "shelf_life_hours": 6, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+    {"event": "seminar", "reporter": "salsabila.rahma", "food_name": "Kue sus dan risoles", "food_portion": 60, "spot": "Foyer ballroom", "pickup": "ambil sendiri", "details": "Sisa coffee break sesi kedua, tertata rapi di nampan bertutup.", "reported_after_hours": 3, "shelf_life_hours": 12, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+    {"event": "seminar", "reporter": "sinar.organizer", "food_name": "Air mineral botol 330 ml", "food_portion": 150, "spot": "Gudang di belakang ballroom", "pickup": "ambil sendiri", "details": "Sisa air minum peserta, masih dalam dus tersegel.", "reported_after_hours": 6, "shelf_life_hours": 4320, "review": {"status": "diterima", "handling": "sudah_diperiksa"}},
+    {"event": "seminar", "reporter": "salsabila.rahma", "food_name": "Biskuit gandum kemasan", "food_portion": 40, "spot": "Meja registrasi peserta", "pickup": "diantar", "details": "Isi goodie bag yang tersisa, kemasan masih utuh.", "reported_after_hours": 2, "shelf_life_hours": 4320, "review": {"status": "diterima"}},
+    {"event": "seminar", "reporter": "salsabila.rahma", "food_name": "Nasi kotak gudeg", "food_portion": 50, "spot": "Ballroom lantai 1, pojok konsumsi", "pickup": "ambil sendiri", "details": "Banyak nasi kotak yang tidak diambil peserta setelah sesi siang.", "reported_after_hours": 5.5, "shelf_life_hours": 6, "review": {"status": "ditolak", "reason": "Laporan ganda. Makanan yang sama sudah dilaporkan oleh panitia acara."}},
+    {"event": "seminar", "reporter": "salsabila.rahma", "food_name": "Jus jeruk botol 250 ml", "food_portion": 24, "spot": "Ruang tunggu pembicara", "pickup": "ambil sendiri", "details": "Minuman untuk pembicara yang tidak dibuka. Disimpan di kulkas ruangan.", "reported_after_hours": 4, "shelf_life_hours": 72, "review": {"status": "diterima"}},
+
+    {"event": "fasilkomfest", "reporter": "bem.fasilkom", "food_name": "Nasi box ayam teriyaki", "food_portion": 30, "spot": "Lobi Gedung A Fasilkom, meja konsumsi panitia", "pickup": "ambil sendiri", "details": "Sisa konsumsi panitia hari kedua.", "reported_after_hours": 6, "shelf_life_hours": 5, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+    {"event": "fasilkomfest", "reporter": "dimas.pratama", "food_name": "Donat kemasan", "food_portion": 48, "spot": "Booth sponsor di koridor Gedung B", "pickup": "ambil sendiri", "details": "Sampling produk sponsor yang tidak habis dibagikan.", "reported_after_hours": 5, "shelf_life_hours": 36, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+    {"event": "fasilkomfest", "reporter": "nurul.aini", "food_name": "Pizza potong", "food_portion": 24, "spot": "Ruang lomba competitive programming, Gedung A lantai 2", "pickup": "ambil sendiri", "details": "Sisa konsumsi peserta lomba, masih di dalam kotak aslinya.", "reported_after_hours": 9, "shelf_life_hours": 8, "review": {"status": "ditolak", "reason": "Pizza sudah lebih dari delapan jam di suhu ruang tanpa pendingin."}},
+    {"event": "fasilkomfest", "reporter": "bem.fasilkom", "food_name": "Minuman isotonik botol", "food_portion": 60, "spot": "Lapangan futsal di belakang Fasilkom", "pickup": "ambil sendiri", "details": "Sisa logistik turnamen futsal, masih dalam dus.", "reported_after_hours": 4, "shelf_life_hours": 2880, "review": {"status": "diterima", "handling": "sudah_diperiksa"}},
+    {"event": "fasilkomfest", "reporter": "dimas.pratama", "food_name": "Keripik singkong kemasan", "food_portion": 75, "spot": "Sekretariat BEM Fasilkom", "pickup": "diantar", "details": "Sisa hadiah kuis, semua kemasan masih tersegel.", "reported_after_hours": 8, "shelf_life_hours": 2160, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dijual"}},
+    {"event": "fasilkomfest", "reporter": "bem.fasilkom", "food_name": "Kue lumpur dan bolu pandan", "food_portion": 40, "spot": "Lobi Gedung A Fasilkom", "pickup": "ambil sendiri", "details": "Snack sesi pembukaan yang tersisa.", "reported_after_hours": 3, "shelf_life_hours": 18, "review": {"status": "diterima", "handling": "selesai", "follow_up": "diolah"}},
+    {"event": "fasilkomfest", "reporter": "nurul.aini", "food_name": "Nasi goreng kotak", "food_portion": 15, "spot": "Ruang panitia acara, Gedung B lantai 1", "pickup": "ambil sendiri", "details": "Konsumsi panitia shift malam yang berlebih.", "reported_after_hours": 10, "shelf_life_hours": 5, "review": {"status": "diterima"}},
+
+    {"event": "kajian", "reporter": "remaja.masjidui", "food_name": "Nasi kotak ayam bakar", "food_portion": 70, "spot": "Selasar Masjid UI sisi selatan", "pickup": "ambil sendiri", "details": "Konsumsi jamaah yang tersisa setelah kajian selesai.", "reported_after_hours": 3, "shelf_life_hours": 6, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+    {"event": "kajian", "reporter": "remaja.masjidui", "food_name": "Kurma kemasan 250 gram", "food_portion": 30, "spot": "Rak logistik ruang takmir", "pickup": "ambil sendiri", "details": "Sisa bingkisan untuk pembicara dan jamaah lansia.", "reported_after_hours": 4, "shelf_life_hours": 2880, "review": {"status": "diterima", "handling": "sudah_diperiksa"}},
+    {"event": "kajian", "reporter": "nurul.aini", "food_name": "Air mineral gelas 220 ml", "food_portion": 200, "spot": "Pintu masuk utama masjid", "pickup": "ambil sendiri", "details": "Sisa air minum jamaah, masih dalam dus.", "reported_after_hours": 4, "shelf_life_hours": 4320, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+    {"event": "kajian", "reporter": "dimas.pratama", "food_name": "Gorengan bakwan dan tahu isi", "food_portion": 60, "spot": "Teras masjid sisi utara", "pickup": "ambil sendiri", "details": "Kiriman donatur yang datang terlambat setelah jamaah pulang.", "reported_after_hours": 3.5, "shelf_life_hours": 6, "review": {"status": "ditolak", "reason": "Gorengan dibiarkan terbuka di teras tanpa penutup sehingga tidak layak dibagikan."}},
+    {"event": "kajian", "reporter": "remaja.masjidui", "food_name": "Bubur kacang hijau cup", "food_portion": 25, "spot": "Dapur masjid", "pickup": "ambil sendiri", "details": "Hidangan penutup untuk jamaah yang dimasak berlebih, sudah dikemas dalam cup bertutup.", "reported_after_hours": 3, "shelf_life_hours": 8, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+
+    {"event": "cfd", "reporter": "komunitas.hijau", "food_name": "Nasi uduk bungkus", "food_portion": 40, "spot": "Tenda posko Komunitas Jakarta Hijau, sisi barat Bundaran HI", "pickup": "ambil sendiri", "details": "Sarapan relawan yang berlebih karena sebagian relawan berhalangan hadir.", "reported_after_hours": 2, "shelf_life_hours": 6, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+    {"event": "cfd", "reporter": "komunitas.hijau", "food_name": "Pisang dan jeruk", "food_portion": 60, "spot": "Pos hidrasi kedua di Jalan M.H. Thamrin", "pickup": "ambil sendiri", "details": "Buah untuk peserta jalan sehat yang tersisa di pos hidrasi.", "reported_after_hours": 3, "shelf_life_hours": 72, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+    {"event": "cfd", "reporter": "salsabila.rahma", "food_name": "Air mineral botol 600 ml", "food_portion": 80, "spot": "Posko utama komunitas", "pickup": "ambil sendiri", "details": "Sisa air minum peserta, masih dalam dus.", "reported_after_hours": 3, "shelf_life_hours": 4320, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+    {"event": "cfd", "reporter": "komunitas.hijau", "food_name": "Roti isi kacang hijau", "food_portion": 35, "spot": "Tenda sponsor di depan posko", "pickup": "ambil sendiri", "details": "Roti dari sponsor yang tidak habis dibagikan kepada peserta.", "reported_after_hours": 2.5, "shelf_life_hours": 30, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+
+    {"event": "pensi", "reporter": "bem.fasilkom", "food_name": "Nasi kotak ayam bumbu kuning", "food_portion": 55, "spot": "Belakang panggung utama, area kru", "pickup": "ambil sendiri", "details": "Konsumsi kru dan pengisi acara yang berlebih.", "reported_after_hours": 6, "shelf_life_hours": 6, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+    {"event": "pensi", "reporter": "yoga.saputra", "food_name": "Batagor porsi", "food_portion": 20, "spot": "Bazar mahasiswa, stand nomor 7", "pickup": "ambil sendiri", "details": "Dagangan yang tersisa saat bazar ditutup.", "reported_after_hours": 7, "shelf_life_hours": 5, "review": {"status": "ditolak", "reason": "Pemilik stand tidak bisa dihubungi dan stand sudah tutup saat petugas datang."}},
+    {"event": "pensi", "reporter": "bem.fasilkom", "food_name": "Es buah cup", "food_portion": 30, "spot": "Stand minuman panitia", "pickup": "ambil sendiri", "details": "Es buah untuk pengisi acara yang tersisa, disimpan di box es.", "reported_after_hours": 5, "shelf_life_hours": 6, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dibagikan"}},
+    {"event": "pensi", "reporter": "dimas.pratama", "food_name": "Kue kering kemasan", "food_portion": 45, "spot": "Stand bazar UMKM mahasiswa", "pickup": "diantar", "details": "Produk UMKM mahasiswa yang tidak terjual, kemasan masih tersegel.", "reported_after_hours": 8, "shelf_life_hours": 2160, "review": {"status": "diterima", "handling": "selesai", "follow_up": "dijual"}},
+    {"event": "pensi", "reporter": "bem.fasilkom", "food_name": "Air mineral gelas 220 ml", "food_portion": 180, "spot": "Gudang logistik panitia", "pickup": "ambil sendiri", "details": "Sisa air minum penonton, masih dalam dus.", "reported_after_hours": 8, "shelf_life_hours": 4320, "review": {"status": "diterima", "handling": "sudah_diperiksa"}}
+  ]
+}

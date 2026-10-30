@@ -108,6 +108,22 @@ Alur penggunaan: EO mengetik nama tempat atau alamat acara → menekan tombol **
 
 Nominatim merupakan perangkat lunak open source dan layanan publiknya dapat digunakan tanpa biaya sesuai kebijakan penggunaan. Integrasi dilakukan melalui backend Django dengan pembatasan maksimal satu request per detik untuk seluruh aplikasi, identitas aplikasi pada User-Agent, penyimpanan hasil pencarian (cache), serta atribusi **© OpenStreetMap contributors** yang ditautkan ke [informasi hak cipta OpenStreetMap](https://www.openstreetmap.org/copyright). Pencarian hanya dijalankan saat tombol ditekan, bukan autocomplete setiap kali pengguna mengetik. Alamat layanan dibuat dapat dikonfigurasi agar bisa diganti bila diperlukan.
 
+## 🗂️ Data awal
+
+Database diisi dengan **50 laporan makanan** sebagai data utama, beserta 10 acara dan 10 akun contoh (4 EO, 1 staff pemeriksa, dan 5 peserta). Data disimpan di [`seed/initial_data.json`](seed/initial_data.json).
+
+- **Sumber:** akun, acara, dan laporan merupakan data sintetis buatan LLM (Claude) yang disusun agar sesuai dengan konteks acara di Jabodetabek. Alamat dan koordinat acara diambil dari Nominatim (data © OpenStreetMap contributors).
+- **Isi:** status laporan bervariasi. Sebagian besar sudah diterima sehingga tampil di Beranda, sebagian masih menunggu verifikasi di halaman Kelola, dan beberapa ditolak beserta alasannya. Dua acara dijadwalkan di masa mendatang sehingga belum memiliki laporan.
+- **Waktu:** tanggal acara, waktu lapor, dan batas best before dihitung relatif terhadap saat seed dijalankan, sehingga data tetap terlihat baru.
+
+Menjalankan seed (lokal maupun di Terminal PWS):
+
+```sh
+SEED_PASSWORD='<password akun contoh>' python manage.py seed_data
+```
+
+Command ini aman dijalankan berulang kali karena data yang sudah ada tidak diduplikasi. Password akun contoh tidak disimpan di repository; tanpa `SEED_PASSWORD`, akun contoh tetap dibuat tetapi tidak dapat dipakai untuk login.
+
 ## 🌐 Deployment PWS
 
 [Buka deployment FoodWastey di PWS](https://adinata-alaudin51-foodwaste.pws.cs.ui.ac.id/)
