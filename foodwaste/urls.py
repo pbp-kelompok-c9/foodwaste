@@ -30,8 +30,8 @@ urlpatterns = [
     path('management/', include('food_waste_management.urls')),
     path('events/', include('event_management.urls')),
     path('reporting/', include('food_waste_reporting.urls')),
-
     path('', include('discovery_dashboard.urls')),
+    path("api/", include("food_waste_reporting.api_urls")),
 ]
 
 
