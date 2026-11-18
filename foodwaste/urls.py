@@ -26,6 +26,7 @@ urlpatterns = [
     ),
 
     path('', include('authentication.urls')),
+    path('api/auth/', include('authentication.api_urls')),
     path('management/', include('food_waste_management.urls')),
     path('events/', include('event_management.urls')),
     path('reporting/', include('food_waste_reporting.urls')),

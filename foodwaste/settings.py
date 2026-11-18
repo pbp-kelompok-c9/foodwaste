@@ -66,6 +66,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
     'authentication',
     'food_waste_management',
     'food_waste_reporting',
@@ -77,6 +80,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -186,6 +190,25 @@ LOGOUT_REDIRECT_URL = 'authentication:login'
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = PRODUCTION
 CSRF_COOKIE_SECURE = PRODUCTION
+
+# Web service untuk aplikasi mobile Flutter (Django REST Framework).
+# Aplikasi mobile memakai token (header `Authorization: Token <key>`), sedangkan
+# session tetap dipakai situs web dan browsable API.
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'auth': os.getenv('API_AUTH_THROTTLE', '20/min'),
+    },
+}
+
+# CORS hanya dibuka untuk /api/ agar Flutter Web (Chrome) bisa memanggil API saat
+# pengembangan. Autentikasi API memakai token di header, bukan cookie, sehingga
+# origin lain tidak bisa menumpang session pengguna.
+CORS_URLS_REGEX = r'^/api/.*$'
+CORS_ALLOW_ALL_ORIGINS = True
 
 # The public Nominatim service is called only after an EO clicks search.
 NOMINATIM_SEARCH_URL = os.getenv(
