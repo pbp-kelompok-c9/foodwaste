@@ -12,6 +12,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', discovery, name='main_landing'),
+    path('api/management/', include('food_waste_management.api_urls')),
 
     path(
         'privacy/',

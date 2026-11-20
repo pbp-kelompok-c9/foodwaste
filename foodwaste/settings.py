@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'food_waste_reporting',
     'event_management',
     'discovery_dashboard',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
