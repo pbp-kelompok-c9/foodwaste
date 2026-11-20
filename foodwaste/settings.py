@@ -62,6 +62,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
+    'rest_framework.authtoken',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -72,6 +75,7 @@ INSTALLED_APPS = [
     'event_management',
     'discovery_dashboard',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
