@@ -9,6 +9,7 @@ from discovery_dashboard.views import discovery
 
 
 urlpatterns = [
+    path('api/events/', include('event_management.api_urls')),
     path('admin/', admin.site.urls),
 
     path('', discovery, name='main_landing'),
